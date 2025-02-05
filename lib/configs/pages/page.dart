@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:venturo_core/configs/routes/route.dart';
+import 'package:venturo_core/features/sign_in/sub_features/no_connection/view/ui/no_connection_screen.dart';
+import 'package:venturo_core/features/sign_in/view/ui/sign_in_screen.dart';
 import 'package:venturo_core/features/splash/bindings/splash_binding.dart';
+import 'package:venturo_core/features/sign_in/bindings/sign_in_binding.dart';
 import 'package:venturo_core/features/profile/bindings/profile_binding.dart';
 import 'package:venturo_core/features/splash/view/components/privacy_policy_view.dart';
 import 'package:venturo_core/features/profile/view/ui/profile_screen.dart';
@@ -14,13 +17,22 @@ abstract class MainPages {
       binding: SplashBinding()
     ),
     GetPage(
-      name: MainRoute.profileView,
+      name: MainRoute.profile,
       page: () =>  ProfileScreen(),
       binding: ProfileBinding(),
     ),
     GetPage(
       name: MainRoute.privacyPolicy,
       page: () =>const  PrivacyPolicyView(),
+    ),
+      GetPage(
+      name: MainRoute.noConnection,
+      page: () =>  NoConnectionScreen(),
+    ),
+    GetPage(
+      name: MainRoute.signIn,
+      page: () => const SignInView(),
+      binding: SignInBinding(),
     ),
 
   ];

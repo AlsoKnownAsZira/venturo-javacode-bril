@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/configs/routes/route.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:venturo_core/shared/controllers/global_controller.dart';
 import 'configs/pages/page.dart';
 import 'configs/themes/theme.dart';
 import 'utils/services/sentry_services.dart';
@@ -13,9 +16,14 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox("venturo");
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  Get.put(GlobalController());
 
   /// Change your options.dns with your project !!!!
   await SentryFlutter.init(
@@ -42,7 +50,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
-          localizationsDelegates:  [
+          localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
@@ -56,10 +64,11 @@ class MyApp extends StatelessWidget {
             Locale('id'),
           ],
           // initialBinding: , Jika memiliki global bindding
-          initialRoute: MainRoute.splashRoute,
+          initialRoute: MainRoute.initial,
           theme: themeLight,
           defaultTransition: Transition.native,
           getPages: MainPages.pages,
+          builder: EasyLoading.init(),
         );
       },
     );

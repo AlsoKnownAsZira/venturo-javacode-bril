@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:venturo_core/features/profile/view/ui/profile_screen.dart';
 
 class SplashController extends GetxController {
   var opacity = 0.0.obs;
@@ -18,6 +17,6 @@ class SplashController extends GetxController {
   }
 
   void navigateToProfile() {
-    Get.offAndToNamed('/profile');
+    Get.offAndToNamed('/sign_in');
   }
 }
