@@ -7,8 +7,15 @@ import 'package:venturo_core/configs/routes/route.dart';
 import 'configs/pages/page.dart';
 import 'configs/themes/theme.dart';
 import 'utils/services/sentry_services.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+		options: DefaultFirebaseOptions.currentPlatform,
+	);
   /// Change your options.dns with your project !!!!
   await SentryFlutter.init(
     (options) {
@@ -23,6 +30,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
 
   @override
   Widget build(BuildContext context) {

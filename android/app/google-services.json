@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "180580159371",
+    "project_id": "core-venturo-5c70a",
+    "storage_bucket": "core-venturo-5c70a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180580159371:android:d23f62a8efcedc3678298e",
+        "android_client_info": {
+          "package_name": "com.example.venturo_core"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClHEepWgkqeb13oQsA60t5V35uohGDx58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
