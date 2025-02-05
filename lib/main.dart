@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/configs/routes/route.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'configs/pages/page.dart';
 import 'configs/themes/theme.dart';
 import 'utils/services/sentry_services.dart';
@@ -14,8 +14,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-		options: DefaultFirebaseOptions.currentPlatform,
-	);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   /// Change your options.dns with your project !!!!
   await SentryFlutter.init(
     (options) {
@@ -30,8 +31,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +42,11 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
+          localizationsDelegates:  [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           title: 'Venturo Core',
           debugShowCheckedModeBanner: false,
           locale: const Locale('id'),
@@ -51,10 +56,10 @@ class MyApp extends StatelessWidget {
             Locale('id'),
           ],
           // initialBinding: , Jika memiliki global bindding
-          initialRoute: Routes.splashRoute,
+          initialRoute: MainRoute.splashRoute,
           theme: themeLight,
           defaultTransition: Transition.native,
-          getPages: Pages.pages,
+          getPages: MainPages.pages,
         );
       },
     );
