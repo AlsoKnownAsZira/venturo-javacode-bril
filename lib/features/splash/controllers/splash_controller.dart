@@ -1,10 +1,14 @@
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:venturo_core/configs/routes/route.dart';
 
 class SplashController extends GetxController {
   var opacity = 0.0.obs;
 
   @override
   void onInit() {
+    _navigateBasedOnSession();
+
     super.onInit();
     animateLogo();
   }
@@ -18,5 +22,19 @@ class SplashController extends GetxController {
 
   void navigateToProfile() {
     Get.offAndToNamed('/sign_in');
+  }
+
+  void _navigateBasedOnSession() async {
+    await Future.delayed(
+        const Duration(seconds: 3)); // Simulate a delay for the splash screen
+    var box = Hive.box('venturo');
+    bool isLoggedIn = box.get('isLoggedIn', defaultValue: false);
+    if (isLoggedIn) {
+      Get.offAllNamed(
+          MainRoute.initial); // Navigate to the initial screen if logged in
+    } else {
+      Get.offAllNamed(
+          MainRoute.signIn); // Navigate to the sign-in screen if not logged in
+    }
   }
 }

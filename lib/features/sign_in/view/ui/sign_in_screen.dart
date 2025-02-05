@@ -103,6 +103,26 @@ class SignInView extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+                onPressed: () => SignInController.to.signInWithGoogle(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/ic_google.png',
+                        height: 24), // Add Google logo in assets
+                   const SizedBox(width: 10),
+                  const  Text(
+                      "Sign in with Google",
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

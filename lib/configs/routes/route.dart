@@ -1,9 +1,8 @@
 abstract class MainRoute {
 
-  static const String initial = '/splash';
+  static const String initial = '/profile';
   static const String splashRoute = '/splash';
 
- /// Privacy Policy Web View
  static const String privacyPolicy = '/privacy_policy';
 static const String profile = '/profile';
 static const String signIn = '/sign_in';

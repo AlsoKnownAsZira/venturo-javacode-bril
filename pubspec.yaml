@@ -28,6 +28,7 @@ dependencies:
   flutter_screenutil: ^5.9.0
   get: ^4.6.6
   google_fonts: ^6.2.0
+  google_sign_in: ^6.2.2
   hive_flutter: ^1.1.0
   panara_dialogs: ^0.1.5
   pinput: ^5.0.1
@@ -43,3 +44,4 @@ flutter:
 
   assets:
     - assets/images/ic_javacode.png
+    - assets/images/ic_google.png
