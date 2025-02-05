@@ -8,4 +8,6 @@ abstract class MainRoute {
 static const String profile = '/profile';
 static const String signIn = '/sign_in';
 static const String noConnection = '/noConnection';
+static const String forgotPassword = '/forgot_password';
+static const String otp = '/otp';
 }

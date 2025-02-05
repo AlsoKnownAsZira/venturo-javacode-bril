@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 import 'package:venturo_core/configs/routes/route.dart';
+import 'package:venturo_core/features/forgot_password/bindings/forgot_password_binding.dart';
+import 'package:venturo_core/features/forgot_password/bindings/otp_binding.dart';
+import 'package:venturo_core/features/forgot_password/view/ui/forgot_password_screen.dart';
+import 'package:venturo_core/features/forgot_password/view/ui/otp_view.dart';
 import 'package:venturo_core/features/sign_in/sub_features/no_connection/view/ui/no_connection_screen.dart';
 import 'package:venturo_core/features/sign_in/view/ui/sign_in_screen.dart';
 import 'package:venturo_core/features/splash/bindings/splash_binding.dart';
@@ -34,6 +38,17 @@ abstract class MainPages {
       page: () => const SignInView(),
       binding: SignInBinding(),
     ),
+  GetPage(
+      name: MainRoute.forgotPassword,
+      page: () => const ForgotPasswordView(),
+      binding: ForgotPasswordBinding(),
+    ),
+  GetPage(
+      name: MainRoute.otp,
+      page: () => const OtpView(),
+      binding: OtpBinding(),
+    ),
+
 
   ];
 }

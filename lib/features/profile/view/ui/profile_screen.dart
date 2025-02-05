@@ -33,6 +33,15 @@ class ProfileScreen extends StatelessWidget {
               message: 'Here',
               onTap: () => Get.find<ProfileController>().privacyPolicyWebView(),
             ),
+            const Divider(),
+            Obx(() {
+              return ListTile(
+                title: Text(
+                    'Device Model: ${ProfileController.to.deviceModel.value}'),
+                subtitle: Text(
+                    'Android Version: ${ProfileController.to.deviceVersion.value}'),
+              );
+            }),
           ],
         ),
       ),

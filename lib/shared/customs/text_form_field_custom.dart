@@ -12,7 +12,7 @@ class TextFormFieldCustoms extends StatelessWidget {
   final Widget? suffixIcon;
 
   const TextFormFieldCustoms({
-    Key? key,
+    super.key,
     this.controller,
     required this.keyboardType,
     this.initialValue, // Make optional
@@ -22,7 +22,7 @@ class TextFormFieldCustoms extends StatelessWidget {
     required this.requiredText,
     this.isPassword = false,
     this.suffixIcon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
