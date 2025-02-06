@@ -11,6 +11,7 @@ import 'package:venturo_core/constants/api_constant.dart';
 import 'package:venturo_core/shared/controllers/global_controllers/initial_controller.dart';
 import 'package:venturo_core/shared/styles/google_text_style.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:dio/dio.dart';
 
 class SignInController extends GetxController {
   static SignInController get to => Get.find();
@@ -20,6 +21,7 @@ class SignInController extends GetxController {
 
   /// Google Sign-In instance
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+   final Dio _dio = Dio();
 
   /// Form Variable Setting
   var formKey = GlobalKey<FormState>();
@@ -54,15 +56,30 @@ class SignInController extends GetxController {
       );
 
       formKey.currentState!.save();
-      if (emailCtrl.text == "admin@gmail.com" && passwordCtrl.text == "admin") {
-        EasyLoading.dismiss();
-                _saveSession();
+      await _signInWithApi(context);
+    } else if (GlobalController.to.isConnect.value == false) {
+      Get.toNamed(MainRoute.noConnection);
+    }
+  }
+ Future<void> _signInWithApi(BuildContext context) async {
+    final url = 'https://trainee.landa.id/javacode/auth/login';
+    try {
+      final response = await _dio.post(
+        url,
+        data: {
+          'email': emailCtrl.text,
+          'password': passwordCtrl.text,
+        },
+      );
 
-      Get.toNamed(MainRoute.checkloc);
+      EasyLoading.dismiss();
 
-
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        // Save session or token if needed
+        _saveSession();
+        Get.toNamed(MainRoute.checkloc);
       } else {
-        EasyLoading.dismiss();
         PanaraInfoDialog.show(
           context,
           title: "Warning",
@@ -75,11 +92,21 @@ class SignInController extends GetxController {
           barrierDismissible: false,
         );
       }
-    } else if (GlobalController.to.isConnect.value == false) {
-      Get.toNamed(MainRoute.noConnection);
+    } catch (e) {
+      EasyLoading.dismiss();
+      PanaraInfoDialog.show(
+        context,
+        title: "Error",
+        message: "Failed to sign in. Please try again.",
+        buttonText: "Coba lagi",
+        onTapDismiss: () {
+          Get.back();
+        },
+        panaraDialogType: PanaraDialogType.error,
+        barrierDismissible: false,
+      );
     }
   }
-
   /// Flavor setting
   void flavorSeting() async {
     Get.bottomSheet(
