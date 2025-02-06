@@ -58,7 +58,7 @@ class SignInController extends GetxController {
         EasyLoading.dismiss();
                 _saveSession();
 
-       await  GlobalController.to.getLocation();
+      Get.toNamed(MainRoute.checkloc);
 
 
       } else {
@@ -174,7 +174,7 @@ class SignInController extends GetxController {
       await _auth.signInWithCredential(credential);
       _saveSession();
 
-     await  GlobalController.to.getLocation();
+      Get.toNamed(MainRoute.checkloc);
 
       EasyLoading.dismiss();
     } catch (error) {

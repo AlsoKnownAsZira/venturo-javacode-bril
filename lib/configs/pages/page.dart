@@ -4,6 +4,7 @@ import 'package:venturo_core/features/forgot_password/bindings/forgot_password_b
 import 'package:venturo_core/features/forgot_password/bindings/otp_binding.dart';
 import 'package:venturo_core/features/forgot_password/view/ui/forgot_password_screen.dart';
 import 'package:venturo_core/features/forgot_password/view/ui/otp_view.dart';
+import 'package:venturo_core/features/initial/views/ui/check_location_screen.dart';
 import 'package:venturo_core/features/initial/views/ui/get_location_screen.dart';
 import 'package:venturo_core/features/sign_in/sub_features/no_connection/view/ui/no_connection_screen.dart';
 import 'package:venturo_core/features/sign_in/view/ui/sign_in_screen.dart';
@@ -52,6 +53,10 @@ abstract class MainPages {
   GetPage(
       name: MainRoute.location,
       page: () => const GetLocationScreen(),
+    ),
+  GetPage(
+      name: MainRoute.checkloc,
+      page: () => const CheckLocationScreen(),
     ),
 
 

@@ -10,4 +10,5 @@ static const String noConnection = '/noConnection';
 static const String forgotPassword = '/forgot_password';
 static const String otp = '/otp';
 static const String location = '/location';
+static const String checkloc = '/check';
 }
