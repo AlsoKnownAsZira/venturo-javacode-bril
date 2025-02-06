@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:venturo_core/shared/controllers/global_controller.dart';
+import 'package:venturo_core/shared/controllers/global_controllers/initial_controller.dart';
 class HttpService extends GetxService {
   HttpService._();
 

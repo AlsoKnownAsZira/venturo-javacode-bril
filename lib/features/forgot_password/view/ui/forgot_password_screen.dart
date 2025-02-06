@@ -9,7 +9,7 @@ import 'package:venturo_core/constants/image_constant.dart';
 import 'package:venturo_core/shared/customs/text_form_field_custom.dart';
 import 'package:venturo_core/shared/styles/elevated_button_style.dart';
 import 'package:venturo_core/shared/styles/google_text_style.dart';
-import 'package:get/get.dart'; // Import Get for navigation
+import 'package:get/get.dart';
 
 class ForgotPasswordView extends StatelessWidget {
   const ForgotPasswordView({super.key});

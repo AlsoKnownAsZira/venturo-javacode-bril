@@ -6,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/configs/routes/route.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:venturo_core/shared/controllers/global_controller.dart';
+import 'package:venturo_core/shared/controllers/global_controllers/initial_controller.dart';
 import 'configs/pages/page.dart';
 import 'configs/themes/theme.dart';
 import 'utils/services/sentry_services.dart';
@@ -22,8 +22,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  Get.put(GlobalController());
+  Get.lazyPut(() => GlobalController());
 
   /// Change your options.dns with your project !!!!
   await SentryFlutter.init(
@@ -63,8 +62,7 @@ class MyApp extends StatelessWidget {
             Locale('en', 'US'),
             Locale('id'),
           ],
-          // initialBinding: , Jika memiliki global bindding
-          initialRoute: MainRoute.splashRoute,
+          initialRoute: MainRoute.initial,
           theme: themeLight,
           defaultTransition: Transition.native,
           getPages: MainPages.pages,

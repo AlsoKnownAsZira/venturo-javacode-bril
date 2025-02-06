@@ -8,10 +8,9 @@ import 'package:panara_dialogs/panara_dialogs.dart';
 import 'package:venturo_core/configs/routes/route.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/constants/api_constant.dart';
-import 'package:venturo_core/shared/controllers/global_controller.dart';
+import 'package:venturo_core/shared/controllers/global_controllers/initial_controller.dart';
 import 'package:venturo_core/shared/styles/google_text_style.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 
 class SignInController extends GetxController {
   static SignInController get to => Get.find();
@@ -57,9 +56,11 @@ class SignInController extends GetxController {
       formKey.currentState!.save();
       if (emailCtrl.text == "admin@gmail.com" && passwordCtrl.text == "admin") {
         EasyLoading.dismiss();
-         _saveSession();
+                _saveSession();
 
-        Get.offAllNamed(MainRoute.initial);
+       await  GlobalController.to.getLocation();
+
+
       } else {
         EasyLoading.dismiss();
         PanaraInfoDialog.show(
@@ -153,7 +154,6 @@ class SignInController extends GetxController {
     );
   }
 
-
   /// Google Sign-In
   Future<void> signInWithGoogle() async {
     try {
@@ -164,17 +164,19 @@ class SignInController extends GetxController {
         return; // User canceled sign-in
       }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
       await _auth.signInWithCredential(credential);
-            _saveSession();
+      _saveSession();
+
+     await  GlobalController.to.getLocation();
 
       EasyLoading.dismiss();
-      Get.offAllNamed(MainRoute.initial);
     } catch (error) {
       EasyLoading.dismiss();
       Get.snackbar("Login Failed", error.toString());
@@ -187,4 +189,3 @@ class SignInController extends GetxController {
     box.put('isLoggedIn', true);
   }
 }
-

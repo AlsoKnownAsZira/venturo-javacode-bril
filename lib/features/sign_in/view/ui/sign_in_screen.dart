@@ -113,8 +113,8 @@ class SignInView extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/ic_google.png',
-                        height: 24), // Add Google logo in assets
+                    Image.asset(ImageConstant.google,
+                        height: 24), 
                    const SizedBox(width: 10),
                   const  Text(
                       "Sign in with Google",

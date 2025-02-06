@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:venturo_core/configs/routes/route.dart';
+import 'package:venturo_core/shared/controllers/global_controllers/initial_controller.dart';
 
 class SplashController extends GetxController {
   var opacity = 0.0.obs;
@@ -30,8 +31,7 @@ class SplashController extends GetxController {
     var box = Hive.box('venturo');
     bool isLoggedIn = box.get('isLoggedIn', defaultValue: false);
     if (isLoggedIn) {
-      Get.offAllNamed(
-          MainRoute.initial); // Navigate to the initial screen if logged in
+      GlobalController.to.getLocation();
     } else {
       Get.offAllNamed(
           MainRoute.signIn); // Navigate to the sign-in screen if not logged in
