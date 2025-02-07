@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter_slidable/flutter_slidable.dart';
 class ListScreen extends StatelessWidget {
   ListScreen({Key? key}) : super(key: key);
   final ListController listController = Get.find();
@@ -56,7 +56,7 @@ class ListScreen extends StatelessWidget {
                       height: 200.h,
                       enlargeCenterPage: true,
                       enableInfiniteScroll: true,
-                      
+
                       autoPlay: true,
                     ),
                     items: listController.promoList.map((promo) {
@@ -114,7 +114,7 @@ class ListScreen extends StatelessWidget {
                 SizedBox(height: 10.h),
 
                 // Menu List
-                Obx(() => ListView.builder(
+             Obx(() => ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: listController.filteredList.length,
@@ -122,16 +122,35 @@ class ListScreen extends StatelessWidget {
                         final menu = listController.filteredList[index];
                         return Padding(
                           padding: EdgeInsets.only(bottom: 10.h),
-                          child: MenuCard(
-                            menu: menu,
-                            isSelected: ListController.to.selectedItems.contains(menu),
-                            onTap: () {
-                              if (ListController.to.selectedItems.contains(menu)) {
-                                ListController.to.selectedItems.remove(menu);
-                              } else {
-                                ListController.to.selectedItems.add(menu);
-                              }
-                            },
+                          child: Slidable(
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (context) {
+                                    ListController.to.deleteItem(menu);
+                                  },
+                                  borderRadius: BorderRadius.horizontal(
+                                    right: Radius.circular(10.r),
+                                  ),
+                                  backgroundColor: const Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Delete',
+                                ),
+                              ],
+                            ),
+                            child: MenuCard(
+                              menu: menu,
+                              isSelected: ListController.to.selectedItems.contains(menu),
+                              onTap: () {
+                                if (ListController.to.selectedItems.contains(menu)) {
+                                  ListController.to.selectedItems.remove(menu);
+                                } else {
+                                  ListController.to.selectedItems.add(menu);
+                                }
+                              },
+                            ),
                           ),
                         );
                       },
