@@ -79,17 +79,17 @@ class GlobalController extends GetxController {
 
       if (locationResult.success) {
         await Future.delayed(const Duration(seconds: 3));
-        Get.offAndToNamed(MainRoute.profile);
+        Get.offAllNamed(MainRoute.list);
       } else if (locationResult.far) {
         await Future.delayed(const Duration(seconds: 3));
         Get.snackbar("Lokasi tidak dekat!",
             "Lokasi anda tidak dekat dengan lokasi Venturo");
-        Get.offAndToNamed(MainRoute.profile);
+        Get.offAllNamed(MainRoute.list);
       }
     } catch (e) {
+      print("Error: $e");
       Get.snackbar("error ngambil lokasi!",
           "Pastikan lokasi anda aktif dan izin lokasi diaktifkan");
-      Get.offAndToNamed(MainRoute.profile);
     }
   }
 }

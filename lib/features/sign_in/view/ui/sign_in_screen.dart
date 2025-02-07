@@ -18,31 +18,31 @@ class SignInView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// Google analytics untuk tracking user di setiap halaman
-    if (Platform.isAndroid) {
+      if (Platform.isAndroid) {
       /// Tracking bawah dia masuk screen sign in di device android
-      analytics.setCurrentScreen(
-        screenName: 'Sign In Screen',
-        screenClassOverride: 'Android',
+      analytics.logScreenView(
+        screenName: 'Sign in Screen',
+        screenClass: 'Android',
       );
     } else if (Platform.isIOS) {
-      /// Tracking bawah dia masuk screen sign in di device ios
-      analytics.setCurrentScreen(
-        screenName: 'Sign In Screen',
-        screenClassOverride: 'IOS',
+      /// Tracking bawah dia masuk screen otp di device ios
+      analytics.logScreenView(
+        screenName: 'sign in Screen',
+        screenClass: 'IOS',
       );
     } else if (Platform.isMacOS) {
       /// Tracking bawah dia masuk screen sign in di device macos
-      analytics.setCurrentScreen(
-        screenName: 'Sign In Screen',
-        screenClassOverride: 'MacOS',
+      analytics.logScreenView(
+        screenName: 'sign in Screen',
+        screenClass: 'MacOS',
       );
     }
 
     if (kIsWeb) {
-      /// Tracking bawah dia masuk screen sign in di device web
-      analytics.setCurrentScreen(
-        screenName: 'Sign In Screen',
-        screenClassOverride: 'Web',
+      /// Tracking bahwa dia masuk screen sign in di device web
+      analytics.logScreenView(
+        screenName: 'sign in Screen',
+        screenClass: 'Web',
       );
     }
 

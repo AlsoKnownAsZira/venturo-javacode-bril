@@ -76,7 +76,6 @@ class SignInController extends GetxController {
 
       if (response.statusCode == 200) {
         final responseData = response.data;
-        // Save session or token if needed
         _saveSession();
         Get.toNamed(MainRoute.checkloc);
       } else {

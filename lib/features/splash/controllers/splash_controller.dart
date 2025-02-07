@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:venturo_core/configs/routes/route.dart';
-import 'package:venturo_core/shared/controllers/global_controllers/initial_controller.dart';
 
 class SplashController extends GetxController {
   var opacity = 0.0.obs;

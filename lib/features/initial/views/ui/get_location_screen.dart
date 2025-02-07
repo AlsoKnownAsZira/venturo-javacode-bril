@@ -13,7 +13,11 @@ class GetLocationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WillPopScope(
+      body: PopScope(
+        canPop: false,
+         onPopInvoked: (didPop) {
+      if (didPop) return;
+    },
         child: Container(
           alignment: Alignment.center,
           width: double.infinity,
@@ -131,7 +135,6 @@ class GetLocationScreen extends StatelessWidget {
             ],
           ),
         ),
-        onWillPop: () async => false,
       ),
     );
   }

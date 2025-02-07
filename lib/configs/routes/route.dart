@@ -11,4 +11,5 @@ static const String forgotPassword = '/forgot_password';
 static const String otp = '/otp';
 static const String location = '/location';
 static const String checkloc = '/check';
+static const String list = '/list';
 }
