@@ -10,6 +10,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:venturo_core/shared/widgets/custom_navbar.dart';
 class ListScreen extends StatelessWidget {
   ListScreen({Key? key}) : super(key: key);
   final ListController listController = Get.find();
@@ -18,6 +19,7 @@ class ListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        bottomNavigationBar: const CustomNavbar(currentIndex: 0),
         appBar: SearchAppBar(
           onChange: (value) => ListController.to.keyword(value),
         ),

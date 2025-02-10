@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:venturo_core/features/profile/view/components/dialog_webview.dart';
 import 'package:venturo_core/shared/widgets/tile_option.dart';
 import 'package:venturo_core/utils/functions/helpers.dart';
-
+import 'package:venturo_core/shared/widgets/custom_navbar.dart';
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key}) {
     Helpers.logFirebaseAnalytics("Profile Screen", "ProfileScreen");
@@ -15,6 +15,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: CustomNavbar(currentIndex: 2),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.dialog(

@@ -16,6 +16,7 @@ dependencies:
   cloud_firestore: ^4.7.0
   connectivity_plus: ^6.1.2
   cupertino_icons: ^1.0.2
+  curved_labeled_navigation_bar: ^2.0.5
   device_info_plus: ^10.0.1
   dio: ^5.8.0+1
   fast_rsa: ^3.6.1
@@ -35,6 +36,7 @@ dependencies:
   geolocator: ^12.0.0
   get: ^4.6.6
   google_fonts: ^6.2.0
+  google_nav_bar: ^5.0.7
   google_sign_in: ^6.2.2
   hive_flutter: ^1.1.0
   loadmore: ^2.1.0
