@@ -11,6 +11,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:venturo_core/shared/widgets/custom_navbar.dart';
+
 class ListScreen extends StatelessWidget {
   ListScreen({Key? key}) : super(key: key);
   final ListController listController = Get.find();
@@ -41,61 +42,71 @@ class ListScreen extends StatelessWidget {
                   padding: EdgeInsets.only(top: 20.h, left: 20.h),
                   child: Row(
                     children: [
-                      Icon(Icons.local_offer, size: 30.sp, color: MainColor.primary),
+                      Icon(Icons.local_offer,
+                          size: 30.sp, color: MainColor.primary),
                       SizedBox(width: 10.w),
                       Text(
                         "Available Promo",
-                        style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 25.sp, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(height: 10.h),
 
-            
-                   CarouselSlider(
-                    options: CarouselOptions(
-                      height: 200.h,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: true,
-
-                      autoPlay: true,
-                    ),
-                    items: listController.promoList.map((promo) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return PromoCard(
-                            promoName: promo["promoName"]!,
-                            discountNominal: promo["discountNominal"]!,
-                            thumbnailUrl: promo["thumbnailUrl"]!,
-                          );
-                        },
-                      );
-                    }).toList(),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: 200.h,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: true,
+                    autoPlay: true,
                   ),
-              
+                  items: listController.promoList.map((promo) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return PromoCard(
+                          promoName: promo["promoName"]!,
+                          discountNominal: promo["discountNominal"]!,
+                          thumbnailUrl: promo["thumbnailUrl"]!,
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
+
                 SizedBox(height: 20.h),
 
                 // Category Chips
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Obx(() => SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
                           children: listController.categories.map((category) {
                             return Padding(
                               padding: EdgeInsets.only(right: 10.w),
                               child: MenuChip(
                                 text: category,
-                                isSelected: listController.selectedCategory.value == category.toLowerCase(),
+                                icon: category == 'makanan'
+                                    ? Icons.fastfood
+                                    : category == 'minuman'
+                                        ? Icons.emoji_food_beverage
+                                        : category == 'snack'
+                                            ? Icons.icecream
+                                            : Icons.menu_book,
+                                isSelected:
+                                    listController.selectedCategory.value ==
+                                        category.toLowerCase(),
                                 onTap: () {
-                                  listController.selectedCategory.value = category.toLowerCase();
+                                  listController.selectedCategory.value =
+                                      category.toLowerCase();
                                 },
                               ),
                             );
                           }).toList(),
                         ),
-                  )),
+                      )),
                 ),
 
                 // Menu Title
@@ -103,17 +114,37 @@ class ListScreen extends StatelessWidget {
                   padding: EdgeInsets.only(top: 20.h, left: 20.h),
                   child: Row(
                     children: [
-                      Icon(Icons.menu_book, size: 30.sp, color: MainColor.primary),
+                      Obx(() {
+                        IconData icon;
+                        switch (listController.selectedCategory.value) {
+                          case 'makanan':
+                            icon = Icons.fastfood;
+                            break;
+                          case 'minuman':
+                            icon = Icons.emoji_food_beverage;
+                            break;
+                          case 'snack':
+                            icon = Icons.icecream;
+                            break;
+                          default:
+                            icon = Icons.menu_book;
+                        }
+                        return Icon(icon,
+                            size: 30.sp, color: MainColor.primary);
+                      }),
                       SizedBox(width: 10.w),
                       Obx(() => Text(
                             listController.selectedCategory.value == 'semua'
                                 ? "Semua Menu"
-                                : listController.selectedCategory.value == 'makanan'
+                                : listController.selectedCategory.value ==
+                                        'makanan'
                                     ? "Makanan"
-                                   : listController.selectedCategory.value == 'minuman'
-                        ? "Minuman"
-                        : "Snack",
-                            style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
+                                    : listController.selectedCategory.value ==
+                                            'minuman'
+                                        ? "Minuman"
+                                        : "Snack",
+                            style: TextStyle(
+                                fontSize: 25.sp, fontWeight: FontWeight.bold),
                           )),
                     ],
                   ),
@@ -121,7 +152,8 @@ class ListScreen extends StatelessWidget {
                 SizedBox(height: 10.h),
 
                 // Menu List
-             Obx(() => ListView.builder(
+                Obx(() => ListView.builder(
+                  
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: listController.filteredList.length,
@@ -149,9 +181,11 @@ class ListScreen extends StatelessWidget {
                             ),
                             child: MenuCard(
                               menu: menu,
-                              isSelected: ListController.to.selectedItems.contains(menu),
+                              isSelected: ListController.to.selectedItems
+                                  .contains(menu),
                               onTap: () {
-                                if (ListController.to.selectedItems.contains(menu)) {
+                                if (ListController.to.selectedItems
+                                    .contains(menu)) {
                                   ListController.to.selectedItems.remove(menu);
                                 } else {
                                   ListController.to.selectedItems.add(menu);

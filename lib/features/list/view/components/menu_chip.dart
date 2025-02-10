@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-class MenuChip extends StatelessWidget {
 
+class MenuChip extends StatelessWidget {
   final bool isSelected;
   final String text;
+  final IconData icon;
   final Function()? onTap;
 
   const MenuChip({
     Key? key,
     this.isSelected = false,
     required this.text,
+    required this.icon,
     this.onTap,
   }) : super(key: key);
 
@@ -35,13 +37,18 @@ class MenuChip extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Text(
-              text,
-              style: Get.textTheme.bodyLarge!.copyWith(
-                color: Colors.white,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: Colors.white),
+              SizedBox(width: 8.w),
+              Text(
+                text,
+                style: Get.textTheme.bodyLarge!.copyWith(
+                  color: Colors.white,
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

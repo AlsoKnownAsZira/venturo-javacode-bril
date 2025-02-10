@@ -90,54 +90,7 @@ class ListController extends GetxController {
               element['kategori'] == selectedCategory.value))
       .toList();
 
-  // Future<bool> getListOfData() async {
-  //   try {
-  //     final result = await repository
-  //         .fetchMenuList(); // ✅ result sekarang List<Map<String, dynamic>>
-  //     print("Fetched data: $result");
 
-  //     if (page.value == 0) {
-  //       items.clear();
-  //     }
-
-  //     if (result.isEmpty) {
-  //       print("No data received.");
-  //       canLoadMore(false);
-  //       refreshController.loadNoData();
-  //     } else {
-  //       items.addAll(result);
-  //       print("Items after adding: $items");
-  //       page.value++;
-  //       refreshController.loadComplete();
-  //     }
-
-  //     return true;
-  //   } catch (exception, stacktrace) {
-  //     print("Exception: $exception");
-  //     await Sentry.captureException(
-  //       exception,
-  //       stackTrace: stacktrace,
-  //     );
-
-  //     refreshController.loadFailed();
-  //     return false;
-  //   }
-  // }
-
-  // Future<void> deleteItem(Map<String, dynamic> item) async {
-  //   try {
-  //     // repository.deleteItem(item['id_menu']);
-
-  //     items.remove(item);
-
-  //     selectedItems.remove(item);
-  //   } catch (exception, stacktrace) {
-  //     await Sentry.captureException(
-  //       exception,
-  //       stackTrace: stacktrace,
-  //     );
-  //   }
-  // }
   var promoList = [
     {
       "promoName": "Isi survey ini untuk discon GACOR!",

@@ -64,7 +64,7 @@ class MenuCard extends StatelessWidget {
                     maxLines: 1,
                   ),
                   Text(
-                    menu['harga'].toString(),
+                   'Rp ${menu['harga'].toString()}',
                     style: Get.textTheme.bodyMedium!.copyWith(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold),
