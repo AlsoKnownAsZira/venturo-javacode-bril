@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
-class MenuCard extends StatelessWidget {
+import 'package:venturo_core/configs/themes/main_color.dart';
+import 'package:venturo_core/features/list/controllers/list_controller.dart';
 
+class MenuCard extends StatelessWidget {
   final Map<String, dynamic> menu;
   final bool isSelected;
   final void Function()? onTap;
-  
-   MenuCard({
+
+  MenuCard({
     Key? key,
     required this.menu,
     this.onTap,
@@ -45,10 +47,15 @@ class MenuCard extends StatelessWidget {
                 color: Colors.grey[100],
               ),
               child: CachedNetworkImage(
-                imageUrl: menu['foto'] != null && menu['foto'].isNotEmpty ? menu['foto'] : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
+                imageUrl: menu['foto'] != null && menu['foto'].isNotEmpty
+                    ? menu['foto']
+                    : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
                 useOldImageOnUrlChange: true,
                 fit: BoxFit.contain,
-                errorWidget: (context, url, error) => Image.network('https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png', fit: BoxFit.cover,),
+                errorWidget: (context, url, error) => Image.network(
+                  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             // menu info
@@ -64,7 +71,7 @@ class MenuCard extends StatelessWidget {
                     maxLines: 1,
                   ),
                   Text(
-                   'Rp ${menu['harga'].toString()}',
+                    'Rp ${menu['harga'].toString()}',
                     style: Get.textTheme.bodyMedium!.copyWith(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold),
@@ -72,6 +79,46 @@ class MenuCard extends StatelessWidget {
                 ],
               ),
             ),
+            const Spacer(),
+            Row(
+              children: [
+                SizedBox(width: 7.w),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: MainColor.primary),
+                    borderRadius: BorderRadius.circular(5.r),
+                  ),
+                  child: Center(
+                    child: IconButton(
+                      onPressed: () {
+                        ListController.to.decrement();
+                      },
+                      icon: Icon(Icons.minimize, color: MainColor.primary),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 7.w),
+                Obx(() => Text(
+                      '${ListController.to.quantity.value}',
+                      style: TextStyle(fontSize: 20.w),
+                    )),
+                SizedBox(width: 7.w),
+                Container(
+                  decoration: BoxDecoration(
+                    color: MainColor.primary,
+                    border: Border.all(color: MainColor.primary),
+                    borderRadius: BorderRadius.circular(5.r),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      ListController.to.increment();
+                    },
+                    icon: Icon(Icons.add, color: Colors.white),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

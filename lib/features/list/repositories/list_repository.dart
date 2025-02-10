@@ -19,8 +19,8 @@ class ListRepository {
       );
 
       if (response.statusCode == 200) {
-        print("Status Code: ${response.statusCode}");
-        print("Response Data: ${response.data}");
+        // print("Status Code: ${response.statusCode}");
+        // print("Response Data: ${response.data}");
 
         data = List<Map<String, dynamic>>.from(
           (response.data['data'] as List).map((menu) => {

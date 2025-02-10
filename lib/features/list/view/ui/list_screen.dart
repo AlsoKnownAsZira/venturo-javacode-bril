@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:venturo_core/configs/routes/route.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:venturo_core/features/list/view/components/menu_card.dart';
@@ -109,7 +110,6 @@ class ListScreen extends StatelessWidget {
                       )),
                 ),
 
-              
                 SizedBox(height: 10.h),
 
                 // Menu List
@@ -185,13 +185,13 @@ class ListScreen extends StatelessWidget {
                                     isSelected: ListController.to.selectedItems
                                         .contains(menu),
                                     onTap: () {
-                                      if (ListController.to.selectedItems
-                                          .contains(menu)) {
-                                        ListController.to.selectedItems
-                                            .remove(menu);
-                                      } else {
-                                        ListController.to.selectedItems
-                                            .add(menu);
+                                      try {
+                                        Get.toNamed(
+                                          MainRoute.listDetail,
+                                          arguments: menu,
+                                        );
+                                      } catch (e) {
+                                        print("Navigation error: $e");
                                       }
                                     },
                                   ),

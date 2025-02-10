@@ -28,7 +28,7 @@ class ListController extends GetxController {
     'minuman',
     'snack',
   ];
-
+  
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
@@ -38,7 +38,7 @@ class ListController extends GetxController {
 
     repository = ListRepository();
     await fetchData();
-    print("getListOfData() has been called");
+    // print("getListOfData() has been called");
   }
 
   void onRefresh() async {
@@ -56,22 +56,22 @@ class ListController extends GetxController {
  Future<bool> fetchData() async {
     try {
       final result = await repository.fetchMenuList();
-      print("Fetched data: $result");
+      // print("Fetched data: $result");
 
       if (result.isEmpty) {
-        print("No data received.");
+        // print("No data received.");
         canLoadMore(false);
         refreshController.loadNoData();
       } else {
         items.clear();  // Clear previous items if needed
         items.addAll(result);
-        print("Items after adding: $items");
+        // print("Items after adding: $items");
         refreshController.loadComplete();
       }
 
       return true;
     } catch (exception, stacktrace) {
-      print("Exception: $exception");
+      // print("Exception: $exception");
       await Sentry.captureException(
         exception,
         stackTrace: stacktrace,
@@ -124,4 +124,11 @@ class ListController extends GetxController {
       "thumbnailUrl": ImageConstant.promo3
     },
   ];
+  final RxInt quantity = 0.obs;
+  void increment () {
+    quantity.value++;
+  }
+  void decrement () {
+    quantity.value--;
+  }
 }
