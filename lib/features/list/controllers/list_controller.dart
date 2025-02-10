@@ -3,7 +3,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/constants/image_constant.dart';
 import 'package:venturo_core/features/list/repositories/list_repository.dart';
-
+import 'package:collection/collection.dart';
 class ListController extends GetxController {
   static ListController get to => Get.find<ListController>();
 
@@ -80,15 +80,31 @@ class ListController extends GetxController {
       return false;
     }
   }
-  List<Map<String, dynamic>> get filteredList => items
-      .where((element) =>
-          element['nama']
-              .toString()
-              .toLowerCase()
-              .contains(keyword.value.toLowerCase()) &&
-          (selectedCategory.value == 'semua' ||
-              element['kategori'] == selectedCategory.value))
-      .toList();
+  // List<Map<String, dynamic>> get filteredList => items
+  //     .where((element) =>
+  //         element['nama']
+  //             .toString()
+  //             .toLowerCase()
+  //             .contains(keyword.value.toLowerCase()) &&
+  //         (selectedCategory.value == 'semua' ||
+  //             element['kategori'] == selectedCategory.value))
+  //     .toList();
+
+  Map<String, List<Map<String, dynamic>>> get groupedMenu {
+  final filteredItems = items.where((element) {
+    final matchesKeyword = element['nama']
+        .toString()
+        .toLowerCase()
+        .contains(keyword.value.toLowerCase());
+
+    final matchesCategory = selectedCategory.value == 'semua' ||
+        element['kategori'] == selectedCategory.value;
+
+    return matchesKeyword && matchesCategory;
+  }).toList();
+
+  return groupBy(filteredItems, (menu) => menu['kategori'].toString());
+}
 
 
   var promoList = [

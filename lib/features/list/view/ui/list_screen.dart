@@ -109,93 +109,102 @@ class ListScreen extends StatelessWidget {
                       )),
                 ),
 
-                // Menu Title
-                Padding(
-                  padding: EdgeInsets.only(top: 20.h, left: 20.h),
-                  child: Row(
-                    children: [
-                      Obx(() {
-                        IconData icon;
-                        switch (listController.selectedCategory.value) {
-                          case 'makanan':
-                            icon = Icons.fastfood;
-                            break;
-                          case 'minuman':
-                            icon = Icons.emoji_food_beverage;
-                            break;
-                          case 'snack':
-                            icon = Icons.icecream;
-                            break;
-                          default:
-                            icon = Icons.menu_book;
-                        }
-                        return Icon(icon,
-                            size: 30.sp, color: MainColor.primary);
-                      }),
-                      SizedBox(width: 10.w),
-                      Obx(() => Text(
-                            listController.selectedCategory.value == 'semua'
-                                ? "Semua Menu"
-                                : listController.selectedCategory.value ==
-                                        'makanan'
-                                    ? "Makanan"
-                                    : listController.selectedCategory.value ==
-                                            'minuman'
-                                        ? "Minuman"
-                                        : "Snack",
-                            style: TextStyle(
-                                fontSize: 25.sp, fontWeight: FontWeight.bold),
-                          )),
-                    ],
-                  ),
-                ),
+              
                 SizedBox(height: 10.h),
 
                 // Menu List
-                Obx(() => ListView.builder(
-                  
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: listController.filteredList.length,
-                      itemBuilder: (context, index) {
-                        final menu = listController.filteredList[index];
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 10.h),
-                          child: Slidable(
-                            endActionPane: ActionPane(
-                              motion: const ScrollMotion(),
+                // Menu List
+                Obx(() {
+                  final groupedItems = listController.groupedMenu;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: groupedItems.entries.map((entry) {
+                      final category = entry.key;
+                      final menus = entry.value;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Header Kategori
+                          Padding(
+                            padding: EdgeInsets.only(top: 20.h, left: 20.h),
+                            child: Row(
                               children: [
-                                SlidableAction(
-                                  onPressed: (context) {
-                                    // ListController.to.deleteItem(menu);
-                                  },
-                                  borderRadius: BorderRadius.horizontal(
-                                    right: Radius.circular(10.r),
-                                  ),
-                                  backgroundColor: const Color(0xFFFE4A49),
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.delete,
-                                  label: 'Delete',
+                                Icon(
+                                  category == 'makanan'
+                                      ? Icons.fastfood
+                                      : category == 'minuman'
+                                          ? Icons.emoji_food_beverage
+                                          : Icons.icecream,
+                                  size: 30.sp,
+                                  color: MainColor.primary,
+                                ),
+                                SizedBox(width: 10.w),
+                                Text(
+                                  category.capitalize!,
+                                  style: TextStyle(
+                                      fontSize: 22.sp,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
-                            child: MenuCard(
-                              menu: menu,
-                              isSelected: ListController.to.selectedItems
-                                  .contains(menu),
-                              onTap: () {
-                                if (ListController.to.selectedItems
-                                    .contains(menu)) {
-                                  ListController.to.selectedItems.remove(menu);
-                                } else {
-                                  ListController.to.selectedItems.add(menu);
-                                }
-                              },
-                            ),
                           ),
-                        );
-                      },
-                    )),
+                          SizedBox(height: 10.h),
+
+                          // Daftar Menu dalam Kategori
+                          ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: menus.length,
+                            itemBuilder: (context, index) {
+                              final menu = menus[index];
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: 10.h),
+                                child: Slidable(
+                                  endActionPane: ActionPane(
+                                    motion: const ScrollMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (context) {
+                                          // ListController.to.deleteItem(menu);
+                                        },
+                                        borderRadius: BorderRadius.horizontal(
+                                          right: Radius.circular(10.r),
+                                        ),
+                                        backgroundColor:
+                                            const Color(0xFFFE4A49),
+                                        foregroundColor: Colors.white,
+                                        icon: Icons.delete,
+                                        label: 'Delete',
+                                      ),
+                                    ],
+                                  ),
+                                  child: MenuCard(
+                                    menu: menu,
+                                    isSelected: ListController.to.selectedItems
+                                        .contains(menu),
+                                    onTap: () {
+                                      if (ListController.to.selectedItems
+                                          .contains(menu)) {
+                                        ListController.to.selectedItems
+                                            .remove(menu);
+                                      } else {
+                                        ListController.to.selectedItems
+                                            .add(menu);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  );
+                }),
+
                 SizedBox(height: 30.h),
               ],
             ),
