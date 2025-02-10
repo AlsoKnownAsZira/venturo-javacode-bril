@@ -29,7 +29,7 @@ class ListScreen extends StatelessWidget {
           onRefresh: listController.onRefresh,
           enablePullUp: listController.canLoadMore.isTrue,
           onLoading: () async {
-            await listController.getListOfData();
+            await listController.fetchData();
             listController.refreshController.loadComplete();
           },
           child: SingleChildScrollView(
@@ -79,20 +79,23 @@ class ListScreen extends StatelessWidget {
                 // Category Chips
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Obx(() => Row(
-                        children: listController.categories.map((category) {
-                          return Padding(
-                            padding: EdgeInsets.only(right: 10.w),
-                            child: MenuChip(
-                              text: category,
-                              isSelected: listController.selectedCategory.value == category.toLowerCase(),
-                              onTap: () {
-                                listController.selectedCategory.value = category.toLowerCase();
-                              },
-                            ),
-                          );
-                        }).toList(),
-                      )),
+                  child: Obx(() => SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                          children: listController.categories.map((category) {
+                            return Padding(
+                              padding: EdgeInsets.only(right: 10.w),
+                              child: MenuChip(
+                                text: category,
+                                isSelected: listController.selectedCategory.value == category.toLowerCase(),
+                                onTap: () {
+                                  listController.selectedCategory.value = category.toLowerCase();
+                                },
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                  )),
                 ),
 
                 // Menu Title
@@ -103,11 +106,13 @@ class ListScreen extends StatelessWidget {
                       Icon(Icons.menu_book, size: 30.sp, color: MainColor.primary),
                       SizedBox(width: 10.w),
                       Obx(() => Text(
-                            listController.selectedCategory.value == 'all'
-                                ? "All Menu"
-                                : listController.selectedCategory.value == 'food'
-                                    ? "Food"
-                                    : "Drink",
+                            listController.selectedCategory.value == 'semua'
+                                ? "Semua Menu"
+                                : listController.selectedCategory.value == 'makanan'
+                                    ? "Makanan"
+                                   : listController.selectedCategory.value == 'minuman'
+                        ? "Minuman"
+                        : "Snack",
                             style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
                           )),
                     ],
@@ -130,7 +135,7 @@ class ListScreen extends StatelessWidget {
                               children: [
                                 SlidableAction(
                                   onPressed: (context) {
-                                    ListController.to.deleteItem(menu);
+                                    // ListController.to.deleteItem(menu);
                                   },
                                   borderRadius: BorderRadius.horizontal(
                                     right: Radius.circular(10.r),

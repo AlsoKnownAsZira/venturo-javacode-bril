@@ -8,7 +8,7 @@ class MenuCard extends StatelessWidget {
   final bool isSelected;
   final void Function()? onTap;
   
-  const MenuCard({
+   MenuCard({
     Key? key,
     required this.menu,
     this.onTap,
@@ -58,7 +58,7 @@ class MenuCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    menu['name'],
+                    menu['nama'],
                     style: Get.textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,

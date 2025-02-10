@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:venturo_core/configs/routes/route.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 
 class ProfileController extends GetxController {
@@ -33,5 +34,14 @@ class ProfileController extends GetxController {
     Get.snackbar("Error", "Failed to get device info: $e");
   }
 }
-
+ Future<void> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      var box = Hive.box('venturo');
+      await box.clear(); 
+      Get.offAndToNamed(MainRoute.signIn); 
+    } catch (e) {
+      Get.snackbar("Error", "Failed to sign out: $e");
+    }
+  }
 }

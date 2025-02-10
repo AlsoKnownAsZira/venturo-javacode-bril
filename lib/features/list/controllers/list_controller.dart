@@ -3,8 +3,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/constants/image_constant.dart';
 import 'package:venturo_core/features/list/repositories/list_repository.dart';
-  class ListController extends GetxController {
 
+class ListController extends GetxController {
   static ListController get to => Get.find<ListController>();
 
   late final ListRepository repository;
@@ -14,36 +14,38 @@ import 'package:venturo_core/features/list/repositories/list_repository.dart';
   final RxList<Map<String, dynamic>> items = <Map<String, dynamic>>[].obs;
 
   final RxList<Map<String, dynamic>> selectedItems =
-
       <Map<String, dynamic>>[].obs;
 
   final RxBool canLoadMore = true.obs;
 
-  final RxString selectedCategory = 'all'.obs;
+  final RxString selectedCategory = 'semua'.obs;
 
   final RxString keyword = ''.obs;
 
   final List<String> categories = [
-    'All',
-    'Food',
-    'Drink',
+    'semua',
+    'makanan',
+    'minuman',
+    'snack',
   ];
 
-  final RefreshController refreshController = RefreshController(initialRefresh: false);
+  final RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void onInit() async {
     super.onInit();
-    
+
     repository = ListRepository();
-    await getListOfData();
+    await fetchData();
+    print("getListOfData() has been called");
   }
 
   void onRefresh() async {
     page(0);
     canLoadMore(true);
 
-    final result = await getListOfData();
+    final result = await fetchData();
 
     if (result) {
       refreshController.refreshCompleted();
@@ -51,63 +53,91 @@ import 'package:venturo_core/features/list/repositories/list_repository.dart';
       refreshController.refreshFailed();
     }
   }
-
-  List<Map<String, dynamic>> get filteredList => items
-      .where((element) =>
-          element['name']
-              .toString()
-              .toLowerCase()
-              .contains(keyword.value.toLowerCase()) &&
-          (selectedCategory.value == 'all' ||
-              element['category'] == selectedCategory.value))
-      .toList();
-      
-  Future<bool> getListOfData() async {
+ Future<bool> fetchData() async {
     try {
-      final result = repository.getListOfData(
-        offset: page.value * 10,
-      );
+      final result = await repository.fetchMenuList();
+      print("Fetched data: $result");
 
-      if (result['previous'] == null) {
-        items.clear();
-      }
-
-      if (result['next'] == null) {
+      if (result.isEmpty) {
+        print("No data received.");
         canLoadMore(false);
         refreshController.loadNoData();
+      } else {
+        items.clear();  // Clear previous items if needed
+        items.addAll(result);
+        print("Items after adding: $items");
+        refreshController.loadComplete();
       }
 
-      items.addAll(result['data']);
-      page.value++;
-      refreshController.loadComplete();
-      
       return true;
     } catch (exception, stacktrace) {
+      print("Exception: $exception");
       await Sentry.captureException(
         exception,
         stackTrace: stacktrace,
       );
-
       refreshController.loadFailed();
       return false;
     }
   }
+  List<Map<String, dynamic>> get filteredList => items
+      .where((element) =>
+          element['nama']
+              .toString()
+              .toLowerCase()
+              .contains(keyword.value.toLowerCase()) &&
+          (selectedCategory.value == 'semua' ||
+              element['kategori'] == selectedCategory.value))
+      .toList();
 
+  // Future<bool> getListOfData() async {
+  //   try {
+  //     final result = await repository
+  //         .fetchMenuList(); // ✅ result sekarang List<Map<String, dynamic>>
+  //     print("Fetched data: $result");
 
-  Future<void> deleteItem(Map<String, dynamic> item) async {
-    try {
-      repository.deleteItem(item['id_menu']);
-      
-      items.remove(item);
-      
-      selectedItems.remove(item);
-    } catch (exception, stacktrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stacktrace,
-      );
-    }
-  }
+  //     if (page.value == 0) {
+  //       items.clear();
+  //     }
+
+  //     if (result.isEmpty) {
+  //       print("No data received.");
+  //       canLoadMore(false);
+  //       refreshController.loadNoData();
+  //     } else {
+  //       items.addAll(result);
+  //       print("Items after adding: $items");
+  //       page.value++;
+  //       refreshController.loadComplete();
+  //     }
+
+  //     return true;
+  //   } catch (exception, stacktrace) {
+  //     print("Exception: $exception");
+  //     await Sentry.captureException(
+  //       exception,
+  //       stackTrace: stacktrace,
+  //     );
+
+  //     refreshController.loadFailed();
+  //     return false;
+  //   }
+  // }
+
+  // Future<void> deleteItem(Map<String, dynamic> item) async {
+  //   try {
+  //     // repository.deleteItem(item['id_menu']);
+
+  //     items.remove(item);
+
+  //     selectedItems.remove(item);
+  //   } catch (exception, stacktrace) {
+  //     await Sentry.captureException(
+  //       exception,
+  //       stackTrace: stacktrace,
+  //     );
+  //   }
+  // }
   var promoList = [
     {
       "promoName": "Isi survey ini untuk discon GACOR!",

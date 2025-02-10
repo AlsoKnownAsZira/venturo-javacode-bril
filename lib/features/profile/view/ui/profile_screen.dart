@@ -43,7 +43,13 @@ class ProfileScreen extends StatelessWidget {
                     'Android Version: ${ProfileController.to.deviceVersion.value}'),
               );
             }),
+
+  ElevatedButton(onPressed: (){
+    ProfileController.to.signOut();
+  }, child: const Text("Sign Out"))
+
           ],
+          
         ),
       ),
     );
