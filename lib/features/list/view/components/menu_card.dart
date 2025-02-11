@@ -84,6 +84,8 @@ class MenuCard extends StatelessWidget {
               children: [
                 SizedBox(width: 7.w),
                 Container(
+                  width: 40.w,
+                  height: 40.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(color: MainColor.primary),
@@ -105,6 +107,8 @@ class MenuCard extends StatelessWidget {
                     )),
                 SizedBox(width: 7.w),
                 Container(
+                  width: 40.w,
+                  height: 40.h,
                   decoration: BoxDecoration(
                     color: MainColor.primary,
                     border: Border.all(color: MainColor.primary),

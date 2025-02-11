@@ -69,7 +69,7 @@ abstract class MainPages {
   GetPage(
       name: MainRoute.listDetail,
       page: () => DetailMenuScreen(),
-      binding: ListBinding(),
+      binding: ListBinding(), 
     ),
 
 

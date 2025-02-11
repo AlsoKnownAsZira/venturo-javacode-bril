@@ -6,7 +6,10 @@ import 'package:venturo_core/features/list/repositories/list_repository.dart';
 import 'package:collection/collection.dart';
 class ListController extends GetxController {
   static ListController get to => Get.find<ListController>();
-
+  var selectedLevel = ''.obs;
+  var selectedTopping = ''.obs;
+  RxList<String> levels = <String>[].obs;
+  RxList<String> toppings = <String>[].obs;
   late final ListRepository repository;
 
   final RxInt page = 0.obs;
@@ -104,10 +107,36 @@ class ListController extends GetxController {
   }).toList();
 
   return groupBy(filteredItems, (menu) => menu['kategori'].toString());
-}
+  }
 
+  Future<void> fetchMenuDetails(int menuId) async {
+    try {
+      final menuDetails = await repository.fetchMenuDetail(menuId);
+      levels.assignAll(List<String>.from(menuDetails['level']));
+      toppings.assignAll(List<String>.from(menuDetails['topping']));
+    } catch (e) {
+      print("Error loading menu details: $e");
+    }
+  }
 
-  var promoList = [
+  void selectLevel(String level) {
+    selectedLevel.value = level;
+    Get.back(); // Close the bottom sheet
+  }
+
+  void selectTopping(String topping) {
+    selectedTopping.value = topping;
+    Get.back();
+  }
+  
+ final RxInt quantity = 0.obs;
+  void increment () {
+    quantity.value++;
+  }
+  void decrement () {
+    quantity.value--;
+  }
+   var promoList = [
     {
       "promoName": "Isi survey ini untuk discon GACOR!",
       "discountNominal": "50",
@@ -124,11 +153,6 @@ class ListController extends GetxController {
       "thumbnailUrl": ImageConstant.promo3
     },
   ];
-  final RxInt quantity = 0.obs;
-  void increment () {
-    quantity.value++;
+ 
   }
-  void decrement () {
-    quantity.value--;
-  }
-}
+ 
