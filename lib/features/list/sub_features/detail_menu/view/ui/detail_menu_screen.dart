@@ -14,6 +14,9 @@ class DetailMenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final menu = Get.arguments;
 
+    // Fetch menu details when the screen is opened
+    listController.fetchMenuDetails(menu['id_menu']);
+
     void _showLevelBottomSheet() {
       showModalBottomSheet(
         isScrollControlled: true,
@@ -25,28 +28,27 @@ class DetailMenuScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Select Topping',
+                      'Select Level',
                       style: TextStyle(
                           fontSize: 20.w, fontWeight: FontWeight.bold),
                     ),
                     Divider(),
-                    if (listController.toppings.isEmpty)
+                    if (listController.levels.isEmpty)
                       Text(
-                        'No toppings available',
+                        'No levels available',
                         style: TextStyle(fontSize: 16.w),
                       )
                     else
                       Wrap(
                         spacing: 8.0,
-                        children: listController.toppings.map((topping) {
+                        children: listController.levels.map((level) {
                           return Obx(() => ChoiceChip(
-                                label: Text(topping),
+                                label: Text(level),
                                 selected:
-                                    listController.selectedTopping.value ==
-                                        topping,
+                                    listController.selectedLevel.value == level,
                                 onSelected: (selected) {
                                   if (selected) {
-                                    listController.selectTopping(topping);
+                                    listController.selectLevel(level);
                                   }
                                 },
                               ));

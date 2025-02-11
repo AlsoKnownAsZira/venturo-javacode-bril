@@ -4,6 +4,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/constants/image_constant.dart';
 import 'package:venturo_core/features/list/repositories/list_repository.dart';
 import 'package:collection/collection.dart';
+
 class ListController extends GetxController {
   static ListController get to => Get.find<ListController>();
   var selectedLevel = ''.obs;
@@ -41,7 +42,6 @@ class ListController extends GetxController {
 
     repository = ListRepository();
     await fetchData();
-    // print("getListOfData() has been called");
   }
 
   void onRefresh() async {
@@ -56,25 +56,22 @@ class ListController extends GetxController {
       refreshController.refreshFailed();
     }
   }
- Future<bool> fetchData() async {
+
+  Future<bool> fetchData() async {
     try {
       final result = await repository.fetchMenuList();
-      // print("Fetched data: $result");
 
       if (result.isEmpty) {
-        // print("No data received.");
         canLoadMore(false);
         refreshController.loadNoData();
       } else {
-        items.clear();  // Clear previous items if needed
+        items.clear();
         items.addAll(result);
-        // print("Items after adding: $items");
         refreshController.loadComplete();
       }
 
       return true;
     } catch (exception, stacktrace) {
-      // print("Exception: $exception");
       await Sentry.captureException(
         exception,
         stackTrace: stacktrace,
@@ -83,63 +80,53 @@ class ListController extends GetxController {
       return false;
     }
   }
-  // List<Map<String, dynamic>> get filteredList => items
-  //     .where((element) =>
-  //         element['nama']
-  //             .toString()
-  //             .toLowerCase()
-  //             .contains(keyword.value.toLowerCase()) &&
-  //         (selectedCategory.value == 'semua' ||
-  //             element['kategori'] == selectedCategory.value))
-  //     .toList();
 
   Map<String, List<Map<String, dynamic>>> get groupedMenu {
-  final filteredItems = items.where((element) {
-    final matchesKeyword = element['nama']
-        .toString()
-        .toLowerCase()
-        .contains(keyword.value.toLowerCase());
+    final filteredItems = items.where((element) {
+      final matchesKeyword = element['nama']
+          .toString()
+          .toLowerCase()
+          .contains(keyword.value.toLowerCase());
 
-    final matchesCategory = selectedCategory.value == 'semua' ||
-        element['kategori'] == selectedCategory.value;
+      final matchesCategory = selectedCategory.value == 'semua' ||
+          element['kategori'] == selectedCategory.value;
 
-    return matchesKeyword && matchesCategory;
-  }).toList();
+      return matchesKeyword && matchesCategory;
+    }).toList();
 
-  return groupBy(filteredItems, (menu) => menu['kategori'].toString());
+    return groupBy(filteredItems, (menu) => menu['kategori'].toString());
   }
 
- Future<void> fetchMenuDetails(int menuId) async {
+  Future<void> fetchMenuDetails(int menuId) async {
     try {
       final menuDetails = await repository.fetchMenuDetail(menuId);
-
       levels.assignAll(menuDetails['level']);
       toppings.assignAll(menuDetails['topping']);
-
     } catch (e) {
       print("Error loading menu details: $e");
     }
   }
 
-
   void selectLevel(String level) {
     selectedLevel.value = level;
-    Get.back(); // Close the bottom sheet
+    Get.back();
   }
 
   void selectTopping(String topping) {
     selectedTopping.value = topping;
     Get.back();
   }
-  
- final RxInt quantity = 0.obs;
-  void increment () {
+
+  final RxInt quantity = 0.obs;
+  void increment() {
     quantity.value++;
   }
-  void decrement () {
+
+  void decrement() {
     quantity.value--;
   }
-   var promoList = [
+
+  var promoList = [
     {
       "promoName": "Isi survey ini untuk discon GACOR!",
       "discountNominal": "50",
@@ -156,6 +143,4 @@ class ListController extends GetxController {
       "thumbnailUrl": ImageConstant.promo3
     },
   ];
- 
-  }
- 
+}

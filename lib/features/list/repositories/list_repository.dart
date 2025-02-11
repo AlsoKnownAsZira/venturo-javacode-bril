@@ -32,12 +32,6 @@ class ListRepository {
               }),
         );
 
-        for (var menu in menuList) {
-          var details = await fetchMenuDetail(menu['id_menu']);
-          menu['topping'] = details['topping'] ?? [];
-          menu['level'] = details['level'] ?? [];
-        }
-
         return menuList;
       } else {
         throw Exception('Failed to load menu');
@@ -48,15 +42,14 @@ class ListRepository {
     }
   }
 
-  // Fetch menu details including toppings and levels
   Future<Map<String, dynamic>> fetchMenuDetail(int idMenu) async {
     try {
       final response = await _dio.get(
-        '$_menuDetailUrl$idMenu', // Use the correct URL format
+        '$_menuDetailUrl$idMenu',
         options: Options(headers: _headers),
       );
 
-       if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
         var data = response.data['data'];
         print('Fetched details for menu ID $idMenu: $data');
         return {
