@@ -10,7 +10,6 @@ class ListRepository {
 
   final Dio _dio = Dio();
 
-  // Fetch list of data from API
   Future<List<Map<String, dynamic>>> fetchMenuList() async {
     try {
       final response = await _dio.get(
@@ -57,12 +56,16 @@ class ListRepository {
         options: Options(headers: _headers),
       );
 
-      if (response.statusCode == 200) {
+       if (response.statusCode == 200) {
         var data = response.data['data'];
-        print('Fetched details for menu ID $idMenu: $data'); // Print the details
+        print('Fetched details for menu ID $idMenu: $data');
         return {
-          'topping': data['topping'] ?? [],
-          'level': data['level'] ?? [],
+          'topping': (data['topping'] as List<dynamic>)
+              .map<String>((t) => t['keterangan'].toString())
+              .toList(),
+          'level': (data['level'] as List<dynamic>)
+              .map<String>((l) => l['keterangan'].toString())
+              .toList(),
         };
       } else {
         throw Exception('Failed to load menu details');
@@ -72,7 +75,7 @@ class ListRepository {
       return {
         'topping': [],
         'level': [],
-      }; // Return empty lists on error
+      };
     }
   }
 }

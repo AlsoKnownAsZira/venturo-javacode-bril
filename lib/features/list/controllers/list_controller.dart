@@ -109,15 +109,18 @@ class ListController extends GetxController {
   return groupBy(filteredItems, (menu) => menu['kategori'].toString());
   }
 
-  Future<void> fetchMenuDetails(int menuId) async {
+ Future<void> fetchMenuDetails(int menuId) async {
     try {
       final menuDetails = await repository.fetchMenuDetail(menuId);
-      levels.assignAll(List<String>.from(menuDetails['level']));
-      toppings.assignAll(List<String>.from(menuDetails['topping']));
+
+      levels.assignAll(menuDetails['level']);
+      toppings.assignAll(menuDetails['topping']);
+
     } catch (e) {
       print("Error loading menu details: $e");
     }
   }
+
 
   void selectLevel(String level) {
     selectedLevel.value = level;

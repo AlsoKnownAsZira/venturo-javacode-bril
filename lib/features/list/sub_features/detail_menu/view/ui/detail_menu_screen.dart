@@ -15,7 +15,6 @@ class DetailMenuScreen extends StatelessWidget {
     final menu = Get.arguments;
 
     void _showLevelBottomSheet() {
-      
       showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -26,19 +25,33 @@ class DetailMenuScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Select Level',
+                      'Select Topping',
                       style: TextStyle(
                           fontSize: 20.w, fontWeight: FontWeight.bold),
                     ),
                     Divider(),
-                    ...listController.levels.map((level) => RadioListTile(
-                          title: Text(level),
-                          value: level,
-                          groupValue: listController.selectedLevel.value,
-                          onChanged: (value) {
-                            listController.selectLevel(value!);
-                          },
-                        )),
+                    if (listController.toppings.isEmpty)
+                      Text(
+                        'No toppings available',
+                        style: TextStyle(fontSize: 16.w),
+                      )
+                    else
+                      Wrap(
+                        spacing: 8.0,
+                        children: listController.toppings.map((topping) {
+                          return Obx(() => ChoiceChip(
+                                label: Text(topping),
+                                selected:
+                                    listController.selectedTopping.value ==
+                                        topping,
+                                onSelected: (selected) {
+                                  if (selected) {
+                                    listController.selectTopping(topping);
+                                  }
+                                },
+                              ));
+                        }).toList(),
+                      ),
                   ],
                 ),
               ));
@@ -62,14 +75,28 @@ class DetailMenuScreen extends StatelessWidget {
                           fontSize: 20.w, fontWeight: FontWeight.bold),
                     ),
                     Divider(),
-                    ...listController.toppings.map((topping) => RadioListTile(
-                          title: Text(topping),
-                          value: topping,
-                          groupValue: listController.selectedTopping.value,
-                          onChanged: (value) {
-                            listController.selectTopping(value!);
-                          },
-                        )),
+                    if (listController.toppings.isEmpty)
+                      Text(
+                        'No toppings available',
+                        style: TextStyle(fontSize: 16.w),
+                      )
+                    else
+                      Wrap(
+                        spacing: 8.0,
+                        children: listController.toppings.map((topping) {
+                          return Obx(() => ChoiceChip(
+                                label: Text(topping),
+                                selected:
+                                    listController.selectedTopping.value ==
+                                        topping,
+                                onSelected: (selected) {
+                                  if (selected) {
+                                    listController.selectTopping(topping);
+                                  }
+                                },
+                              ));
+                        }).toList(),
+                      ),
                   ],
                 ),
               ));
@@ -79,14 +106,12 @@ class DetailMenuScreen extends StatelessWidget {
 
     void _showCatatanBottomSheet() {
       showModalBottomSheet(
-        isScrollControlled: true, // Allows it to resize with the keyboard
+        isScrollControlled: true,
         context: context,
         builder: (context) {
           return Padding(
             padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context)
-                  .viewInsets
-                  .bottom, // Adjust for keyboard
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: Container(
               width: Get.width,
