@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:venturo_core/features/list/sub_features/checkout/view/ui/checkout_screen.dart';
 
 class DetailMenuScreen extends StatelessWidget {
   DetailMenuScreen({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class DetailMenuScreen extends StatelessWidget {
                     Divider(),
                     if (listController.levels.isEmpty)
                       Text(
-                        'No levels available',
+                        'Tidak ada pilihan Level',
                         style: TextStyle(fontSize: 16.w),
                       )
                     else
@@ -79,7 +80,7 @@ class DetailMenuScreen extends StatelessWidget {
                     Divider(),
                     if (listController.toppings.isEmpty)
                       Text(
-                        'No toppings available',
+                        'Tidak ada pilhan Topping',
                         style: TextStyle(fontSize: 16.w),
                       )
                     else
@@ -213,27 +214,17 @@ class DetailMenuScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              menu['nama'],
-                              style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: MainColor.primary),
-                            ),
-                            SizedBox(height: 20.h),
-                            Text(
-                              menu['deskripsi'],
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  overflow: TextOverflow.ellipsis),
-                              maxLines: 3, // Limit the number of lines
-                            ),
-                          ],
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            menu['nama'],
+                            style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: MainColor.primary),
+                          ),
+                        ],
                       ),
                       Row(
                         children: [
@@ -279,11 +270,23 @@ class DetailMenuScreen extends StatelessWidget {
                                 ListController.to.increment();
                               },
                               icon: Icon(Icons.add, color: Colors.white),
+                              
                             ),
                           ),
                         ],
                       ),
                     ],
+                  ),
+                   SizedBox(
+                    height: 20.w,
+                  ),
+                  Flexible(
+                    child: Text(
+                      menu['deskripsi'],
+                      style: const TextStyle(
+                          fontSize: 16, overflow: TextOverflow.ellipsis),
+                      maxLines: 3, // Limit the number of lines
+                    ),
                   ),
                   SizedBox(
                     height: 70.w,
@@ -389,7 +392,12 @@ class DetailMenuScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: MainColor.primary,
                         ),
-                        onPressed: () {},
+                       onPressed: () {
+                          Get.to(() => CheckoutScreen(), arguments: {
+                            'menu': menu,
+                            'quantity': listController.quantity.value,
+                          });
+                        },
                         child: Text(
                           'Tambah ke Pesanan',
                           style: TextStyle(

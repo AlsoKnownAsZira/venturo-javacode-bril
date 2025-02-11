@@ -13,4 +13,5 @@ static const String location = '/location';
 static const String checkloc = '/check';
 static const String list = '/list';
 static const String listDetail = '/list_detail';
+static const String listCheckout = '/list_checkout';
 }
