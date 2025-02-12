@@ -10,6 +10,8 @@ import 'package:venturo_core/features/list/bindings/list_binding.dart';
 import 'package:venturo_core/features/list/sub_features/checkout/view/ui/checkout_screen.dart';
 import 'package:venturo_core/features/list/sub_features/detail_menu/view/ui/detail_menu_screen.dart';
 import 'package:venturo_core/features/list/view/ui/list_screen.dart';
+import 'package:venturo_core/features/order/bindings/order_binding.dart';
+import 'package:venturo_core/features/order/view/ui/order_screen.dart';
 import 'package:venturo_core/features/sign_in/sub_features/no_connection/view/ui/no_connection_screen.dart';
 import 'package:venturo_core/features/sign_in/view/ui/sign_in_screen.dart';
 import 'package:venturo_core/features/splash/bindings/splash_binding.dart';
@@ -76,6 +78,11 @@ abstract class MainPages {
       name: MainRoute.listCheckout,
       page: () => CheckoutScreen(),
       binding: ListBinding(), 
+    ),
+  GetPage(
+      name: MainRoute.order,
+      page: () => OrderScreen(),
+      binding: OrderBinding(), 
     ),
 
 

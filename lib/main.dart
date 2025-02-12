@@ -24,7 +24,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Get.lazyPut(() => GlobalController());
+  Get.lazyPut(() => GlobalController()); 
 
   /// Change your options.dns with your project !!!!
   await SentryFlutter.init(

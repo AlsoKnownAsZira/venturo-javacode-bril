@@ -28,7 +28,10 @@ class ListScreen extends StatelessWidget {
         body: SmartRefresher(
           controller: listController.refreshController,
           enablePullDown: true,
-          onRefresh: listController.onRefresh,
+          onRefresh: () async {
+            listController.onRefresh();
+            listController.refreshController.refreshCompleted();
+          },
           enablePullUp: listController.canLoadMore.isTrue,
           onLoading: () async {
             await listController.fetchData();

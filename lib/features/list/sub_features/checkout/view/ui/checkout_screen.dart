@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:venturo_core/configs/routes/route.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/constants/list_assets_constant.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
@@ -46,6 +46,18 @@ class CheckoutScreen extends StatelessWidget {
         existingItem['quantity'] += item['quantity'];
       }
     }
+    IconData getCategoryIcon(String kategori) {
+      switch (kategori.toLowerCase()) {
+        case 'makanan':
+          return Icons.fastfood;
+        case 'minuman':
+          return Icons.local_drink;
+        case 'snack':
+          return Icons.local_pizza;
+        default:
+          return Icons.category;
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -79,19 +91,26 @@ class CheckoutScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 16.w),
-                    child: Text(
-                      kategori,
-                      style: TextStyle(
-                          fontSize: 22.w, fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10.w, horizontal: 16.w),
+                      child: Row(children: [
+                        Icon(
+                          getCategoryIcon(kategori),
+                          size: 22.w,
+                          color: MainColor.primary,
+                        ),
+                        Text(
+                          kategori,
+                          style: TextStyle(
+                              fontSize: 22.w, fontWeight: FontWeight.bold),
+                        ),
+                      ])),
                   ...kategoriItems.map((item) {
                     return CheckoutItemCard(item: item);
-                  }).toList(),
+                  }),
                 ],
               );
-            }).toList(),
+            }),
             SizedBox(height: 365.h),
             Container(
               width: Get.width,
@@ -246,7 +265,10 @@ class CheckoutScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: MainColor.primary),
                         onPressed: () {
+                          Get.offNamed(MainRoute.order,
+                              arguments: groupedItems);
                           cartBox.clear();
+
                           Get.snackbar("Success", "Pesanan berhasil dibuat");
                         },
                         child: Text(

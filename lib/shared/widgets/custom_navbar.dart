@@ -18,7 +18,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
         Get.offAndToNamed(MainRoute.list);
         break;
       case 1:
-        Get.offAndToNamed(MainRoute.profile);
+        Get.offAndToNamed(MainRoute.order);
         break;
       case 2:
         Get.offAndToNamed(MainRoute.profile);
