@@ -19,6 +19,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox("venturo");
+  await Hive.openBox('cartBox');
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

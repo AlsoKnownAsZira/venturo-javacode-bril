@@ -5,18 +5,30 @@ import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:venturo_core/features/list/sub_features/checkout/view/ui/checkout_screen.dart';
-
+import 'package:hive/hive.dart';
 class DetailMenuScreen extends StatelessWidget {
   DetailMenuScreen({Key? key}) : super(key: key);
 
-  final ListController listController = Get.find(); // Use the same controller
+  final ListController listController = Get.find(); 
 
   @override
   Widget build(BuildContext context) {
     final menu = Get.arguments;
+      // Reset quantity when the screen is opened
+    WidgetsBinding.instance.addPostFrameCallback((_) { // untuk menjalankan fungsi setelah widget di render
+      listController.quantity.value = 0;
+      listController.fetchMenuDetails(menu['id_menu']);
+    });
 
-    // Fetch menu details when the screen is opened
-    listController.fetchMenuDetails(menu['id_menu']);
+  void addToCart(Map<String, dynamic> menu, int quantity, {String? level, String? topping}) {
+      final cartBox = Hive.box('cartBox');
+      cartBox.add({
+        'menu': menu,
+        'quantity': quantity,
+        'level': level,
+        'topping': topping,
+      });
+    }
 
     void _showLevelBottomSheet() {
       showModalBottomSheet(
@@ -393,10 +405,17 @@ class DetailMenuScreen extends StatelessWidget {
                           backgroundColor: MainColor.primary,
                         ),
                        onPressed: () {
-                          Get.to(() => CheckoutScreen(), arguments: {
-                            'menu': menu,
-                            'quantity': listController.quantity.value,
-                          });
+                       addToCart(
+                            menu,
+                            listController.quantity.value,
+                            level: listController.selectedLevel.value.isNotEmpty
+                                ? listController.selectedLevel.value
+                                : null,
+                            topping: listController.selectedTopping.value.isNotEmpty
+                                ? listController.selectedTopping.value
+                                : null,
+                          );
+                          Get.to(() => CheckoutScreen());
                         },
                         child: Text(
                           'Tambah ke Pesanan',

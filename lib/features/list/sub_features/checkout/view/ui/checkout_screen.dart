@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/constants/list_assets_constant.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
@@ -14,9 +15,8 @@ class CheckoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final arguments = Get.arguments;
-    final menu = arguments['menu'];
-    final quantity = arguments['quantity'];
+    final cartBox = Hive.box('cartBox');
+    final items = cartBox.values.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -42,24 +42,38 @@ class CheckoutScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ListTile(
-              leading: CachedNetworkImage(
-                height: Get.height * 0.3,
-                alignment: Alignment.center,
-                imageUrl: menu['foto'] != null && menu['foto'].isNotEmpty
-                    ? menu['foto']
-                    : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
-                useOldImageOnUrlChange: true,
-                fit: BoxFit.contain,
-                errorWidget: (context, url, error) => Image.network(
-                  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
-                  fit: BoxFit.cover,
+            ...items.map((item) {
+              final menu = item['menu'];
+              final quantity = item['quantity'];
+              final level = item['level'];
+              final topping = item['topping'];
+              return ListTile(
+                leading: CachedNetworkImage(
+                  height: 90.h,
+                  width: 90.w,
+                  alignment: Alignment.center,
+                  imageUrl: menu['foto'] != null && menu['foto'].isNotEmpty
+                      ? menu['foto']
+                      : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
+                  useOldImageOnUrlChange: true,
+                  fit: BoxFit.contain,
+                  errorWidget: (context, url, error) => Image.network(
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              title: Text(menu['nama']),
-              subtitle: Text("Rp ${menu['harga']}"),
-              trailing: Text("Quantity: $quantity"),
-            ),
+                title: Text(menu['nama']),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Rp ${menu['harga']}"),
+                    if (level != null) Text("Level: $level"),
+                    if (topping != null) Text("Topping: $topping"),
+                  ],
+                ),
+                trailing: Text("Quantity: $quantity"),
+              );
+            }).toList(),
             SizedBox(height: 365.h),
             Container(
               width: Get.width,
@@ -87,12 +101,12 @@ class CheckoutScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Total Pesanan ($quantity) Item:",
+                          "Total Pesanan () Item:",
                           style: TextStyle(
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Rp ${quantity * menu['harga']}",
+                          "Rp ",
                           style: TextStyle(
                               fontSize: 20.w,
                               fontWeight: FontWeight.bold,
@@ -201,7 +215,7 @@ class CheckoutScreen extends StatelessWidget {
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Rp ${quantity * menu['harga']}",
+                          "Rp ",
                           style: TextStyle(
                               fontSize: 20.w,
                               fontWeight: FontWeight.bold,
@@ -213,7 +227,11 @@ class CheckoutScreen extends StatelessWidget {
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: MainColor.primary),
-                        onPressed: () {},
+                        onPressed: () {
+                          cartBox.clear();
+                          Get.snackbar(
+                              "WIP", "Fitur ini masih dalam pengembangan");
+                        },
                         child: Text(
                           "Pesan Sekarang",
                           style: TextStyle(
