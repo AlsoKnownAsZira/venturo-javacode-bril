@@ -111,9 +111,6 @@ class ListScreen extends StatelessWidget {
                 ),
 
                 SizedBox(height: 10.h),
-
-                // Menu List
-                // Menu List
                 Obx(() {
                   final groupedItems = listController.groupedMenu;
 

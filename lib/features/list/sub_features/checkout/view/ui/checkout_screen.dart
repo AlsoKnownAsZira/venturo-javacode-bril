@@ -18,6 +18,17 @@ class CheckoutScreen extends StatelessWidget {
     final cartBox = Hive.box('cartBox');
     final items = cartBox.values.toList();
 
+    // Grouping items by kategori
+    Map<String, List<dynamic>> groupedItems = {};
+
+    for (var item in items) {
+      String kategori = item['kategori'] ?? 'Lainnya';
+      if (!groupedItems.containsKey(kategori)) {
+        groupedItems[kategori] = [];
+      }
+      groupedItems[kategori]!.add(item);
+    }
+
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -42,36 +53,55 @@ class CheckoutScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ...items.map((item) {
-              final menu = item['menu'];
-              final quantity = item['quantity'];
-              final level = item['level'];
-              final topping = item['topping'];
-              return ListTile(
-                leading: CachedNetworkImage(
-                  height: 90.h,
-                  width: 90.w,
-                  alignment: Alignment.center,
-                  imageUrl: menu['foto'] != null && menu['foto'].isNotEmpty
-                      ? menu['foto']
-                      : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
-                  useOldImageOnUrlChange: true,
-                  fit: BoxFit.contain,
-                  errorWidget: (context, url, error) => Image.network(
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
-                    fit: BoxFit.cover,
+            ...groupedItems.entries.map((entry) {
+              String kategori = entry.key;
+              List<dynamic> kategoriItems = entry.value;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 16.w),
+                    child: Text(
+                      kategori,
+                      style: TextStyle(
+                          fontSize: 22.w, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                title: Text(menu['nama']),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Rp ${menu['harga']}"),
-                    if (level != null) Text("Level: $level"),
-                    if (topping != null) Text("Topping: $topping"),
-                  ],
-                ),
-                trailing: Text("Quantity: $quantity"),
+                  ...kategoriItems.map((item) {
+                    final menu = item['menu'];
+                    final quantity = item['quantity'];
+                    final level = item['level'];
+                    final topping = item['topping'];
+
+                    return ListTile(
+                      leading: CachedNetworkImage(
+                        height: 90.h,
+                        width: 90.w,
+                        alignment: Alignment.center,
+                        imageUrl: menu['foto'] != null && menu['foto'].isNotEmpty
+                            ? menu['foto']
+                            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
+                        useOldImageOnUrlChange: true,
+                        fit: BoxFit.contain,
+                        errorWidget: (context, url, error) => Image.network(
+                          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      title: Text(menu['nama']),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Rp ${menu['harga']}"),
+                          if (level != null) Text("Level: $level"),
+                          if (topping != null) Text("Topping: $topping"),
+                        ],
+                      ),
+                      trailing: Text("Qty: $quantity"),
+                    );
+                  }).toList(),
+                ],
               );
             }).toList(),
             SizedBox(height: 365.h),
@@ -101,12 +131,12 @@ class CheckoutScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Total Pesanan () Item:",
+                          "Total Pesanan (${items.length}) Item:",
                           style: TextStyle(
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Rp ",
+                          "Rp ${items.fold<int>(0, (sum, item) => sum + (item['quantity'] * item['menu']['harga'] as int))}",
                           style: TextStyle(
                               fontSize: 20.w,
                               fontWeight: FontWeight.bold,
@@ -215,7 +245,7 @@ class CheckoutScreen extends StatelessWidget {
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Rp ",
+                          "Rp ${items.fold<int>(0, (sum, item) => sum + (item['quantity'] * item['menu']['harga'] as int))}",
                           style: TextStyle(
                               fontSize: 20.w,
                               fontWeight: FontWeight.bold,
@@ -230,10 +260,7 @@ class CheckoutScreen extends StatelessWidget {
                         onPressed: () {
                           cartBox.clear();
                           Get.snackbar(
-                              backgroundColor: MainColor.kPrimaryColor,
-                              colorText: Colors.white,
-                              "Pesanan ditambahkan",
-                              "Silahkan tunggu pesanan");
+                              "Success", "Pesanan berhasil dibuat");
                         },
                         child: Text(
                           "Pesan Sekarang",

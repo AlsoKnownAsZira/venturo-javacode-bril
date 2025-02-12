@@ -25,15 +25,16 @@ class DetailMenuScreen extends StatelessWidget {
     });
 
     void addToCart(Map<String, dynamic> menu, int quantity,
-        {String? level, String? topping}) {
-      final cartBox = Hive.box('cartBox');
-      cartBox.add({
-        'menu': menu,
-        'quantity': quantity,
-        'level': level,
-        'topping': topping,
-      });
-    }
+    {String? level, String? topping, required String kategori}) {
+  final cartBox = Hive.box('cartBox');
+  cartBox.add({
+    'menu': menu,
+    'quantity': quantity,
+    'level': level,
+    'topping': topping,
+    'kategori': kategori,
+  });
+}
 
     void _showLevelBottomSheet() {
       showModalBottomSheet(
@@ -408,31 +409,30 @@ class DetailMenuScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: MainColor.primary,
                         ),
-                        onPressed: () {
-                          if (listController.quantity.value <= 0) {
-                            Get.snackbar(
-                              'Peringatan',
-                              'Jumlah pesanan tidak boleh kosong',
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white,
-                            );
-                            return;
-                          } else {
-                            addToCart(
-                              menu,
-                              listController.quantity.value,
-                              level:
-                                  listController.selectedLevel.value.isNotEmpty
-                                      ? listController.selectedLevel.value
-                                      : null,
-                              topping: listController
-                                      .selectedTopping.value.isNotEmpty
-                                  ? listController.selectedTopping.value
-                                  : null,
-                            );
-                            Get.to(() => CheckoutScreen());
-                          }
-                        },
+                       onPressed: () {
+  if (listController.quantity.value <= 0) {
+    Get.snackbar(
+      'Peringatan',
+      'Jumlah pesanan tidak boleh kosong',
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+    );
+    return;
+  } else {
+    addToCart(
+      menu,
+      listController.quantity.value,
+      level: listController.selectedLevel.value.isNotEmpty
+          ? listController.selectedLevel.value
+          : null,
+      topping: listController.selectedTopping.value.isNotEmpty
+          ? listController.selectedTopping.value
+          : null,
+      kategori: menu['kategori'], 
+    );
+    Get.to(() => CheckoutScreen());
+  }
+},
                         child: Text(
                           'Tambah ke Pesanan',
                           style: TextStyle(
