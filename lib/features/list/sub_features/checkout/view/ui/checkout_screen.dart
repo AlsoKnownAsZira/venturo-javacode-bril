@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/constants/list_assets_constant.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
+import 'package:venturo_core/features/list/sub_features/checkout/view/components/checkout_item_card.dart';
 
 class CheckoutScreen extends StatelessWidget {
   CheckoutScreen({Key? key}) : super(key: key);
@@ -18,15 +19,32 @@ class CheckoutScreen extends StatelessWidget {
     final cartBox = Hive.box('cartBox');
     final items = cartBox.values.toList();
 
-    // Grouping items by kategori
-    Map<String, List<dynamic>> groupedItems = {};
+    // Grouping items by kategori and combining same menu orders
+    Map<String, List<Map<String, dynamic>>> groupedItems = {};
 
     for (var item in items) {
       String kategori = item['kategori'] ?? 'Lainnya';
+      String menuId = item['menu']['id'] ?? '';
+
       if (!groupedItems.containsKey(kategori)) {
         groupedItems[kategori] = [];
       }
-      groupedItems[kategori]!.add(item);
+
+      var existingItem = groupedItems[kategori]!.firstWhere(
+        (element) => element['menu']['id'] == menuId,
+        orElse: () => {},
+      );
+
+      if (existingItem.isEmpty) {
+        groupedItems[kategori]!.add({
+          'menu': item['menu'],
+          'quantity': item['quantity'],
+          'level': item['level'],
+          'topping': item['topping']
+        });
+      } else {
+        existingItem['quantity'] += item['quantity'];
+      }
     }
 
     return Scaffold(
@@ -55,7 +73,7 @@ class CheckoutScreen extends StatelessWidget {
           children: [
             ...groupedItems.entries.map((entry) {
               String kategori = entry.key;
-              List<dynamic> kategoriItems = entry.value;
+              List<Map<String, dynamic>> kategoriItems = entry.value;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,37 +87,7 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                   ),
                   ...kategoriItems.map((item) {
-                    final menu = item['menu'];
-                    final quantity = item['quantity'];
-                    final level = item['level'];
-                    final topping = item['topping'];
-
-                    return ListTile(
-                      leading: CachedNetworkImage(
-                        height: 90.h,
-                        width: 90.w,
-                        alignment: Alignment.center,
-                        imageUrl: menu['foto'] != null && menu['foto'].isNotEmpty
-                            ? menu['foto']
-                            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
-                        useOldImageOnUrlChange: true,
-                        fit: BoxFit.contain,
-                        errorWidget: (context, url, error) => Image.network(
-                          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      title: Text(menu['nama']),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Rp ${menu['harga']}"),
-                          if (level != null) Text("Level: $level"),
-                          if (topping != null) Text("Topping: $topping"),
-                        ],
-                      ),
-                      trailing: Text("Qty: $quantity"),
-                    );
+                    return CheckoutItemCard(item: item);
                   }).toList(),
                 ],
               );
@@ -136,7 +124,7 @@ class CheckoutScreen extends StatelessWidget {
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Rp ${items.fold<int>(0, (sum, item) => sum + (item['quantity'] * item['menu']['harga'] as int))}",
+                          "Rp ${(items.fold<num>(0, (sum, item) => sum + ((item['quantity'] ?? 0) * (item['menu']['harga'] ?? 0)))).toInt()}",
                           style: TextStyle(
                               fontSize: 20.w,
                               fontWeight: FontWeight.bold,
@@ -245,7 +233,7 @@ class CheckoutScreen extends StatelessWidget {
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Rp ${items.fold<int>(0, (sum, item) => sum + (item['quantity'] * item['menu']['harga'] as int))}",
+                          "Rp ${(items.fold<num>(0, (sum, item) => sum + ((item['quantity'] ?? 0) * (item['menu']['harga'] ?? 0)))).toInt()}",
                           style: TextStyle(
                               fontSize: 20.w,
                               fontWeight: FontWeight.bold,
@@ -259,8 +247,7 @@ class CheckoutScreen extends StatelessWidget {
                             backgroundColor: MainColor.primary),
                         onPressed: () {
                           cartBox.clear();
-                          Get.snackbar(
-                              "Success", "Pesanan berhasil dibuat");
+                          Get.snackbar("Success", "Pesanan berhasil dibuat");
                         },
                         child: Text(
                           "Pesan Sekarang",
