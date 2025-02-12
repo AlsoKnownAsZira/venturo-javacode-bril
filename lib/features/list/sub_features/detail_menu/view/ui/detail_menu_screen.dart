@@ -6,21 +6,26 @@ import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:venturo_core/features/list/sub_features/checkout/view/ui/checkout_screen.dart';
 import 'package:hive/hive.dart';
+
 class DetailMenuScreen extends StatelessWidget {
   DetailMenuScreen({Key? key}) : super(key: key);
 
-  final ListController listController = Get.find(); 
+  final ListController listController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     final menu = Get.arguments;
-      // Reset quantity when the screen is opened
-    WidgetsBinding.instance.addPostFrameCallback((_) { // untuk menjalankan fungsi setelah widget di render
+    // Reset quantity when the screen is opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // untuk menjalankan fungsi setelah widget di render
       listController.quantity.value = 0;
+      listController.selectedLevel.value = '';
+      listController.selectedTopping.value = '';
       listController.fetchMenuDetails(menu['id_menu']);
     });
 
-  void addToCart(Map<String, dynamic> menu, int quantity, {String? level, String? topping}) {
+    void addToCart(Map<String, dynamic> menu, int quantity,
+        {String? level, String? topping}) {
       final cartBox = Hive.box('cartBox');
       cartBox.add({
         'menu': menu,
@@ -282,14 +287,13 @@ class DetailMenuScreen extends StatelessWidget {
                                 ListController.to.increment();
                               },
                               icon: Icon(Icons.add, color: Colors.white),
-                              
                             ),
                           ),
                         ],
                       ),
                     ],
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: 20.w,
                   ),
                   Flexible(
@@ -404,18 +408,30 @@ class DetailMenuScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: MainColor.primary,
                         ),
-                       onPressed: () {
-                       addToCart(
-                            menu,
-                            listController.quantity.value,
-                            level: listController.selectedLevel.value.isNotEmpty
-                                ? listController.selectedLevel.value
-                                : null,
-                            topping: listController.selectedTopping.value.isNotEmpty
-                                ? listController.selectedTopping.value
-                                : null,
-                          );
-                          Get.to(() => CheckoutScreen());
+                        onPressed: () {
+                          if (listController.quantity.value <= 0) {
+                            Get.snackbar(
+                              'Peringatan',
+                              'Jumlah pesanan tidak boleh kosong',
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                            );
+                            return;
+                          } else {
+                            addToCart(
+                              menu,
+                              listController.quantity.value,
+                              level:
+                                  listController.selectedLevel.value.isNotEmpty
+                                      ? listController.selectedLevel.value
+                                      : null,
+                              topping: listController
+                                      .selectedTopping.value.isNotEmpty
+                                  ? listController.selectedTopping.value
+                                  : null,
+                            );
+                            Get.to(() => CheckoutScreen());
+                          }
                         },
                         child: Text(
                           'Tambah ke Pesanan',

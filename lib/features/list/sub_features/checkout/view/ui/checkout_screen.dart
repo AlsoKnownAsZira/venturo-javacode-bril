@@ -230,7 +230,10 @@ class CheckoutScreen extends StatelessWidget {
                         onPressed: () {
                           cartBox.clear();
                           Get.snackbar(
-                              "WIP", "Fitur ini masih dalam pengembangan");
+                              backgroundColor: MainColor.kPrimaryColor,
+                              colorText: Colors.white,
+                              "Pesanan ditambahkan",
+                              "Silahkan tunggu pesanan");
                         },
                         child: Text(
                           "Pesan Sekarang",
