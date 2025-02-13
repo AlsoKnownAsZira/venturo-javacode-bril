@@ -98,7 +98,7 @@ class PromoCard extends StatelessWidget {
                 )
               else if (nominal != null)
                 Text(
-                  'Rp Potongan Sebesar $nominal',
+                  ' Potongan Sebesar Rp $nominal',
                   style: Get.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
