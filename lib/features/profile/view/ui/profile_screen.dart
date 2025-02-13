@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:venturo_core/constants/image_constant.dart';
 import 'package:venturo_core/features/profile/constants/profile_assets_constant.dart';
 import 'package:venturo_core/features/profile/controllers/profile_controller.dart';
 import 'package:get/get.dart';
@@ -6,52 +7,42 @@ import 'package:venturo_core/features/profile/view/components/dialog_webview.dar
 import 'package:venturo_core/shared/widgets/tile_option.dart';
 import 'package:venturo_core/utils/functions/helpers.dart';
 import 'package:venturo_core/shared/widgets/custom_navbar.dart';
+
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key}) {
     Helpers.logFirebaseAnalytics("Profile Screen", "ProfileScreen");
   }
+
   final assetsConstant = ProfileAssetsConstant();
+  final ProfileController profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CustomNavbar(currentIndex: 2),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.dialog(
-            const DialogWebview(),
-          );
-        },
-        child: const Icon(Icons.open_in_new),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            const Text("Profile Screen"),
-            const Divider(),
-            TileOption(
-              title: 'Privacy Policy',
-              message: 'Here',
-              onTap: () => Get.find<ProfileController>().privacyPolicyWebView(),
+        bottomNavigationBar: CustomNavbar(currentIndex: 2),
+        appBar: AppBar(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
             ),
-            const Divider(),
-            Obx(() {
-              return ListTile(
-                title: Text(
-                    'Device Model: ${ProfileController.to.deviceModel.value}'),
-                subtitle: Text(
-                    'Android Version: ${ProfileController.to.deviceVersion.value}'),
-              );
-            }),
-
-  ElevatedButton(onPressed: (){
-    ProfileController.to.signOut();
-  }, child: const Text("Sign Out"))
-
-          ],
-          
+          ),
+          backgroundColor: Colors.white,
+          shadowColor: Colors.black,
+          elevation: 4,
+          centerTitle: true,
+          title: const Text(
+            "Profil",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
-      ),
-    );
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(ImageConstant.loading),
+              fit: BoxFit.fitHeight,
+              alignment: Alignment.center,
+            ),
+          ),
+        ));
   }
 }

@@ -81,7 +81,7 @@ class SignInView extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () => Get.toNamed(
-                      '/forgot_password'), // Adjust the route name as needed
+                      '/forgot_password'), 
                   child: Text(
                     'Forgot Password?',
                     style: GoogleTextStyle.fw600.copyWith(
