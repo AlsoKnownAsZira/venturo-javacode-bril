@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:venturo_core/configs/routes/route.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
+import 'package:venturo_core/features/list/sub_features/promo/controllers/list_promo_controller.dart';
 import 'package:venturo_core/features/list/view/components/menu_card.dart';
 import 'package:venturo_core/features/list/view/components/menu_chip.dart';
 import 'package:venturo_core/features/list/view/components/promo_card.dart';
@@ -16,11 +17,22 @@ import 'package:venturo_core/shared/widgets/custom_navbar.dart';
 class ListScreen extends StatelessWidget {
   ListScreen({Key? key}) : super(key: key);
   final ListController listController = Get.find();
+  final ListPromoController promoController = Get.put(ListPromoController());
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: MainColor.primary,
+          onPressed: () {
+            Get.toNamed(MainRoute.listCheckout);
+          },
+          child: const Icon(
+            Icons.shopping_cart,
+            color: MainColor.white,
+          ),
+        ),
         bottomNavigationBar: const CustomNavbar(currentIndex: 0),
         appBar: SearchAppBar(
           onChange: (value) => ListController.to.keyword(value),
@@ -58,26 +70,34 @@ class ListScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10.h),
-
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: 200.h,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: true,
-                    autoPlay: true,
-                  ),
-                  items: listController.promoList.map((promo) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return PromoCard(
-                          promoName: promo["promoName"]!,
-                          discountNominal: promo["discountNominal"]!,
-                          thumbnailUrl: promo["thumbnailUrl"]!,
+                Obx(() {
+                  if (promoController.isLoading.value) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    return CarouselSlider(
+                      options: CarouselOptions(
+                        height: 200.h,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: true,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 5),
+                                              ),
+                      items: promoController.promoList.map((promo) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return PromoCard(
+                              promoName: promo["nama"] ?? '',
+                              discountNominal: promo["diskon"] as int?,
+                              nominal: promo["nominal"] as int?,
+                              thumbnailUrl: promo["foto"] ?? '',
+                              syaratKetentuan: promo["syarat_ketentuan"] ?? '',
+                            );
+                          },
                         );
-                      },
+                      }).toList(),
                     );
-                  }).toList(),
-                ),
+                  }
+                }),
 
                 SizedBox(height: 20.h),
 

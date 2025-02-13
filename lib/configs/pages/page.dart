@@ -9,6 +9,7 @@ import 'package:venturo_core/features/initial/views/ui/get_location_screen.dart'
 import 'package:venturo_core/features/list/bindings/list_binding.dart';
 import 'package:venturo_core/features/list/sub_features/checkout/view/ui/checkout_screen.dart';
 import 'package:venturo_core/features/list/sub_features/detail_menu/view/ui/detail_menu_screen.dart';
+import 'package:venturo_core/features/list/sub_features/promo/view/ui/promo_screen.dart';
 import 'package:venturo_core/features/list/view/ui/list_screen.dart';
 import 'package:venturo_core/features/order/bindings/order_binding.dart';
 import 'package:venturo_core/features/order/view/ui/order_screen.dart';
@@ -82,6 +83,11 @@ abstract class MainPages {
   GetPage(
       name: MainRoute.order,
       page: () => OrderScreen(),
+      binding: OrderBinding(), 
+    ),
+  GetPage(
+      name: MainRoute.promo,
+      page: () => PromoScreen(),
       binding: OrderBinding(), 
     ),
 

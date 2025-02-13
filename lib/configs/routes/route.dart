@@ -15,4 +15,5 @@ static const String list = '/list';
 static const String listDetail = '/list_detail';
 static const String listCheckout = '/list_checkout';
 static const String order = '/order';
+static const String promo = '/list_promo';
 }
