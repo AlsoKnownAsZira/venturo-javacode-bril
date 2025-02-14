@@ -7,6 +7,7 @@ import 'package:venturo_core/features/list/view/components/menu_card.dart';
 import 'package:venturo_core/features/list/view/components/menu_chip.dart';
 import 'package:venturo_core/features/list/view/components/promo_card.dart';
 import 'package:venturo_core/features/list/view/components/search_app_bar.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -26,7 +27,17 @@ class ListScreen extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           backgroundColor: MainColor.primary,
           onPressed: () {
-            Get.toNamed(MainRoute.listCheckout);
+         final cartBox = Hive.box('cartBox');
+            if (cartBox.isEmpty) {
+              Get.snackbar(
+                'Peringatan',
+                'Keranjang belanja kosong',
+                backgroundColor: Colors.red,
+                colorText: Colors.white,
+              );
+            } else {
+              Get.toNamed(MainRoute.listCheckout);
+            }
           },
           child: const Icon(
             Icons.shopping_cart,

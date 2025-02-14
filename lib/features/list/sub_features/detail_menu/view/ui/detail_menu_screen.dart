@@ -15,7 +15,6 @@ class DetailMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final menu = Get.arguments;
-    // Reset quantity when the screen is opened
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // untuk menjalankan fungsi setelah widget di render
       listController.quantity.value = 0;

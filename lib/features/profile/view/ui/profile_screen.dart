@@ -73,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                           Icon(Icons.credit_card,
                               color: MainColor.primary, size: 20.sp),
                           Text(
-                            "Segera Verifikasi KTP mu S=sekarang!",
+                            "Segera Verifikasi KTP mu Sekarang!",
                             style: TextStyle(
                                 color: MainColor.primary, fontSize: 20.sp),
                           )
