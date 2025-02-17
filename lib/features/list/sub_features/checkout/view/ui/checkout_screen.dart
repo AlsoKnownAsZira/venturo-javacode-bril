@@ -19,10 +19,10 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartBox = Hive.box<CartItem>('cartBox');
-// Retrieve items from Hive and convert them to CartItem list
+    // Retrieve items from Hive and convert them to CartItem list
     List<CartItem> items = cartBox.values.toList();
 
-// Grouping items by kategori and combining same menu orders
+    // Grouping items by kategori and combining same menu orders
     Map<Kategori, List<CartItem>> groupedItems = {};
 
     for (var item in items) {
@@ -33,10 +33,7 @@ class CheckoutScreen extends StatelessWidget {
       }
 
       var existingItem = groupedItems[kategori]!.firstWhereOrNull(
-        (element) =>
-            element.menu.idMenu == item.menu.idMenu 
-            // element.level == item.level &&
-            // element.topping == item.topping,
+        (element) => element.menu.idMenu == item.menu.idMenu
       );
 
       if (existingItem != null) {
@@ -45,6 +42,7 @@ class CheckoutScreen extends StatelessWidget {
         groupedItems[kategori]!.add(item);
       }
     }
+
     IconData getCategoryIcon(String kategori) {
       switch (kategori.toLowerCase()) {
         case 'makanan':

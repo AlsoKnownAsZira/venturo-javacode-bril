@@ -68,7 +68,7 @@ class Item extends HiveObject {
       idMenu: map['id_menu'] ?? 0,
       nama: map['nama'] ?? '',
       kategori: Kategori.values.firstWhere(
-        (e) => e.name == map['kategori'],
+        (e) => e.name.toLowerCase() == map['kategori'].toString().toLowerCase(),
         orElse: () => Kategori.MAKANAN,
       ),
       harga: map['harga'] ?? 0,

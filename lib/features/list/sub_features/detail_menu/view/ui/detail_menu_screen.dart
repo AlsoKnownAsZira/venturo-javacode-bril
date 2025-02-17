@@ -29,13 +29,13 @@ class DetailMenuScreen extends StatelessWidget {
       final cartBox = Hive.box<CartItem>('cartBox');
       List<CartItem> cartItems = cartBox.values.toList();
       for (var item in cartItems) {
-        print('Item: ${item.menu.nama}, Quantity: ${item.quantity}');
+        print('Item: ${item.menu.nama}, Quantity: ${item.quantity}, Category ${item.menu.kategori}');
       }
     }
 
 void addToCart(Item menu, int quantity, {String? level, String? topping}) {
   final cartBox = Hive.box<CartItem>('cartBox');
-  print('adding to cart: ${menu.nama}, ${menu.idMenu}');
+  print('adding to cart: ${menu.nama},ID:  ${menu.idMenu}');
   // Check if item already exists in cart
   List<CartItem> cartItems = cartBox.values.toList();
   int existingIndex = cartItems.indexWhere((item) =>
