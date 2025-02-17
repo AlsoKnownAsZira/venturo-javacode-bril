@@ -7,6 +7,8 @@ import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/constants/list_assets_constant.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:venturo_core/features/list/sub_features/checkout/view/components/checkout_item_card.dart';
+import 'package:venturo_core/shared/models/cart_item.dart';
+import 'package:venturo_core/shared/models/menu.dart';
 
 class CheckoutScreen extends StatelessWidget {
   CheckoutScreen({Key? key}) : super(key: key);
@@ -16,34 +18,28 @@ class CheckoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cartBox = Hive.box('cartBox');
-    final items = cartBox.values.toList();
+    final cartBox = Hive.box<CartItem>('cartBox');
+// Retrieve items from Hive and convert them to CartItem list
+    List<CartItem> items = cartBox.values.toList();
 
-    // Grouping items by kategori and combining same menu orders
-    Map<String, List<Map<String, dynamic>>> groupedItems = {};
+// Grouping items by kategori and combining same menu orders
+    Map<Kategori, List<CartItem>> groupedItems = {};
 
     for (var item in items) {
-      String kategori = item['kategori'] ?? 'Lainnya';
-      String menuId = item['menu']['id'] ?? '';
+      Kategori kategori = item.menu.kategori;
 
       if (!groupedItems.containsKey(kategori)) {
         groupedItems[kategori] = [];
       }
 
-      var existingItem = groupedItems[kategori]!.firstWhere(
-        (element) => element['menu']['id'] == menuId,
-        orElse: () => {},
+      var existingItem = groupedItems[kategori]!.firstWhereOrNull(
+        (element) => element.menu.idMenu == item.menu.idMenu,
       );
 
-      if (existingItem.isEmpty) {
-        groupedItems[kategori]!.add({
-          'menu': item['menu'],
-          'quantity': item['quantity'],
-          'level': item['level'],
-          'topping': item['topping']
-        });
+      if (existingItem != null) {
+        existingItem.quantity += item.quantity;
       } else {
-        existingItem['quantity'] += item['quantity'];
+        groupedItems[kategori]!.add(item);
       }
     }
     IconData getCategoryIcon(String kategori) {
@@ -84,8 +80,8 @@ class CheckoutScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ...groupedItems.entries.map((entry) {
-              String kategori = entry.key;
-              List<Map<String, dynamic>> kategoriItems = entry.value;
+              Kategori kategori = entry.key;
+              List<CartItem> kategoriItems = entry.value;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,18 +91,25 @@ class CheckoutScreen extends StatelessWidget {
                           vertical: 10.w, horizontal: 16.w),
                       child: Row(children: [
                         Icon(
-                          getCategoryIcon(kategori),
+                          getCategoryIcon(kategori.name),
                           size: 22.w,
                           color: MainColor.primary,
                         ),
                         Text(
-                          kategori,
+                          kategori.name,
                           style: TextStyle(
                               fontSize: 22.w, fontWeight: FontWeight.bold),
                         ),
                       ])),
                   ...kategoriItems.map((item) {
-                    return CheckoutItemCard(item: item);
+                    return CheckoutItemCard(
+                      item: {
+                        'menu': item.menu.toMap(),
+                        'quantity': item.quantity,
+                        'level': item.level,
+                        'topping': item.topping,
+                      },
+                    );
                   }),
                 ],
               );
@@ -143,7 +146,7 @@ class CheckoutScreen extends StatelessWidget {
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Rp ${(items.fold<num>(0, (sum, item) => sum + ((item['quantity'] ?? 0) * (item['menu']['harga'] ?? 0)))).toInt()}",
+                          "Rp ${(items.fold<num>(0, (sum, item) => sum + (item.quantity * item.menu.harga))).toInt()}",
                           style: TextStyle(
                               fontSize: 20.w,
                               fontWeight: FontWeight.bold,
@@ -252,7 +255,7 @@ class CheckoutScreen extends StatelessWidget {
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Rp ${(items.fold<num>(0, (sum, item) => sum + ((item['quantity'] ?? 0) * (item['menu']['harga'] ?? 0)))).toInt()}",
+                          "Rp ${(items.fold<num>(0, (sum, item) => sum + (item.quantity * item.menu.harga))).toInt()}",
                           style: TextStyle(
                               fontSize: 20.w,
                               fontWeight: FontWeight.bold,

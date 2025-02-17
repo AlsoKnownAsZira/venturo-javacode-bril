@@ -6,6 +6,8 @@ import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:venturo_core/features/list/sub_features/checkout/view/ui/checkout_screen.dart';
 import 'package:hive/hive.dart';
+import 'package:venturo_core/shared/models/cart_item.dart';
+import 'package:venturo_core/shared/models/menu.dart';
 
 class DetailMenuScreen extends StatelessWidget {
   DetailMenuScreen({Key? key}) : super(key: key);
@@ -23,16 +25,39 @@ class DetailMenuScreen extends StatelessWidget {
       listController.fetchMenuDetails(menu['id_menu']);
     });
 
-    void addToCart(Map<String, dynamic> menu, int quantity,
-    {String? level, String? topping, required String kategori}) {
-  final cartBox = Hive.box('cartBox');
-  cartBox.add({
-    'menu': menu,
-    'quantity': quantity,
-    'level': level,
-    'topping': topping,
-    'kategori': kategori,
-  });
+    void printCartContents() {
+      final cartBox = Hive.box<CartItem>('cartBox');
+      List<CartItem> cartItems = cartBox.values.toList();
+      for (var item in cartItems) {
+        print('Item: ${item.menu.nama}, Quantity: ${item.quantity}');
+      }
+    }
+
+void addToCart(Item menu, int quantity, {String? level, String? topping}) {
+  final cartBox = Hive.box<CartItem>('cartBox');
+
+  // Check if item already exists in cart
+  List<CartItem> cartItems = cartBox.values.toList();
+  int existingIndex = cartItems.indexWhere((item) => item.menu.idMenu == menu.idMenu);
+
+  if (existingIndex != -1) {
+    // Item already exists, update quantity
+    CartItem existingItem = cartItems[existingIndex];
+    existingItem.quantity += quantity;
+    cartBox.putAt(existingIndex, existingItem); // Update the existing item
+  } else {
+    // Item does not exist, add new entry
+    CartItem newItem = CartItem(
+      menu: menu,
+      quantity: quantity,
+      level: level,
+      topping: topping,
+    );
+    cartBox.add(newItem);
+  }
+
+  // Print cart contents for debugging
+  printCartContents();
 }
 
     void _showLevelBottomSheet() {
@@ -408,30 +433,35 @@ class DetailMenuScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: MainColor.primary,
                         ),
-                       onPressed: () {
-  if (listController.quantity.value <= 0) {
-    Get.snackbar(
-      'Peringatan',
-      'Jumlah pesanan tidak boleh kosong',
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
-    return;
-  } else {
-    addToCart(
-      menu,
-      listController.quantity.value,
-      level: listController.selectedLevel.value.isNotEmpty
-          ? listController.selectedLevel.value
-          : null,
-      topping: listController.selectedTopping.value.isNotEmpty
-          ? listController.selectedTopping.value
-          : null,
-      kategori: menu['kategori'], 
-    );
-    Get.to(() => CheckoutScreen());
-  }
-},
+                        onPressed: () {
+                          if (listController.quantity.value <= 0) {
+                            Get.snackbar(
+                              'Peringatan',
+                              'Jumlah pesanan tidak boleh kosong',
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                            );
+                            return;
+                          } else {
+                            // Convert `menu` map to `Item` object
+                            Item selectedMenu = Item.fromMap(menu);
+
+                            addToCart(
+                              selectedMenu,
+                              listController.quantity.value,
+                              level:
+                                  listController.selectedLevel.value.isNotEmpty
+                                      ? listController.selectedLevel.value
+                                      : null,
+                              topping: listController
+                                      .selectedTopping.value.isNotEmpty
+                                  ? listController.selectedTopping.value
+                                  : null,
+                            );
+
+                            Get.to(() => CheckoutScreen());
+                          }
+                        },
                         child: Text(
                           'Tambah ke Pesanan',
                           style: TextStyle(

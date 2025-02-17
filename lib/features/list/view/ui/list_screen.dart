@@ -13,6 +13,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:venturo_core/shared/models/cart_item.dart';
 import 'package:venturo_core/shared/widgets/custom_navbar.dart';
 
 class ListScreen extends StatelessWidget {
@@ -27,7 +28,7 @@ class ListScreen extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           backgroundColor: MainColor.primary,
           onPressed: () {
-         final cartBox = Hive.box('cartBox');
+            final cartBox = Hive.box<CartItem>('cartBox');
             if (cartBox.isEmpty) {
               Get.snackbar(
                 'Peringatan',
@@ -36,7 +37,8 @@ class ListScreen extends StatelessWidget {
                 colorText: Colors.white,
               );
             } else {
-              Get.toNamed(MainRoute.listCheckout);
+              cartBox.clear();
+              // Get.toNamed(MainRoute.listCheckout);
             }
           },
           child: const Icon(
@@ -92,7 +94,7 @@ class ListScreen extends StatelessWidget {
                         enableInfiniteScroll: true,
                         autoPlay: true,
                         autoPlayInterval: const Duration(seconds: 5),
-                                              ),
+                      ),
                       items: promoController.promoList.map((promo) {
                         return Builder(
                           builder: (BuildContext context) {

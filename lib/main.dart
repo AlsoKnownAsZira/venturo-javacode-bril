@@ -8,6 +8,8 @@ import 'package:venturo_core/configs/routes/route.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:venturo_core/features/sign_in/bindings/sign_in_binding.dart';
 import 'package:venturo_core/shared/controllers/global_controllers/initial_controller.dart';
+import 'package:venturo_core/shared/models/cart_item.dart';
+import 'package:venturo_core/shared/models/menu.dart';
 import 'configs/pages/page.dart';
 import 'configs/themes/theme.dart';
 import 'utils/services/sentry_services.dart';
@@ -18,13 +20,18 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  Hive.registerAdapter(CartItemAdapter());
+
+  Hive.registerAdapter(ItemAdapter());
+  Hive.registerAdapter(KategoriAdapter());
+
   await Hive.openBox("venturo");
-  await Hive.openBox('cartBox');
+  await Hive.openBox<CartItem>('cartBox');
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Get.lazyPut(() => GlobalController()); 
+  Get.lazyPut(() => GlobalController());
 
   /// Change your options.dns with your project !!!!
   await SentryFlutter.init(
