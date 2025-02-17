@@ -53,7 +53,7 @@ class Item extends HiveObject {
   // Convert Item to Map (for debugging, not needed for Hive)
   Map<String, dynamic> toMap() {
     return {
-      'idMenu': idMenu,
+      'id_menu': idMenu,
       'nama': nama,
       'kategori': kategori.name,
       'harga': harga,
@@ -65,7 +65,7 @@ class Item extends HiveObject {
   // Create Item from Map (for debugging, not needed for Hive)
   factory Item.fromMap(Map<String, dynamic> map) {
     return Item(
-      idMenu: map['idMenu'] ?? 0,
+      idMenu: map['id_menu'] ?? 0,
       nama: map['nama'] ?? '',
       kategori: Kategori.values.firstWhere(
         (e) => e.name == map['kategori'],

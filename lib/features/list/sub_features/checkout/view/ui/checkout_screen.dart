@@ -33,7 +33,10 @@ class CheckoutScreen extends StatelessWidget {
       }
 
       var existingItem = groupedItems[kategori]!.firstWhereOrNull(
-        (element) => element.menu.idMenu == item.menu.idMenu,
+        (element) =>
+            element.menu.idMenu == item.menu.idMenu 
+            // element.level == item.level &&
+            // element.topping == item.topping,
       );
 
       if (existingItem != null) {

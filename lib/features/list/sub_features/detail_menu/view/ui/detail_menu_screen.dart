@@ -35,10 +35,14 @@ class DetailMenuScreen extends StatelessWidget {
 
 void addToCart(Item menu, int quantity, {String? level, String? topping}) {
   final cartBox = Hive.box<CartItem>('cartBox');
-
+  print('adding to cart: ${menu.nama}, ${menu.idMenu}');
   // Check if item already exists in cart
   List<CartItem> cartItems = cartBox.values.toList();
-  int existingIndex = cartItems.indexWhere((item) => item.menu.idMenu == menu.idMenu);
+  int existingIndex = cartItems.indexWhere((item) =>
+      item.menu.idMenu == menu.idMenu 
+      // item.level == level &&
+      // item.topping == topping
+      );
 
   if (existingIndex != -1) {
     // Item already exists, update quantity
