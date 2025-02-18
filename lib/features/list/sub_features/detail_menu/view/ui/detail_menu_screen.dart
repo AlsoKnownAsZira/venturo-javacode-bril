@@ -22,6 +22,7 @@ class DetailMenuScreen extends StatelessWidget {
       listController.quantity.value = 0;
       listController.selectedLevel.value = '';
       listController.selectedTopping.value = '';
+      listController.selectedNote.value = '';
       listController.fetchMenuDetails(menu['id_menu']);
     });
 
@@ -33,36 +34,38 @@ class DetailMenuScreen extends StatelessWidget {
       }
     }
 
-void addToCart(Item menu, int quantity, {String? level, String? topping}) {
-  final cartBox = Hive.box<CartItem>('cartBox');
-  print('adding to cart: ${menu.nama},ID:  ${menu.idMenu}');
-  // Check if item already exists in cart
-  List<CartItem> cartItems = cartBox.values.toList();
-  int existingIndex = cartItems.indexWhere((item) =>
-      item.menu.idMenu == menu.idMenu 
-      // item.level == level &&
-      // item.topping == topping
-      );
+    void addToCart(Item menu, int quantity, {String? level, String? topping, String? note}) {
+      final cartBox = Hive.box<CartItem>('cartBox');
+      print('adding to cart: ${menu.nama},ID:  ${menu.idMenu}');
+      // Check if item already exists in cart
+      List<CartItem> cartItems = cartBox.values.toList();
+      int existingIndex = cartItems.indexWhere((item) =>
+          item.menu.idMenu == menu.idMenu 
+          // item.level == level &&
+          // item.topping == topping
+          );
 
-  if (existingIndex != -1) {
-    // Item already exists, update quantity
-    CartItem existingItem = cartItems[existingIndex];
-    existingItem.quantity += quantity;
-    cartBox.putAt(existingIndex, existingItem); // Update the existing item
-  } else {
-    // Item does not exist, add new entry
-    CartItem newItem = CartItem(
-      menu: menu,
-      quantity: quantity,
-      level: level,
-      topping: topping,
-    );
-    cartBox.add(newItem);
-  }
+      if (existingIndex != -1) {
+        // Item already exists, update quantity
+        CartItem existingItem = cartItems[existingIndex];
+        existingItem.quantity += quantity;
+        existingItem.note = note; // Update the note
+        cartBox.putAt(existingIndex, existingItem); // Update the existing item
+      } else {
+        // Item does not exist, add new entry
+        CartItem newItem = CartItem(
+          menu: menu,
+          quantity: quantity,
+          level: level,
+          topping: topping,
+          note: note,
+        );
+        cartBox.add(newItem);
+      }
 
-  // Print cart contents for debugging
-  printCartContents();
-}
+      // Print cart contents for debugging
+      printCartContents();
+    }
 
     void _showLevelBottomSheet() {
       showModalBottomSheet(
@@ -153,49 +156,55 @@ void addToCart(Item menu, int quantity, {String? level, String? topping}) {
       );
     }
 
-    void _showCatatanBottomSheet() {
-      showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (context) {
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Container(
-              width: Get.width,
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Add Catatan',
-                      style: TextStyle(
-                          fontSize: 20.w, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Masukkan catatan',
-                      suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.done,
-                          color: MainColor.primary,
-                        ),
-                      ),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ],
+   void _showCatatanBottomSheet() {
+  showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    builder: (context) {
+      return Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Container(
+          width: Get.width,
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Add Catatan',
+                  style: TextStyle(
+                      fontSize: 20.w, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-          );
-        },
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Masukkan catatan',
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      listController.selectNote(listController.selectedNote.value);
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.done,
+                      color: MainColor.primary,
+                    ),
+                  ),
+                  border: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  listController.selectedNote.value = value;
+                },
+              ),
+            ],
+          ),
+        ),
       );
-    }
+    },
+  );
+}
 
     return Scaffold(
       appBar: AppBar(
@@ -460,6 +469,9 @@ void addToCart(Item menu, int quantity, {String? level, String? topping}) {
                               topping: listController
                                       .selectedTopping.value.isNotEmpty
                                   ? listController.selectedTopping.value
+                                  : null,
+                              note: listController.selectedNote.value.isNotEmpty
+                                  ? listController.selectedNote.value
                                   : null,
                             );
 

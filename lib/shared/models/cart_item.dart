@@ -16,10 +16,14 @@ class CartItem extends HiveObject {
   @HiveField(3)
   String? topping;
 
+  @HiveField(4) 
+  String? note; 
+
   CartItem({
     required this.menu,
     required this.quantity,
     this.level,
     this.topping,
+    this.note,
   });
 }

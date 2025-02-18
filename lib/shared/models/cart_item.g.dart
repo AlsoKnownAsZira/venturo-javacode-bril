@@ -21,13 +21,14 @@ class CartItemAdapter extends TypeAdapter<CartItem> {
       quantity: fields[1] as int,
       level: fields[2] as String?,
       topping: fields[3] as String?,
+      note: fields[4] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, CartItem obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.menu)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class CartItemAdapter extends TypeAdapter<CartItem> {
       ..writeByte(2)
       ..write(obj.level)
       ..writeByte(3)
-      ..write(obj.topping);
+      ..write(obj.topping)
+      ..writeByte(4)
+      ..write(obj.note);
   }
 
   @override

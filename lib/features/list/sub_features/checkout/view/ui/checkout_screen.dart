@@ -83,6 +83,34 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       totalPayment = 0;
     }
 
+    void _showEditNoteDialog(CartItem item) {
+      TextEditingController noteController = TextEditingController(text: item.note);
+
+      Get.defaultDialog(
+        title: 'Edit Note',
+        content: Column(
+          children: [
+            TextField(
+              controller: noteController,
+              decoration: InputDecoration(
+                hintText: 'Enter note',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  item.note = noteController.text;
+                  cartBox.put(item.key, item); // Update the item in the box
+                });
+                Get.back();
+              },
+              child: Text('Save'),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -130,13 +158,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       ])),
                   ...kategoriItems.map((item) {
-                    return CheckoutItemCard(
-                      item: {
-                        'menu': item.menu.toMap(),
-                        'quantity': item.quantity,
-                        'level': item.level,
-                        'topping': item.topping,
+                    return GestureDetector(
+                      onTap: () {
+                        _showEditNoteDialog(item);
                       },
+                      child: CheckoutItemCard(
+                        item: {
+                          'menu': item.menu.toMap(),
+                          'quantity': item.quantity,
+                          'level': item.level,
+                          'topping': item.topping,
+                          'note': item.note, // Add this line
+                        },
+                      ),
                     );
                   }),
                 ],
@@ -298,90 +332,78 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
-                        Row(
-                          children: [
-                            Text(
-                              selectedPaymentMethod.isEmpty
-                                  ? 'Pilih metode pembayaran'
-                                  : selectedPaymentMethod,
-                              style: TextStyle(
-                                  fontSize: 20.w,
-                                  fontWeight: FontWeight.bold,
-                                  color: selectedPaymentMethod.isEmpty
-                                      ? Colors.red
-                                      : MainColor.primary),
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  Get.bottomSheet(
-                                    backgroundColor: Colors.white,
-                                    Container(
-                                      width: Get.width,
-                                      padding: EdgeInsets.all(20.w),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
+                        Text(
+                          selectedPaymentMethod.isEmpty
+                              ? 'Pilih metode pembayaran'
+                              : selectedPaymentMethod,
+                          style: TextStyle(
+                              fontSize: 20.w,
+                              fontWeight: FontWeight.bold,
+                              color: selectedPaymentMethod.isEmpty
+                                  ? Colors.red
+                                  : MainColor.primary),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Get.bottomSheet(
+                                backgroundColor: Colors.white,
+                                Container(
+                                  width: Get.width,
+                                  padding: EdgeInsets.all(20.w),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'Pilih Metode Pembayaran',
+                                        style: TextStyle(
+                                            fontSize: 20.w,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      Wrap(
+                                        spacing: 10.w,
                                         children: [
-                                          Text(
-                                            'Pilih Metode Pembayaran',
-                                            style: TextStyle(
-                                                fontSize: 20.w,
-                                                fontWeight: FontWeight.bold),
+                                          ChoiceChip(
+                                            label: const Text('Paylater'),
+                                            selected: selectedPaymentMethod ==
+                                                'Paylater',
+                                            onSelected: (bool selected) {
+                                              setState(() {
+                                                selectedPaymentMethod =
+                                                    selected ? 'Paylater' : '';
+                                              });
+                                            },
+                                            selectedColor: MainColor.primary,
+                                            backgroundColor: Colors.grey[200],
                                           ),
-                                          SizedBox(height: 10.h),
-                                          Wrap(
-                                            spacing: 10.w,
-                                            children: [
-                                              ChoiceChip(
-                                                label: const Text('Paylater'),
-                                                selected:
-                                                    selectedPaymentMethod ==
-                                                        'Paylater',
-                                                onSelected: (bool selected) {
-                                                  setState(() {
-                                                    selectedPaymentMethod =
-                                                        selected
-                                                            ? 'Paylater'
-                                                            : '';
-                                                  });
-                                                },
-                                                selectedColor:
-                                                    MainColor.primary,
-                                                backgroundColor:
-                                                    Colors.grey[200],
-                                              ),
-                                              ChoiceChip(
-                                                label: const Text('Cash'),
-                                                selected:
-                                                    selectedPaymentMethod ==
-                                                        'Cash',
-                                                onSelected: (bool selected) {
-                                                  setState(() {
-                                                    selectedPaymentMethod =
-                                                        selected ? 'Cash' : '';
-                                                  });
-                                                },
-                                                selectedColor:
-                                                    MainColor.primary,
-                                                backgroundColor:
-                                                    Colors.grey[200],
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 20.h),
-                                          ElevatedButton(
-                                            onPressed: () => Get.back(),
-                                            child: const Text('OK'),
+                                          ChoiceChip(
+                                            label: const Text('Cash'),
+                                            selected: selectedPaymentMethod ==
+                                                'Cash',
+                                            onSelected: (bool selected) {
+                                              setState(() {
+                                                selectedPaymentMethod =
+                                                    selected ? 'Cash' : '';
+                                              });
+                                            },
+                                            selectedColor: MainColor.primary,
+                                            backgroundColor: Colors.grey[200],
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(Icons.arrow_forward_ios),
-                                style: ButtonStyle(
-                                    iconSize: MaterialStateProperty.all(20.w))),
-                          ],
-                        ),
+                                      SizedBox(height: 20.h),
+                                      ElevatedButton(
+                                        onPressed: () => Get.back(),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.arrow_forward_ios),
+                            style: ButtonStyle(
+                                iconSize: MaterialStateProperty.all(20.w))),
                       ],
                     ),
                   ],
@@ -437,10 +459,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: MainColor.primary),
                         onPressed: () {
-                          // Get.offNamed(MainRoute.order, arguments: {
-                          //   'groupedItems': groupedItems,
-                          //   'paymentMethod': selectedPaymentMethod,
-                          // });
                           Get.defaultDialog(
                             title: 'Rincian Diskon',
                             titleStyle: const TextStyle(

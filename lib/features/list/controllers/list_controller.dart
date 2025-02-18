@@ -9,6 +9,8 @@ class ListController extends GetxController {
   static ListController get to => Get.find<ListController>();
   var selectedLevel = ''.obs;
   var selectedTopping = ''.obs;
+  var selectedNote = ''.obs;
+  
   RxList<String> levels = <String>[].obs;
   RxList<String> toppings = <String>[].obs;
   late final ListRepository repository;
@@ -125,22 +127,8 @@ class ListController extends GetxController {
   void decrement() {
     quantity.value--;
   }
+  void selectNote(String note) {
+    selectedNote.value = note;
+  }
 
-  var promoList = [
-    {
-      "promoName": "Isi survey ini untuk discon GACOR!",
-      "discountNominal": "50",
-      "thumbnailUrl": ImageConstant.promo1
-    },
-    {
-      "promoName": "Promo untuk anda si paling jago!",
-      "discountNominal": "10",
-      "thumbnailUrl": ImageConstant.promo2
-    },
-    {
-      "promoName": "Promo jumat berkah!",
-      "discountNominal": "15",
-      "thumbnailUrl": ImageConstant.promo3
-    },
-  ];
 }
