@@ -9,6 +9,7 @@ import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:venturo_core/features/list/sub_features/checkout/view/components/checkout_item_card.dart';
 import 'package:venturo_core/shared/models/cart_item.dart';
 import 'package:venturo_core/shared/models/menu.dart';
+import 'package:venturo_core/configs/routes/route.dart';
 
 class CheckoutScreen extends StatelessWidget {
   CheckoutScreen({Key? key}) : super(key: key);
@@ -33,8 +34,7 @@ class CheckoutScreen extends StatelessWidget {
       }
 
       var existingItem = groupedItems[kategori]!.firstWhereOrNull(
-        (element) => element.menu.idMenu == item.menu.idMenu
-      );
+          (element) => element.menu.idMenu == item.menu.idMenu);
 
       if (existingItem != null) {
         existingItem.quantity += item.quantity;
@@ -191,7 +191,17 @@ class CheckoutScreen extends StatelessWidget {
                         ),
                         const Spacer(),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              print(
+                                  "MainRoute.checkoutVoucher: ${MainRoute.checkoutVoucher}");
+                              if (MainRoute.checkoutVoucher.isNotEmpty) {
+                                print("Navigating to voucher screen");
+                                Get.toNamed(MainRoute.checkoutVoucher);
+                              } else {
+                                print(
+                                    "MainRoute.checkoutVoucher is null or empty");
+                              }
+                            },
                             icon: const Icon(Icons.arrow_forward_ios),
                             style: ButtonStyle(
                                 iconSize: MaterialStateProperty.all(20.w))),

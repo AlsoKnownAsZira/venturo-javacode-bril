@@ -37,8 +37,7 @@ class ListScreen extends StatelessWidget {
                 colorText: Colors.white,
               );
             } else {
-              cartBox.clear();
-              // Get.toNamed(MainRoute.listCheckout);
+              Get.toNamed(MainRoute.listCheckout);
             }
           },
           child: const Icon(
