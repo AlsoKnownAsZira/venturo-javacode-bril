@@ -56,20 +56,20 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/ic_javacode.png"
+  image_path: "assets/images/ic_javaLogo.jpg"
   min_sdk_android: 16
   web:
     generate: true
-    image_path: "assets/images/ic_javacode.png"
+    image_path: "assets/images/ic_javaLogo.jpg"
     background_color: "#ffffff"
     theme_color: "#ffffff"
   windows:
     generate: true
-    image_path: "assets/images/ic_javacode.png"
+    image_path: "assets/images/ic_javaLogo.jpg"
     icon_size: 48 # min:48, max:256, default: 48
   macos:
     generate: true
-    image_path: "assets/images/ic_javacode.png"
+    image_path: "assets/images/ic_javaLogo.jpg"
 
 flutter:
   uses-material-design: true
@@ -84,3 +84,4 @@ flutter:
     - assets/images/ic_promoco1.png
     - assets/images/ic_promoco2.png
     - assets/images/ic_promoco3.png
+    - assets/images/ic_javaLogo.jpg
