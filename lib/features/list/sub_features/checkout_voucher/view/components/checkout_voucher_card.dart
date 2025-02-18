@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:venturo_core/features/list/sub_features/checkout_voucher/controllers/list_checkout_voucher_controller.dart';
+
 class CheckoutVoucher extends StatelessWidget {
   final String title;
   final int amount;
@@ -9,14 +10,12 @@ class CheckoutVoucher extends StatelessWidget {
   final String description;
   final String expiredIn;
 
-
   CheckoutVoucher({
     required this.title,
     required this.amount,
     required this.imageUrl,
     required this.description,
     required this.expiredIn,
-
   });
 
   final ListCheckoutVoucherController controller = Get.find<ListCheckoutVoucherController>();
@@ -48,14 +47,13 @@ class CheckoutVoucher extends StatelessWidget {
                 style: TextStyle(fontSize: 18.w, fontWeight: FontWeight.bold),
               ),
               Spacer(),
-     
-                   Obx(() => Checkbox(
+              Obx(() => Checkbox(
                 value: controller.selectedVoucher.value == title,
                 onChanged: (bool? value) {
                   if (value == true) {
-                    controller.selectVoucher(title);
+                    controller.selectVoucher(title, amount);
                   } else {
-                    controller.selectVoucher('');
+                    controller.selectVoucher('', 0);
                   }
                 },
               )),

@@ -9,13 +9,20 @@ import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:venturo_core/features/list/sub_features/checkout/view/components/checkout_item_card.dart';
 import 'package:venturo_core/shared/models/cart_item.dart';
 import 'package:venturo_core/shared/models/menu.dart';
-import 'package:venturo_core/configs/routes/route.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
   CheckoutScreen({Key? key}) : super(key: key);
 
+  @override
+  _CheckoutScreenState createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
   final assetsConstant = ListAssetsConstant();
   final ListController listController = Get.find(); // Use the same controller
+
+  String selectedVoucher = '';
+  int selectedVoucherAmount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +61,24 @@ class CheckoutScreen extends StatelessWidget {
         default:
           return Icons.category;
       }
+    }
+
+    // Calculate the total quantity of items
+    int totalQuantity = items.fold<int>(0, (sum, item) => sum + item.quantity);
+
+    // Calculate the total price of items
+    int totalPrice = items.fold<int>(
+        0, (sum, item) => sum + (item.quantity * item.menu.harga));
+
+    // Calculate the discount amount (20%)
+    double discount = totalPrice * 0.20;
+
+    // Calculate the total payment after discount and voucher
+    double totalPayment = totalPrice - discount - selectedVoucherAmount;
+
+    // Ensure total payment is not less than or equal to zero
+    if (totalPayment <= 0) {
+      totalPayment = 0;
     }
 
     return Scaffold(
@@ -142,12 +167,12 @@ class CheckoutScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Total Pesanan (${items.length}) Item:",
+                          "Total Pesanan ($totalQuantity) Item:",
                           style: TextStyle(
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Rp ${(items.fold<num>(0, (sum, item) => sum + (item.quantity * item.menu.harga))).toInt()}",
+                          "Rp $totalPrice",
                           style: TextStyle(
                               fontSize: 20.w,
                               fontWeight: FontWeight.bold,
@@ -164,16 +189,67 @@ class CheckoutScreen extends StatelessWidget {
                           size: 20.w,
                         ),
                         Text(
-                          'Diskon',
+                          'Diskon 20%',
                           style: TextStyle(
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.arrow_forward_ios),
-                            style: ButtonStyle(
-                                iconSize: MaterialStateProperty.all(20.w))),
+                        Row(
+                          children: [
+                            Text(
+                              "- Rp ${discount.toInt()}",
+                              style: TextStyle(
+                                  fontSize: 20.w,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  Get.defaultDialog(
+                                    title: 'Rincian Diskon',
+                                    titleStyle: const TextStyle(
+                                        color: MainColor.primary,
+                                        fontWeight: FontWeight.bold),
+                                    content: const Column(
+                                      children: [
+                                        ListTile(
+                                          title: Text('Mengisi Survey'),
+                                          trailing: Text(
+                                            '10%',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        ListTile(
+                                          title: Text('Terlambat <3x'),
+                                          trailing: Text(
+                                            '10%',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    MainColor.primary)),
+                                        onPressed: () => Get.back(),
+                                        child: const Text(
+                                          'OK',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                                icon: const Icon(Icons.arrow_forward_ios),
+                                style: ButtonStyle(
+                                    iconSize: MaterialStateProperty.all(20.w))),
+                          ],
+                        ),
                       ],
                     ),
                     const Divider(),
@@ -190,16 +266,22 @@ class CheckoutScreen extends StatelessWidget {
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
+                        Text(
+                          "- Rp $selectedVoucherAmount",
+                          style: TextStyle(
+                              fontSize: 20.w,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
                         IconButton(
-                            onPressed: () {
-                              print(
-                                  "MainRoute.checkoutVoucher: ${MainRoute.checkoutVoucher}");
-                              if (MainRoute.checkoutVoucher.isNotEmpty) {
-                                print("Navigating to voucher screen");
-                                Get.toNamed(MainRoute.checkoutVoucher);
-                              } else {
-                                print(
-                                    "MainRoute.checkoutVoucher is null or empty");
+                            onPressed: () async {
+                              final result =
+                                  await Get.toNamed(MainRoute.checkoutVoucher);
+                              if (result != null) {
+                                setState(() {
+                                  selectedVoucher = result['voucher'];
+                                  selectedVoucherAmount = result['amount'];
+                                });
                               }
                             },
                             icon: const Icon(Icons.arrow_forward_ios),
@@ -266,7 +348,9 @@ class CheckoutScreen extends StatelessWidget {
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Rp ${(items.fold<num>(0, (sum, item) => sum + (item.quantity * item.menu.harga))).toInt()}",
+                          totalPayment == 0
+                              ? "Rp 0 (Free)"
+                              : "Rp ${totalPayment.toInt()}",
                           style: TextStyle(
                               fontSize: 20.w,
                               fontWeight: FontWeight.bold,
@@ -296,7 +380,6 @@ class CheckoutScreen extends StatelessWidget {
                 ),
               ),
             )
-            // Add more widgets to display other details or actions
           ],
         ),
       ),
