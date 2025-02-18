@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:venturo_core/configs/routes/route.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
+import 'package:venturo_core/constants/image_constant.dart';
 import 'package:venturo_core/features/list/constants/list_assets_constant.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:venturo_core/features/list/sub_features/checkout/view/components/checkout_item_card.dart';
@@ -23,6 +24,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   String selectedVoucher = '';
   int selectedVoucherAmount = 0;
+  String selectedPaymentMethod = '';
 
   @override
   Widget build(BuildContext context) {
@@ -232,15 +234,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     ),
                                     actions: [
                                       TextButton(
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    MainColor.primary)),
                                         onPressed: () => Get.back(),
-                                        child: const Text(
-                                          'OK',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
+                                        child: const Text('OK'),
                                       ),
                                     ],
                                   );
@@ -303,11 +298,90 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               fontSize: 20.w, fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.arrow_forward_ios),
-                            style: ButtonStyle(
-                                iconSize: MaterialStateProperty.all(20.w))),
+                        Row(
+                          children: [
+                            Text(
+                              selectedPaymentMethod.isEmpty
+                                  ? 'Pilih metode pembayaran'
+                                  : selectedPaymentMethod,
+                              style: TextStyle(
+                                  fontSize: 20.w,
+                                  fontWeight: FontWeight.bold,
+                                  color: selectedPaymentMethod.isEmpty
+                                      ? Colors.red
+                                      : MainColor.primary),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  Get.bottomSheet(
+                                    backgroundColor: Colors.white,
+                                    Container(
+                                      width: Get.width,
+                                      padding: EdgeInsets.all(20.w),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Pilih Metode Pembayaran',
+                                            style: TextStyle(
+                                                fontSize: 20.w,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(height: 10.h),
+                                          Wrap(
+                                            spacing: 10.w,
+                                            children: [
+                                              ChoiceChip(
+                                                label: const Text('Paylater'),
+                                                selected:
+                                                    selectedPaymentMethod ==
+                                                        'Paylater',
+                                                onSelected: (bool selected) {
+                                                  setState(() {
+                                                    selectedPaymentMethod =
+                                                        selected
+                                                            ? 'Paylater'
+                                                            : '';
+                                                  });
+                                                },
+                                                selectedColor:
+                                                    MainColor.primary,
+                                                backgroundColor:
+                                                    Colors.grey[200],
+                                              ),
+                                              ChoiceChip(
+                                                label: const Text('Cash'),
+                                                selected:
+                                                    selectedPaymentMethod ==
+                                                        'Cash',
+                                                onSelected: (bool selected) {
+                                                  setState(() {
+                                                    selectedPaymentMethod =
+                                                        selected ? 'Cash' : '';
+                                                  });
+                                                },
+                                                selectedColor:
+                                                    MainColor.primary,
+                                                backgroundColor:
+                                                    Colors.grey[200],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 20.h),
+                                          ElevatedButton(
+                                            onPressed: () => Get.back(),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(Icons.arrow_forward_ios),
+                                style: ButtonStyle(
+                                    iconSize: MaterialStateProperty.all(20.w))),
+                          ],
+                        ),
                       ],
                     ),
                   ],
@@ -363,11 +437,37 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: MainColor.primary),
                         onPressed: () {
-                          Get.offNamed(MainRoute.order,
-                              arguments: groupedItems);
+                          // Get.offNamed(MainRoute.order, arguments: {
+                          //   'groupedItems': groupedItems,
+                          //   'paymentMethod': selectedPaymentMethod,
+                          // });
+                          Get.defaultDialog(
+                            title: 'Rincian Diskon',
+                            titleStyle: const TextStyle(
+                                color: MainColor.primary,
+                                fontWeight: FontWeight.bold),
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(ImageConstant.confirm),
+                                const SizedBox(height: 10),
+                                const Text('Pesanan Sedang Disiapkan',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 10),
+                                const Text(
+                                    'Kamu dapat melacak pesananmu di fitur Pesanan'),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Get.offAndToNamed(MainRoute.list),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
                           cartBox.clear();
-
-                          Get.snackbar("Success", "Pesanan berhasil dibuat");
                         },
                         child: Text(
                           "Pesan Sekarang",

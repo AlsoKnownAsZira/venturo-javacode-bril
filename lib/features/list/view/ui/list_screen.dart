@@ -20,6 +20,7 @@ class ListScreen extends StatelessWidget {
   ListScreen({Key? key}) : super(key: key);
   final ListController listController = Get.find();
   final ListPromoController promoController = Get.put(ListPromoController());
+  final RefreshController refreshController = RefreshController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,16 +51,16 @@ class ListScreen extends StatelessWidget {
           onChange: (value) => ListController.to.keyword(value),
         ),
         body: SmartRefresher(
-          controller: listController.refreshController,
+          controller: refreshController,
           enablePullDown: true,
           onRefresh: () async {
             listController.onRefresh();
-            listController.refreshController.refreshCompleted();
+            refreshController.refreshCompleted();
           },
           enablePullUp: listController.canLoadMore.isTrue,
           onLoading: () async {
             await listController.fetchData();
-            listController.refreshController.loadComplete();
+            refreshController.loadComplete();
           },
           child: SingleChildScrollView(
             child: Column(

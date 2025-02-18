@@ -13,4 +13,5 @@ class ImageConstant {
   static const String promoco1 = 'assets/images/ic_promoco1.png';
   static const String promoco2 = 'assets/images/ic_promoco2.png';
   static const String promoco3 = 'assets/images/ic_promoco3.png';
+  static const String confirm = 'assets/images/ic_confirm.png';
 }
