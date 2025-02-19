@@ -15,6 +15,7 @@ static const String list = '/list';
 static const String listDetail = '/list_detail';
 static const String listCheckout = '/list_checkout';
 static const String order = '/order';
+static const String orderDetail = '/order/:orderId';
 static const String promo = '/list_promo';
 static const String checkoutVoucher = '/list_checkout_voucher';
 static const String checkoutDiscount = '/list_checkout_discount';

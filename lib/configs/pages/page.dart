@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:venturo_core/configs/routes/route.dart';
+import 'package:venturo_core/features/detail_order/bindings/detail_order_binding.dart';
 import 'package:venturo_core/features/forgot_password/bindings/forgot_password_binding.dart';
 import 'package:venturo_core/features/forgot_password/bindings/otp_binding.dart';
 import 'package:venturo_core/features/forgot_password/view/ui/forgot_password_screen.dart';
@@ -14,6 +15,7 @@ import 'package:venturo_core/features/list/sub_features/detail_menu/view/ui/deta
 import 'package:venturo_core/features/list/sub_features/promo/view/ui/promo_screen.dart';
 import 'package:venturo_core/features/list/view/ui/list_screen.dart';
 import 'package:venturo_core/features/order/bindings/order_binding.dart';
+import 'package:venturo_core/features/detail_order/view/ui/detail_order_view.dart';
 import 'package:venturo_core/features/order/view/ui/order_screen.dart';
 import 'package:venturo_core/features/sign_in/sub_features/no_connection/view/ui/no_connection_screen.dart';
 import 'package:venturo_core/features/sign_in/view/ui/sign_in_screen.dart';
@@ -84,8 +86,13 @@ abstract class MainPages {
     ),
   GetPage(
       name: MainRoute.order,
-      page: () => OrderScreen(),
+      page: () =>const  OrderScreen(),
       binding: OrderBinding(), 
+    ),
+  GetPage(
+      name: MainRoute.orderDetail,
+      page: () =>const  DetailOrderView(),
+      binding: DetailOrderBinding(), 
     ),
   GetPage(
       name: MainRoute.promo,
