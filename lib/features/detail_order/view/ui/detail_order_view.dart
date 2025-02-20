@@ -25,8 +25,8 @@ class DetailOrderView extends StatelessWidget {
 
     return Scaffold(
       appBar: RoundedAppBar(
-        title: 'Order',
-        icon: Icons.shopping_bag_outlined,
+        title: 'Pesanan',
+        icon: Icons.arrow_back_ios,
         actions: [
           Obx(
             () => Conditional.single(
@@ -63,64 +63,185 @@ class DetailOrderView extends StatelessWidget {
               final order = DetailOrderController.to.order.value!;
               final foodItems = DetailOrderController.to.foodItems;
               final drinkItems = DetailOrderController.to.drinkItems;
+              final snackItems = DetailOrderController.to.snackItems;
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Order Details',
-                    style: Get.textTheme.titleMedium,
-                  ),
-                  SizedBox(height: 10.h),
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        ...foodItems.map((item) => DetailOrderCard(item)),
-                        ...drinkItems.map((item) => DetailOrderCard(item)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Voucher Rp ${order['data']['order']['potongan']}',
-                          style: Get.textTheme.bodyMedium,
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10.h),
+                    if (foodItems.isNotEmpty) ...[
+                      Row(
+                        children: [
+                          const Icon(Icons.fastfood, color: MainColor.primary),
+                          Text(
+                            'Makanan',
+                            style: TextStyle(
+                              fontSize: 25.sp,
+                              fontWeight: FontWeight.bold,
+                              color: MainColor.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ...foodItems.map((item) => Padding(
+                            padding: EdgeInsets.only(bottom: 10.h),
+                            child: DetailOrderCard(item),
+                          )),
+                    ],
+                    if (drinkItems.isNotEmpty) ...[
+                      Row(
+                        children: [
+                          const Icon(Icons.local_drink,
+                              color: MainColor.primary),
+                          Text(
+                            'Minuman',
+                            style: TextStyle(
+                              fontSize: 25.sp,
+                              fontWeight: FontWeight.bold,
+                              color: MainColor.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ...drinkItems.map((item) => Padding(
+                            padding: EdgeInsets.only(bottom: 10.h),
+                            child: DetailOrderCard(item),
+                          )),
+                    ],
+                    if (snackItems.isNotEmpty) ...[
+                      Row(
+                        children: [
+                          const Icon(Icons.icecream, color: MainColor.primary),
+                          Text(
+                            'Snack',
+                            style: TextStyle(
+                              fontSize: 25.sp,
+                              fontWeight: FontWeight.bold,
+                              color: MainColor.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ...snackItems.map((item) => Padding(
+                            padding: EdgeInsets.only(bottom: 10.h),
+                            child: DetailOrderCard(item),
+                          )),
+                    ],
+                    SizedBox(height: 50.h),
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            offset: Offset(0, 0),
+                            blurRadius: 5,
+                          ),
+                        ],
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
                         ),
-                        Text(
-                          'total bayar: Rp ${order['data']['order']['total_bayar']}',
-                          style: Get.textTheme.bodyMedium,
+                      ),
+                      width: Get.width,
+                      child: Padding(
+                        padding: EdgeInsets.all(20.w),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Total Pesanan (x menu)',
+                                  style: TextStyle(
+                                      fontSize: 20.w,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  "Rp ${['harga']}",
+                                  style: TextStyle(
+                                      fontSize: 20.w,
+                                      fontWeight: FontWeight.bold,
+                                      color: MainColor.primary),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.discount_sharp,
+                                  color: MainColor.primary,
+                                  size: 20.w,
+                                ),
+                                Text(
+                                  'Voucher',
+                                  style: TextStyle(
+                                      fontSize: 20.w,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  'Rp ${order['data']['order']['potongan']}',
+                                  style: TextStyle(
+                                      fontSize: 20.w,
+                                      fontWeight: FontWeight.bold,
+                                      color: MainColor.primary),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.monetization_on,
+                                  color: MainColor.primary,
+                                  size: 20.w,
+                                ),
+                                Text(
+                                  'Pembayaran',
+                                  style: TextStyle(
+                                      fontSize: 20.w,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  'Paylater',
+                                  style: TextStyle(
+                                      fontSize: 20.w,
+                                      fontWeight: FontWeight.bold,
+                                      color: MainColor.primary),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              children: [
+                                Text(
+                                  'Total Pembayaran',
+                                  style: TextStyle(
+                                      fontSize: 20.w,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  'Rp ${order['data']['order']['total_bayar']}',
+                                  style: TextStyle(
+                                      fontSize: 20.w,
+                                      fontWeight: FontWeight.bold,
+                                      color: MainColor.primary),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            OrderTracker()
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          offset: Offset(0, 0),
-                          blurRadius: 5,
-                        ),
-                      ],
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
                       ),
                     ),
-                    width: Get.width,
-                    height: Get.height.h * 0.3,
-                    child: Padding(
-                      padding: EdgeInsets.all(20.w),
-                      child: Column(
-                        children: [OrderTracker()],
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               );
             }
           },

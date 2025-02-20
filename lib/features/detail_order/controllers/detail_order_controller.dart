@@ -69,4 +69,9 @@ class DetailOrderController extends GetxController {
       order.value?['data']['detail']
           .where((element) => element['kategori'] == 'minuman')
           .toList() ?? [];
+
+  List<Map<String, dynamic>> get snackItems =>
+      order.value?['data']['detail']
+          .where((element) => element['kategori'] == 'snack')
+          .toList() ?? [];
 }

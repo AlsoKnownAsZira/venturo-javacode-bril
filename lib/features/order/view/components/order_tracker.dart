@@ -15,78 +15,106 @@ class OrderTracker extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Your order is being prepared'.tr,
-          style: Get.textTheme.titleSmall,
+          'Pesananmu sedang disiapkan:'.tr,
+          style:
+              Get.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           textAlign: TextAlign.left,
         ),
         18.verticalSpace,
-        Stack(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.center,
-                child: Container(
-                  height: 2.h,
-                  color: Colors.grey,
-                  margin: EdgeInsets.symmetric(horizontal: 20.w),
-                ),
+            const Spacer(flex: 10),
+            Expanded(
+              flex: 10,
+              child: Conditional.single(
+                context: context,
+                conditionBuilder: (context) =>
+                    DetailOrderController.to.order.value?['data']['order']
+                        ['status'] >=
+                    0,
+                widgetBuilder: (context) => const CheckedStep(),
+                fallbackBuilder: (context) => const UncheckedStep(),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Spacer(flex: 10),
-                Expanded(
-                  flex: 10,
-                  child: Conditional.single(
-                    context: context,
-                    conditionBuilder: (context) =>
-                        DetailOrderController.to.order.value?['status'] == 0 ||
-                        DetailOrderController.to.order.value?['status'] == 1,
-                    widgetBuilder: (context) => const CheckedStep(),
-                    fallbackBuilder: (context) => const UncheckedStep(),
-                  ),
-                ),
-                Expanded(
-                  flex: 10,
-                  child: Conditional.single(
-                    context: context,
-                    conditionBuilder: (context) =>
-                        DetailOrderController.to.order.value?['status'] == 1,
-                    widgetBuilder: (context) => const CheckedStep(),
-                    fallbackBuilder: (context) => const UncheckedStep(),
-                  ),
-                ),
-                Expanded(
-                  flex: 10,
-                  child: Conditional.single(
-                    context: context,
-                    conditionBuilder: (context) =>
-                        DetailOrderController.to.order.value?['status'] == 2,
-                    widgetBuilder: (context) => const CheckedStep(),
-                    fallbackBuilder: (context) => const UncheckedStep(),
-                  ),
-                ),
-                const Spacer(flex: 10),
-              ],
+            Expanded(
+              flex: 35,
+              child: Container(
+                height: 2.h,
+                color: DetailOrderController.to.order.value?['data']['order']
+                            ['status'] >=
+                        1
+                    ? Get.theme.primaryColor
+                    : Colors.grey,
+              ),
             ),
+            Expanded(
+              flex: 10,
+              child: Conditional.single(
+                context: context,
+                conditionBuilder: (context) =>
+                    DetailOrderController.to.order.value?['data']['order']
+                        ['status'] >=
+                    1,
+                widgetBuilder: (context) => const CheckedStep(),
+                fallbackBuilder: (context) => const UncheckedStep(),
+              ),
+            ),
+            Expanded(
+              flex: 35,
+              child: Container(
+                height: 2.h,
+                color: DetailOrderController.to.order.value?['data']['order']
+                            ['status'] >=
+                        2
+                    ? Get.theme.primaryColor
+                    : Colors.grey,
+              ),
+            ),
+            Expanded(
+              flex: 10,
+              child: Conditional.single(
+                context: context,
+                conditionBuilder: (context) =>
+                    DetailOrderController.to.order.value?['data']['order']
+                        ['status'] >=
+                    2,
+                widgetBuilder: (context) => const CheckedStep(),
+                fallbackBuilder: (context) => const UncheckedStep(),
+              ),
+            ),
+            const Spacer(flex: 10),
           ],
         ),
         18.verticalSpace,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Pesanan diterima'.tr,
-              style: Get.textTheme.bodySmall,
+            Expanded(
+              flex: 2,
+              child: Text(
+                'Pesanan Diterima'.tr,
+                style: Get.textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
             ),
-            Text(
-              'Silahkan DIambil'.tr,
-              style: Get.textTheme.bodySmall,
+            const Spacer(flex: 1),
+            Expanded(
+              flex: 2,
+              child: Text(
+                'Menyiapkan'.tr,
+                style: Get.textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
             ),
-            Text(
-              'Pesanan Selesai'.tr,
-              style: Get.textTheme.bodySmall,
+            const Spacer(flex: 1),
+            Expanded(
+              flex: 2,
+              child: Text(
+                'Siap Diambil'.tr,
+                style: Get.textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),
