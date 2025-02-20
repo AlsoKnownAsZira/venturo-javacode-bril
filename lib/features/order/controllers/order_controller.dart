@@ -44,7 +44,7 @@ import 'package:venturo_core/features/order/repositories/order_repository.dart';
 
     try {
       final result = _orderRepository.getOngoingOrder();
-      final data = result.where((element) => element['status'] != 4).toList();
+      final data = result.where((element) => element['data']['order']['status']!= 4).toList();
       onGoingOrders(data.reversed.toList());
 
       onGoingOrderState('success');

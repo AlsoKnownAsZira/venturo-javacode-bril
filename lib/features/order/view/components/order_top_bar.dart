@@ -39,7 +39,7 @@ class OrderTopBar extends StatelessWidget implements PreferredSizeWidget {
         labelStyle: Get.textTheme.bodyLarge?.copyWith(
           fontWeight: FontWeight.w600,
         ),
-        indicatorPadding: EdgeInsets.symmetric(horizontal: 70.w),
+        indicatorPadding: EdgeInsets.symmetric(horizontal: 20.w),
       ),
     );
   }

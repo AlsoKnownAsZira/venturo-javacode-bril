@@ -44,7 +44,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
           text: 'Beranda',
         ),
         GButton(
-          icon: Icons.fastfood_rounded,
+          icon: Icons.room_service,
           text: 'Pesanan',
         ),
         GButton(

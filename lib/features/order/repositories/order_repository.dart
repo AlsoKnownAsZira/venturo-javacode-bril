@@ -1,223 +1,244 @@
-import 'package:venturo_core/features/order/constants/order_api_constant.dart';
 class OrderRepository {
   List<Map<String, dynamic>> ongoingOrder = [
     {
-      "id_order": 35,
-      "no_struk": "001/KWT/01/2022",
-      "nama": "dev noersy",
-      "total_bayar": 12000,
-      "tanggal": "2023-06-19",
-      "status": 0,
-      "menu": [
-        {
-          "id_menu": 9,
-          "kategori": "makanan",
-          "nama": "Nasi Goreng",
-          "foto": "https://i.ibb.co/mRJnq3Z/nasi-goreng.jpg",
-          "jumlah": 1,
-          "harga": "10000",
-          "total": 10000,
-          "catatan": "test"
-        }
-      ]
-    },
-     {
-      "id_order": 133,
-      "no_struk": "001/KWT/02/2022",
-      "nama": "admin",
-      "total_bayar": 31000,
-      "tanggal": "2022-02-18",
-      "status": 3,
-      "menu": [
-        {
-          "id_menu": 2,
-          "kategori": "makanan",
-          "topping": "[]",
-          "nama": "Chicken Slam ",
-          "foto": "https://i.ibb.co/R9kJtny/1637916829.png",
-          "jumlah": 1,
-          "harga": "19000",
-          "total": 19000,
-          "catatan": "\"\""
+      "data": {
+        "order": {
+          "id_order": 707,
+          "no_struk": "048/KWT/03/2023",
+          "nama": null,
+          "id_voucher": 0,
+          "nama_voucher": null,
+          "diskon": 1,
+          "potongan": 39000,
+          "total_bayar": 39000,
+          "tanggal": "2023-03-13",
+          "status": 0
         },
-        {
-          "id_menu": 4,
-          "kategori": "makanan",
-          "topping": "[]",
-          "nama": "Chiken Katsu",
-          "foto": "https://i.ibb.co/R9kJtny/1637916829.png",
-          "jumlah": 1,
-          "harga": "12000",
-          "total": 12000,
-          "catatan": "\"\""
-        }
-      ]
+        "detail": [
+          {
+            "id_menu": 13,
+            "kategori": "makanan",
+            "topping": "",
+            "nama": "Fried Rice",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_62660ef6630d6.png",
+            "jumlah": 3,
+            "harga": "39000",
+            "total": 117000,
+            "catatan": ""
+          }
+        ]
+      }
     },
     {
-      "id_order": 134,
-      "no_struk": "002/KWT/02/2022",
-      "nama": "admin",
-      "total_bayar": 22400,
-      "tanggal": "2022-02-18",
-      "status": 4,
-      "menu": [
-        {
-          "id_menu": 11,
-          "kategori": "minuman",
-          "topping": "",
-          "nama": "Es Buah",
-          "foto": "https://javacode.landa.id/img/menu/gambar_620e4ee227013.png",
-          "jumlah": 1,
-          "harga": "8000",
-          "total": 8000,
-          "catatan": "\"\""
+      "data": {
+        "order": {
+          "id_order": 993,
+          "no_struk": "254/KWT/09/2024",
+          "nama": "admin",
+          "id_voucher": 1,
+          "nama_voucher": null,
+          "diskon": 0,
+          "potongan": 12800,
+          "total_bayar": 12800,
+          "tanggal": "2024-09-11",
+          "status": 0
         },
-        {
-          "id_menu": 10,
-          "kategori": "minuman",
-          "topping": "",
-          "nama": "Es Teller 666",
-          "foto": "https://javacode.landa.id/img/menu/gambar_620df18327cde.png",
-          "jumlah": 1,
-          "harga": "10000",
-          "total": 10000,
-          "catatan": "\"\""
-        },
-        {
-          "id_menu": 3,
-          "kategori": "minuman",
-          "topping": "[1,2]",
-          "nama": "Lemon Tea",
-          "foto": "https://javacode.landa.id/img/menu/gambar_62660e379fdf4.png",
-          "jumlah": 1,
-          "harga": "16000",
-          "total": 16000,
-          "catatan": "\"\""
-        }
-      ]
+        "detail": [
+          {
+            "id_menu": 2,
+            "kategori": "makanan",
+            "topping": "[1,2]",
+            "nama": "Chicken Slam ",
+            "foto": "https://i.ibb.co/R9kJtny/1637916829.png",
+            "jumlah": 2,
+            "harga": "18000",
+            "total": 36000,
+            "catatan": ""
+          },
+          {
+            "id_menu": 3,
+            "kategori": "minuman",
+            "topping": "[2,3]",
+            "nama": "Lemon Tea",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_62660e379fdf4.png",
+            "jumlah": 1,
+            "harga": "10000",
+            "total": 10000,
+            "catatan": ""
+          }
+        ]
+      }
     },
     {
-      "id_order": 135,
-      "no_struk": "003/KWT/02/2022",
-      "nama": "admin",
-      "total_bayar": 10400,
-      "tanggal": "2022-02-18",
-      "status": 4,
-      "menu": [
-        {
-          "id_menu": 9,
-          "kategori": "makanan",
-          "topping": "[]",
-          "nama": "Nasi Goreng",
-          "foto": "https://i.ibb.co/KNxRXBN/1637916792.png",
-          "jumlah": 1,
-          "harga": "10000",
-          "total": 10000,
-          "catatan": "\"\""
+      "data": {
+        "order": {
+          "id_order": 1000,
+          "no_struk": "261/KWT/09/2024",
+          "nama": "Fauzi updated 8",
+          "id_voucher": 1,
+          "nama_voucher": null,
+          "diskon": 0,
+          "potongan": 74250,
+          "total_bayar": 74250,
+          "tanggal": "2024-09-30",
+          "status": 0
         },
-        {
-          "id_menu": 3,
-          "kategori": "minuman",
-          "topping": "[]",
-          "nama": "Lemon Tea",
-          "foto": "https://javacode.landa.id/img/menu/gambar_62660e379fdf4.png",
-          "jumlah": 1,
-          "harga": "12000",
-          "total": 12000,
-          "catatan": "\"\""
-        }
-      ]
+        "detail": [
+          {
+            "id_menu": 12,
+            "kategori": "makanan",
+            "topping": "[]",
+            "nama": "Chicken Slam Noodles",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_62660e47317ea.png",
+            "jumlah": 1,
+            "harga": "16000",
+            "total": 16000,
+            "catatan": ""
+          },
+          {
+            "id_menu": 3,
+            "kategori": "minuman",
+            "topping": "[3,3]",
+            "nama": "Lemon Tea",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_62660e379fdf4.png",
+            "jumlah": 1,
+            "harga": "5000",
+            "total": 5000,
+            "catatan": ""
+          },
+          {
+            "id_menu": 19,
+            "kategori": "snack",
+            "topping": "[]",
+            "nama": "Grilled Sausage",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_62660f6f077fc.png",
+            "jumlah": 1,
+            "harga": "16000",
+            "total": 16000,
+            "catatan": ""
+          },
+          {
+            "id_menu": 13,
+            "kategori": "makanan",
+            "topping": "[]",
+            "nama": "Fried Rice",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_62660ef6630d6.png",
+            "jumlah": 2,
+            "harga": "13000",
+            "total": 26000,
+            "catatan": ""
+          },
+          {
+            "id_menu": 28,
+            "kategori": "minuman",
+            "topping": "[]",
+            "nama": "Tubruk",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_6266108602d08.png",
+            "jumlah": 2,
+            "harga": "6000",
+            "total": 12000,
+            "catatan": ""
+          }
+        ]
+      }
     },
     {
-      "id_order": 136,
-      "no_struk": "004/KWT/02/2022",
-      "nama": "admin",
-      "total_bayar": 29400,
-      "tanggal": "2022-02-18",
-      "status": 4,
-      "menu": [
-        {
-          "id_menu": 10,
-          "kategori": "minuman",
-          "topping": "[]",
-          "nama": "Es Teller 666",
-          "foto": "https://javacode.landa.id/img/menu/gambar_620df18327cde.png",
-          "jumlah": 1,
-          "harga": "10000",
-          "total": 10000,
-          "catatan": "\"\""
+      "data": {
+        "order": {
+          "id_order": 1001,
+          "no_struk": "086/KWT/10/2024",
+          "nama": "Fauzi updated 8",
+          "id_voucher": 1,
+          "nama_voucher": null,
+          "diskon": 0,
+          "potongan": 14850,
+          "total_bayar": 14850,
+          "tanggal": "2024-10-01",
+          "status": 0
         },
-        {
-          "id_menu": 2,
-          "kategori": "makanan",
-          "topping": "[]",
-          "nama": "Chicken Slam ",
-          "foto": "https://i.ibb.co/R9kJtny/1637916829.png",
-          "jumlah": 1,
-          "harga": "19000",
-          "total": 19000,
-          "catatan": "\"\""
-        },
-        {
-          "id_menu": 4,
-          "kategori": "makanan",
-          "topping": "[]",
-          "nama": "Chiken Katsu",
-          "foto": "https://i.ibb.co/R9kJtny/1637916829.png",
-          "jumlah": 1,
-          "harga": "12000",
-          "total": 12000,
-          "catatan": "\"\""
-        }
-      ]
+        "detail": [
+          {
+            "id_menu": 3,
+            "kategori": "minuman",
+            "topping": "[1,2]",
+            "nama": "Lemon Tea",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_62660e379fdf4.png",
+            "jumlah": 3,
+            "harga": "5000",
+            "total": 15000,
+            "catatan": ""
+          }
+        ]
+      }
     },
     {
-      "id_order": 137,
-      "no_struk": "005/KWT/02/2022",
-      "nama": "admin",
-      "total_bayar": 12800,
-      "tanggal": "2022-02-18",
-      "status": 4,
-      "menu": [
-        {
-          "id_menu": 2,
-          "kategori": "makanan",
-          "topping": "[1,2]",
-          "nama": "Chicken Slam ",
-          "foto": "https://i.ibb.co/R9kJtny/1637916829.png",
-          "jumlah": 2,
-          "harga": "18000",
-          "total": 36000,
-          "catatan": ""
+      "data": {
+        "order": {
+          "id_order": 1007,
+          "no_struk": "092/KWT/10/2024",
+          "nama": "Fauzi updated 8",
+          "id_voucher": 1,
+          "nama_voucher": null,
+          "diskon": 0,
+          "potongan": 15840,
+          "total_bayar": 15840,
+          "tanggal": "2024-10-08",
+          "status": 0
         },
-        {
-          "id_menu": 3,
-          "kategori": "minuman",
-          "topping": "[2,3]",
-          "nama": "Lemon Tea",
-          "foto": "https://javacode.landa.id/img/menu/gambar_62660e379fdf4.png",
-          "jumlah": 1,
-          "harga": "10000",
-          "total": 10000,
-          "catatan": ""
-        }
-      ]
+        "detail": [
+          {
+            "id_menu": 12,
+            "kategori": "makanan",
+            "topping": "[]",
+            "nama": "Chicken Slam Noodles",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_62660e47317ea.png",
+            "jumlah": 1,
+            "harga": "16000",
+            "total": 16000,
+            "catatan": ""
+          }
+        ]
+      }
     }
   ];
 
   // Get Ongoing Order
   List<Map<String, dynamic>> getOngoingOrder() {
-    return ongoingOrder.where((element) => element['status'] < 3).toList();
+    ongoingOrder.sort((a, b) {
+      DateTime dateA = DateTime.parse(a['data']['order']['tanggal']);
+      DateTime dateB = DateTime.parse(b['data']['order']['tanggal']);
+      return dateA.compareTo(dateB);
+    });
+    return ongoingOrder
+        .where((element) => element['data']['order']['status'] < 3)
+        .toList();
   }
 
   // Get Order History
   List<Map<String, dynamic>> getOrderHistory() {
-    return ongoingOrder.where((element) => element['status'] > 2).toList();
+    ongoingOrder.sort((a, b) {
+      DateTime dateA = DateTime.parse(a['data']['order']['tanggal']);
+      DateTime dateB = DateTime.parse(b['data']['order']['tanggal']);
+      return dateA.compareTo(dateB);
+    });
+    return ongoingOrder
+        .where((element) => element['data']['order']['status'] > 2)
+        .toList();
   }
 
   // Get Order Detail
   Map<String, dynamic>? getOrderDetail(int idOrder) {
-    return ongoingOrder.firstWhere((element) => element['id_order'] == idOrder,
+    return ongoingOrder.firstWhere(
+        (element) => element['data']['order']['id_order'] == idOrder,
         orElse: () => {});
   }
 }

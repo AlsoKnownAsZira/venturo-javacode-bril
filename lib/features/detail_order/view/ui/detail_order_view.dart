@@ -2,7 +2,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:get/get.dart';
+import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/detail_order/controllers/detail_order_controller.dart';
+import 'package:venturo_core/features/order/view/components/order_tracker.dart';
 
 import 'package:venturo_core/features/order/view/components/primary_button_title.dart';
 import 'package:venturo_core/features/order/view/components/detail_order_card.dart';
@@ -54,7 +56,8 @@ class DetailOrderView extends StatelessWidget {
           () {
             if (DetailOrderController.to.orderDetailState.value == 'loading') {
               return Center(child: CircularProgressIndicator());
-            } else if (DetailOrderController.to.orderDetailState.value == 'error') {
+            } else if (DetailOrderController.to.orderDetailState.value ==
+                'error') {
               return Center(child: Text('Failed to load order details'));
             } else {
               final order = DetailOrderController.to.order.value!;
@@ -83,35 +86,39 @@ class DetailOrderView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Total Order: Rp ${order['total_order']}',
+                          'Voucher Rp ${order['data']['order']['potongan']}',
                           style: Get.textTheme.bodyMedium,
                         ),
                         Text(
-                          'Voucher: Rp ${order['voucher']}',
-                          style: Get.textTheme.bodyMedium,
-                        ),
-                        Text(
-                          'Payment: Rp ${order['payment']}',
-                          style: Get.textTheme.bodyMedium,
-                        ),
-                        Text(
-                          'Total Payment: Rp ${order['total_payment']}',
+                          'total bayar: Rp ${order['data']['order']['total_bayar']}',
                           style: Get.textTheme.bodyMedium,
                         ),
                       ],
                     ),
                   ),
-                  PrimaryButtonWithTitle(
-                    title: 'Order Status: ${order['status']}',
-                    onPressed: () {
-                      // Handle button press
-                    },
-                    backgroundColor: Colors.blue,
-                    borderColor: Colors.blueAccent,
-                    titleColor: Colors.white,
-                    width: double.infinity,
-                    height: 50.0,
-                    isLoading: false,
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          offset: Offset(0, 0),
+                          blurRadius: 5,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    width: Get.width,
+                    height: Get.height.h * 0.3,
+                    child: Padding(
+                      padding: EdgeInsets.all(20.w),
+                      child: Column(
+                        children: [OrderTracker()],
+                      ),
+                    ),
                   ),
                 ],
               );

@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class DetailOrderCard extends StatelessWidget {
-
   final Map<String, dynamic> detailOrder;
 
   const DetailOrderCard(this.detailOrder, {Key? key}) : super(key: key);
@@ -68,37 +67,20 @@ class DetailOrderCard extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            height: 75.r,
-            padding: EdgeInsets.only(left: 12.w, right: 5.w),
-            child: QuantityCounter(quantity: detailOrder['jumlah']),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: 75.r,
+              padding: EdgeInsets.only(left: 12.w, right: 5.w),
+              child: Center(
+                child: Text(
+                  detailOrder['jumlah'].toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.w),
+                ),
+              ),
+            ),
           ),
         ],
-      ),
-    );
-  }
-  
-}
-class QuantityCounter extends StatelessWidget {
-  final int quantity;
-
-  const QuantityCounter({
-    Key? key,
-    required this.quantity,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: Colors.grey),
-      ),
-      child: Text(
-        '$quantity',
-        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
       ),
     );
   }

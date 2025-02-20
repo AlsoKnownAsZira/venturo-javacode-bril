@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:venturo_core/configs/themes/main_color.dart';
 
 class OrderItemCard extends StatelessWidget {
   const OrderItemCard({
@@ -17,6 +18,13 @@ class OrderItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final firstMenuItem = order['data']['detail'][0];
+    final secondMenuItem = order['data']['detail'].length > 1
+        ? order['data']['detail'][1]
+        : {'nama': ''};
+    final totalMenuItems = (order['data']['detail'] as List<dynamic>)
+        .map((item) => (item as Map<String, dynamic>)['jumlah'] as int)
+        .reduce((sum, jumlah) => sum + jumlah);
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(10.r),
@@ -34,49 +42,113 @@ class OrderItemCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              order['name'] ?? 'Unknown',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
+            // Image
+            Container(
+              height: 100.h,
+              width: 100.w,
+              margin: EdgeInsets.only(right: 10.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.r),
+                color: Colors.white,
               ),
-            ),
-            SizedBox(height: 5.h),
-            Text(
-              'Order ID: ${order['id']}',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(height: 5.h),
-            Text(
-              'Status: ${order['status']}',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(height: 10.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: onOrderAgain,
-                  child: Text('Order Again'),
+              child: Image.network(
+                firstMenuItem['foto'] ??
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
+                fit: BoxFit.contain,
+                errorBuilder: (context, _, __) => Image.network(
+                  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
+                  fit: BoxFit.contain,
                 ),
-                ElevatedButton(
-                  onPressed: () => onGiveReview?.call(order['id']),
-                  child: Text('Give Review'),
-                ),
-              ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _getStatusText(order['data']['order']['status']),
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber),
+                  ),
+                  SizedBox(height: 10.h),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '${firstMenuItem['nama']}\n',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: secondMenuItem['nama'].isNotEmpty
+                              ? '${secondMenuItem['nama']}...'
+                              : '',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Rp ${(order['data']['order']['total_bayar'].toString())}',
+                        style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: MainColor.primary),
+                      ),
+                      SizedBox(width: 10.w),
+                      Text(
+                        '($totalMenuItems menu)',
+                        style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: MainColor.grey),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              (order['data']['order']['tanggal'].toString()),
+              style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: MainColor.grey),
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _getStatusText(int status) {
+    switch (status) {
+      case 0:
+        return 'Dalam Antrian';
+      case 1:
+        return 'Sedang Disiapkan';
+      case 2:
+        return 'Bisa Diambil';
+      case 3:
+        return 'Selesai';
+      case 4:
+        return 'Dibatalkan';
+      default:
+        return 'Unknown';
+    }
   }
 }

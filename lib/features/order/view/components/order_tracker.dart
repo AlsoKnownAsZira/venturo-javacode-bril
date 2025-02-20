@@ -20,44 +20,56 @@ class OrderTracker extends StatelessWidget {
           textAlign: TextAlign.left,
         ),
         18.verticalSpace,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Stack(
           children: [
-            const Spacer(flex: 10),
-            Expanded(
-              flex: 10,
-              child: Conditional.single(
-                context: context,
-                conditionBuilder: (context) =>
-                    DetailOrderController.to.order.value?['status'] == 0 ||
-                    DetailOrderController.to.order.value?['status'] == 1,
-                widgetBuilder: (context) => const CheckedStep(),
-                fallbackBuilder: (context) => const UncheckedStep(),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: 2.h,
+                  color: Colors.grey,
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
+                ),
               ),
             ),
-            const Spacer(flex: 1),
-            Expanded(
-              flex: 10,
-              child: Conditional.single(
-                context: context,
-                conditionBuilder: (context) =>
-                    DetailOrderController.to.order.value?['status'] == 1,
-                widgetBuilder: (context) => const CheckedStep(),
-                fallbackBuilder: (context) => const UncheckedStep(),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Spacer(flex: 10),
+                Expanded(
+                  flex: 10,
+                  child: Conditional.single(
+                    context: context,
+                    conditionBuilder: (context) =>
+                        DetailOrderController.to.order.value?['status'] == 0 ||
+                        DetailOrderController.to.order.value?['status'] == 1,
+                    widgetBuilder: (context) => const CheckedStep(),
+                    fallbackBuilder: (context) => const UncheckedStep(),
+                  ),
+                ),
+                Expanded(
+                  flex: 10,
+                  child: Conditional.single(
+                    context: context,
+                    conditionBuilder: (context) =>
+                        DetailOrderController.to.order.value?['status'] == 1,
+                    widgetBuilder: (context) => const CheckedStep(),
+                    fallbackBuilder: (context) => const UncheckedStep(),
+                  ),
+                ),
+                Expanded(
+                  flex: 10,
+                  child: Conditional.single(
+                    context: context,
+                    conditionBuilder: (context) =>
+                        DetailOrderController.to.order.value?['status'] == 2,
+                    widgetBuilder: (context) => const CheckedStep(),
+                    fallbackBuilder: (context) => const UncheckedStep(),
+                  ),
+                ),
+                const Spacer(flex: 10),
+              ],
             ),
-            const Spacer(flex: 1),
-            Expanded(
-              flex: 10,
-              child: Conditional.single(
-                context: context,
-                conditionBuilder: (context) =>
-                    DetailOrderController.to.order.value?['status'] == 2,
-                widgetBuilder: (context) => const CheckedStep(),
-                fallbackBuilder: (context) => const UncheckedStep(),
-              ),
-            ),
-            const Spacer(flex: 10),
           ],
         ),
         18.verticalSpace,
@@ -65,15 +77,15 @@ class OrderTracker extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Order Placed'.tr,
+              'Pesanan diterima'.tr,
               style: Get.textTheme.bodySmall,
             ),
             Text(
-              'Preparing'.tr,
+              'Silahkan DIambil'.tr,
               style: Get.textTheme.bodySmall,
             ),
             Text(
-              'Ready for Pickup'.tr,
+              'Pesanan Selesai'.tr,
               style: Get.textTheme.bodySmall,
             ),
           ],
