@@ -161,7 +161,7 @@ class OrderRepository {
           "potongan": 14850,
           "total_bayar": 14850,
           "tanggal": "2024-10-01",
-          "status": 0
+          "status": 1
         },
         "detail": [
           {
