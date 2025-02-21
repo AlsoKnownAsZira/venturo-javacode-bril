@@ -59,22 +59,26 @@ import 'package:venturo_core/features/order/repositories/order_repository.dart';
   }
 
 
-  Future<void> getOrderHistories() async {
-    orderHistoryState('loading');
-    
-    try {
-      final result = _orderRepository.getOrderHistory();
-      historyOrders(result.reversed.toList());
-      
-      orderHistoryState('success');
-    } catch (exception, stacktrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stacktrace,
-      );
-      orderHistoryState('error');
-    }
+Future<void> getOrderHistories() async {
+  orderHistoryState('loading');
+
+  try {
+    final result = await _orderRepository.getOrderHistory(); 
+     print("Order history fetched: $result"); // Debugging
+    historyOrders.assignAll(result.reversed.toList()); 
+    print("History Orders after update: $historyOrders"); // Debugging
+
+    orderHistoryState('success');
+  } catch (exception, stacktrace) {
+        print("Error fetching order history: $exception");
+
+    await Sentry.captureException(
+      exception,
+      stackTrace: stacktrace,
+    );
+    orderHistoryState('error');
   }
+}
 
 
   void setDateFilter({String? category, DateTimeRange? range}) {
@@ -86,11 +90,11 @@ import 'package:venturo_core/features/order/repositories/order_repository.dart';
   List<Map<String, dynamic>> get filteredHistoryOrder {
     final historyOrderList = historyOrders.toList();
 
-    if (selectedCategory.value == 'canceled') {
-      historyOrderList.removeWhere((element) => element['status'] != 4);
-    } else if (selectedCategory.value == 'completed') {
-      historyOrderList.removeWhere((element) => element['status'] != 3);
-    }
+if (selectedCategory.value == 'canceled') {
+  historyOrderList.removeWhere((element) => element['data']['order']['status'] != 4);
+} else if (selectedCategory.value == 'completed') {
+  historyOrderList.removeWhere((element) => element['data']['order']['status'] != 3);
+}
 
 
     historyOrderList.removeWhere((element) =>

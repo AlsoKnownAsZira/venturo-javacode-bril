@@ -241,6 +241,10 @@ class OrderRepository {
     }
   ];
 
+  List<Map<String, dynamic>> historyOrders = [
+
+  ];
+
   // Get Ongoing Order
   List<Map<String, dynamic>> getOngoingOrder() {
     ongoingOrder.sort((a, b) {
@@ -254,16 +258,11 @@ class OrderRepository {
   }
 
   // Get Order History
-  List<Map<String, dynamic>> getOrderHistory() {
-    ongoingOrder.sort((a, b) {
-      DateTime dateA = DateTime.parse(a['data']['order']['tanggal']);
-      DateTime dateB = DateTime.parse(b['data']['order']['tanggal']);
-      return dateA.compareTo(dateB);
-    });
-    return ongoingOrder
-        .where((element) => element['data']['order']['status'] > 2)
-        .toList();
-  }
+List<Map<String, dynamic>> getOrderHistory() {
+  return ongoingOrder
+      .where((element) => element['data']['order']['status'] > 2)
+      .toList();
+}
 
   // Get Order Detail
   Map<String, dynamic>? getOrderDetail(int idOrder) {

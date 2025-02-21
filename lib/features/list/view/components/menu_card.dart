@@ -79,50 +79,6 @@ class MenuCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Spacer(),
-            Row(
-              children: [
-                SizedBox(width: 7.w),
-                Container(
-                  width: 40.w,
-                  height: 40.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: MainColor.primary),
-                    borderRadius: BorderRadius.circular(5.r),
-                  ),
-                  child: Center(
-                    child: IconButton(
-                      onPressed: () {
-                        ListController.to.decrement();
-                      },
-                      icon: Icon(Icons.minimize, color: MainColor.primary),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 7.w),
-                Obx(() => Text(
-                      '${ListController.to.quantity.value}',
-                      style: TextStyle(fontSize: 20.w),
-                    )),
-                SizedBox(width: 7.w),
-                Container(
-                  width: 40.w,
-                  height: 40.h,
-                  decoration: BoxDecoration(
-                    color: MainColor.primary,
-                    border: Border.all(color: MainColor.primary),
-                    borderRadius: BorderRadius.circular(5.r),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      ListController.to.increment();
-                    },
-                    icon: Icon(Icons.add, color: Colors.white),
-                  ),
-                ),
-              ],
-            )
           ],
         ),
       ),

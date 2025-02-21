@@ -178,6 +178,9 @@ class DetailOrderView extends StatelessWidget {
                             child: DetailOrderCard(item),
                           )),
                     ],
+                    SizedBox(
+                      height: 300,
+                    )
                   ],
                 ),
               );

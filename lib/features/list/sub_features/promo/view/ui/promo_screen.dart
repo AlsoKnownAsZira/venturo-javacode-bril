@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/constants/list_assets_constant.dart';
 import 'package:venturo_core/features/list/view/components/promo_card.dart';
-
+import 'package:flutter_html/flutter_html.dart';
 class PromoScreen extends StatelessWidget {
   PromoScreen({super.key});
 
@@ -105,10 +105,9 @@ class PromoScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    promo['syarat_ketentuan'] ??
+                  child: Html(
+                    data: promo['syarat_ketentuan'] ??
                         'No terms and conditions provided.',
-                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
               ],
