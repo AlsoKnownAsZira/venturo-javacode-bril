@@ -201,6 +201,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               item.quantity = newQuantity;
                               cartBox.put(
                                   item.key, item); // Update the item in the box
+                              item.note = listController.selectedNote.value;
+                              item.level = listController.selectedLevel.value;
+                              item.topping =
+                                  listController.selectedTopping.value;
+                              cartBox.put(
+                                  item.key, item); // Update the item in the box
                               _updateTotals();
                             }
                           });
