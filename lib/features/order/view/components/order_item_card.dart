@@ -18,13 +18,15 @@ class OrderItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firstMenuItem = order['data']['detail'][0];
-    final secondMenuItem = order['data']['detail'].length > 1
-        ? order['data']['detail'][1]
-        : {'nama': ''};
-    final totalMenuItems = (order['data']['detail'] as List<dynamic>)
-        .map((item) => (item as Map<String, dynamic>)['jumlah'] as int)
-        .reduce((sum, jumlah) => sum + jumlah);
+    final List<dynamic> details = order['data']['detail'] ?? [];
+
+    // Ensure there's at least one item
+    final firstMenuItem = details.isNotEmpty ? details[0] : {'nama': 'Unknown', 'foto': null};
+    final secondMenuItem = details.length > 1 ? details[1] : {'nama': ''};
+
+    // Safe total item count calculation
+    final totalMenuItems = details.fold(0, (sum, item) => sum + (item['jumlah'] as int? ?? 0));
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(10.r),
@@ -38,7 +40,7 @@ class OrderItemCard extends StatelessWidget {
               color: Colors.black.withOpacity(0.1),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
+              offset: Offset(0, 3),
             ),
           ],
         ),
@@ -69,18 +71,19 @@ class OrderItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _getStatusText(order['data']['order']['status']),
+                    _getStatusText(order['data']['order']['status'] as int? ?? -1), // Handle possible null
                     style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.amber),
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber,
+                    ),
                   ),
                   SizedBox(height: 10.h),
                   RichText(
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: '${firstMenuItem['nama']}\n',
+                          text: '${firstMenuItem['nama'] ?? 'Unknown'}\n',
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.normal,
@@ -88,7 +91,7 @@ class OrderItemCard extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: secondMenuItem['nama'].isNotEmpty
+                          text: secondMenuItem['nama']?.isNotEmpty == true
                               ? '${secondMenuItem['nama']}...'
                               : '',
                           style: TextStyle(
@@ -103,19 +106,21 @@ class OrderItemCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Rp ${(order['data']['order']['total_bayar'].toString())}',
+                        'Rp ${(order['data']['order']['total_bayar'] as int? ?? 0).toString()}',
                         style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                            color: MainColor.primary),
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: MainColor.primary,
+                        ),
                       ),
                       SizedBox(width: 10.w),
                       Text(
                         '($totalMenuItems menu)',
                         style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                            color: MainColor.grey),
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: MainColor.grey,
+                        ),
                       ),
                     ],
                   ),
@@ -123,11 +128,12 @@ class OrderItemCard extends StatelessWidget {
               ),
             ),
             Text(
-              (order['data']['order']['tanggal'].toString()),
+              order['data']['order']['tanggal']?.toString() ?? '-',
               style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: MainColor.grey),
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: MainColor.grey,
+              ),
             ),
           ],
         ),

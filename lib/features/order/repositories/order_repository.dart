@@ -208,6 +208,36 @@ class OrderRepository {
           }
         ]
       }
+    },
+    {
+      "data": {
+        "order": {
+          "id_order": 9999,
+          "no_struk": "092/KWT/10/2024",
+          "nama": "Fauzi updated 8",
+          "id_voucher": 1,
+          "nama_voucher": null,
+          "diskon": 0,
+          "potongan": 15840,
+          "total_bayar": 15840,
+          "tanggal": "2024-10-08",
+          "status": 3
+        },
+        "detail": [
+          {
+            "id_menu": 12,
+            "kategori": "makanan",
+            "topping": "[]",
+            "nama": "NGETES HISTORY",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_62660e47317ea.png",
+            "jumlah": 1,
+            "harga": "16000",
+            "total": 16000,
+            "catatan": ""
+          }
+        ]
+      }
     }
   ];
 

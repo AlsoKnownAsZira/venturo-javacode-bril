@@ -65,6 +65,22 @@ class DetailOrderView extends StatelessWidget {
               final drinkItems = DetailOrderController.to.drinkItems;
               final snackItems = DetailOrderController.to.snackItems;
 
+              // Calculate total quantity and total price
+              int totalQuantity = 0;
+              int totalPrice = 0;
+
+              void calculateTotals(List<Map<String, dynamic>> items) {
+                for (var item in items) {
+                  totalQuantity += item['jumlah'] as int;
+                  totalPrice +=
+                      (item['jumlah'] * int.parse(item['harga'])) as int;
+                }
+              }
+
+              calculateTotals(foodItems);
+              calculateTotals(drinkItems);
+              calculateTotals(snackItems);
+
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,14 +168,14 @@ class DetailOrderView extends StatelessWidget {
                             Row(
                               children: [
                                 Text(
-                                  'Total Pesanan (x menu)',
+                                  'Total Pesanan ($totalQuantity menu)',
                                   style: TextStyle(
                                       fontSize: 20.w,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 const Spacer(),
                                 Text(
-                                  "Rp ${['harga']}",
+                                  "Rp $totalPrice",
                                   style: TextStyle(
                                       fontSize: 20.w,
                                       fontWeight: FontWeight.bold,
