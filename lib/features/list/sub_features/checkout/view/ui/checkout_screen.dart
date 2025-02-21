@@ -73,7 +73,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         0, (sum, item) => sum + (item.quantity * item.menu.harga));
 
     // Calculate the discount amount (20%)
-    double discount = totalPrice * 0.20;
+    double discount = selectedVoucherAmount > 0 ? 0 : totalPrice * 0.20;
 
     // Calculate the total payment after discount and voucher
     double totalPayment = totalPrice - discount - selectedVoucherAmount;
@@ -226,15 +226,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           size: 20.w,
                         ),
                         Text(
-                          'Diskon 20%',
+                          selectedVoucherAmount > 0
+                              ? 'Diskon tidak bisa digunakan dengan voucher'
+                              : 'Diskon 20%',
                           style: TextStyle(
-                              fontSize: 20.w, fontWeight: FontWeight.bold),
+                              fontSize: 16.w, fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
                         Row(
                           children: [
                             Text(
-                              "- Rp ${discount.toInt()}",
+                              selectedVoucherAmount > 0
+                                  ? ""
+                                  : "- Rp ${discount.toInt()}",
                               style: TextStyle(
                                   fontSize: 20.w,
                                   fontWeight: FontWeight.bold,

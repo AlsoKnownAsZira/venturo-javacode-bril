@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:venturo_core/configs/routes/route.dart';
+import 'package:venturo_core/configs/themes/main_color.dart';
 
 class PromoCard extends StatelessWidget {
   const PromoCard({
@@ -44,7 +45,7 @@ class PromoCard extends StatelessWidget {
         width: width ?? 282.w,
         height: 188.h,
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: MainColor.primary,
           borderRadius: BorderRadius.circular(15.r),
           image: DecorationImage(
             image: CachedNetworkImageProvider(
