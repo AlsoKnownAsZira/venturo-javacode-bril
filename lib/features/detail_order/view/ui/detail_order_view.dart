@@ -24,6 +24,40 @@ class DetailOrderView extends StatelessWidget {
     );
 
     return Scaffold(
+      bottomSheet: Obx(() {
+        if (DetailOrderController.to.orderDetailState.value == 'loading' ||
+            DetailOrderController.to.orderDetailState.value == 'error') {
+          return const SizedBox.shrink();
+        } else {
+          final order = DetailOrderController.to.order.value!;
+          final foodItems = DetailOrderController.to.foodItems;
+          final drinkItems = DetailOrderController.to.drinkItems;
+          final snackItems = DetailOrderController.to.snackItems;
+
+          // Calculate total quantity and total price
+          int totalQuantity = 0;
+          int totalPrice = 0;
+
+          void calculateTotals(List<Map<String, dynamic>> items) {
+            for (var item in items) {
+              totalQuantity += item['jumlah'] as int;
+              totalPrice += (item['jumlah'] * int.parse(item['harga'])) as int;
+            }
+          }
+
+          calculateTotals(foodItems);
+          calculateTotals(drinkItems);
+          calculateTotals(snackItems);
+
+          return Container(
+            height: 300, // Set a fixed height for the bottom sheet
+            child: OrderSummary(
+                totalQuantity: totalQuantity,
+                totalPrice: totalPrice,
+                order: order),
+          );
+        }
+      }),
       appBar: RoundedAppBar(
         title: 'Pesanan',
         icon: Icons.arrow_back_ios,
@@ -39,26 +73,26 @@ class DetailOrderView extends StatelessWidget {
                   onPressed: () {
                     // Handle cancel order
                   },
-                  child: Text(
+                  child: const Text(
                     'Cancel Order',
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
               ),
-              fallbackBuilder: (context) => SizedBox.shrink(),
+              fallbackBuilder: (context) => const SizedBox.shrink(),
             ),
           ),
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Obx(
           () {
             if (DetailOrderController.to.orderDetailState.value == 'loading') {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (DetailOrderController.to.orderDetailState.value ==
                 'error') {
-              return Center(child: Text('Failed to load order details'));
+              return const Center(child: Text('Failed to load order details'));
             } else {
               final order = DetailOrderController.to.order.value!;
               final foodItems = DetailOrderController.to.foodItems;
@@ -144,123 +178,131 @@ class DetailOrderView extends StatelessWidget {
                             child: DetailOrderCard(item),
                           )),
                     ],
-                    SizedBox(height: 50.h),
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(255, 0, 0, 0),
-                            offset: Offset(0, 0),
-                            blurRadius: 5,
-                          ),
-                        ],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                        ),
-                      ),
-                      width: Get.width,
-                      child: Padding(
-                        padding: EdgeInsets.all(20.w),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Total Pesanan ($totalQuantity menu)',
-                                  style: TextStyle(
-                                      fontSize: 20.w,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  "Rp $totalPrice",
-                                  style: TextStyle(
-                                      fontSize: 20.w,
-                                      fontWeight: FontWeight.bold,
-                                      color: MainColor.primary),
-                                ),
-                              ],
-                            ),
-                            const Divider(),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.discount_sharp,
-                                  color: MainColor.primary,
-                                  size: 20.w,
-                                ),
-                                Text(
-                                  'Voucher',
-                                  style: TextStyle(
-                                      fontSize: 20.w,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  'Rp ${order['data']['order']['potongan']}',
-                                  style: TextStyle(
-                                      fontSize: 20.w,
-                                      fontWeight: FontWeight.bold,
-                                      color: MainColor.primary),
-                                ),
-                              ],
-                            ),
-                            const Divider(),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.monetization_on,
-                                  color: MainColor.primary,
-                                  size: 20.w,
-                                ),
-                                Text(
-                                  'Pembayaran',
-                                  style: TextStyle(
-                                      fontSize: 20.w,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  'Paylater',
-                                  style: TextStyle(
-                                      fontSize: 20.w,
-                                      fontWeight: FontWeight.bold,
-                                      color: MainColor.primary),
-                                ),
-                              ],
-                            ),
-                            const Divider(),
-                            Row(
-                              children: [
-                                Text(
-                                  'Total Pembayaran',
-                                  style: TextStyle(
-                                      fontSize: 20.w,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  'Rp ${order['data']['order']['total_bayar']}',
-                                  style: TextStyle(
-                                      fontSize: 20.w,
-                                      fontWeight: FontWeight.bold,
-                                      color: MainColor.primary),
-                                ),
-                              ],
-                            ),
-                            const Divider(),
-                            OrderTracker()
-                          ],
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               );
             }
           },
+        ),
+      ),
+    );
+  }
+}
+
+class OrderSummary extends StatelessWidget {
+  const OrderSummary({
+    super.key,
+    required this.totalQuantity,
+    required this.totalPrice,
+    required this.order,
+  });
+
+  final int totalQuantity;
+  final int totalPrice;
+  final Map<String, dynamic> order;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color.fromARGB(255, 255, 255, 255),
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromARGB(255, 0, 0, 0),
+            offset: Offset(0, 0),
+            blurRadius: 5,
+          ),
+        ],
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      width: Get.width,
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  'Total Pesanan ($totalQuantity menu)',
+                  style: TextStyle(fontSize: 20.w, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Text(
+                  "Rp $totalPrice",
+                  style: TextStyle(
+                      fontSize: 20.w,
+                      fontWeight: FontWeight.bold,
+                      color: MainColor.primary),
+                ),
+              ],
+            ),
+            const Divider(),
+            Row(
+              children: [
+                Icon(
+                  Icons.discount_sharp,
+                  color: MainColor.primary,
+                  size: 20.w,
+                ),
+                Text(
+                  'Voucher',
+                  style: TextStyle(fontSize: 20.w, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Text(
+                  'Rp ${order['data']['order']['potongan']}',
+                  style: TextStyle(
+                      fontSize: 20.w,
+                      fontWeight: FontWeight.bold,
+                      color: MainColor.primary),
+                ),
+              ],
+            ),
+            const Divider(),
+            Row(
+              children: [
+                Icon(
+                  Icons.monetization_on,
+                  color: MainColor.primary,
+                  size: 20.w,
+                ),
+                Text(
+                  'Pembayaran',
+                  style: TextStyle(fontSize: 20.w, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Text(
+                  'Paylater',
+                  style: TextStyle(
+                      fontSize: 20.w,
+                      fontWeight: FontWeight.bold,
+                      color: MainColor.primary),
+                ),
+              ],
+            ),
+            const Divider(),
+            Row(
+              children: [
+                Text(
+                  'Total Pembayaran',
+                  style: TextStyle(fontSize: 20.w, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Text(
+                  'Rp ${order['data']['order']['total_bayar']}',
+                  style: TextStyle(
+                      fontSize: 20.w,
+                      fontWeight: FontWeight.bold,
+                      color: MainColor.primary),
+                ),
+              ],
+            ),
+            const Divider(),
+            OrderTracker()
+          ],
         ),
       ),
     );

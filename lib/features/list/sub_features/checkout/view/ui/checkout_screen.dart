@@ -84,7 +84,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
 
     void _showEditNoteDialog(CartItem item) {
-      TextEditingController noteController = TextEditingController(text: item.note);
+      TextEditingController noteController =
+          TextEditingController(text: item.note);
 
       Get.defaultDialog(
         title: 'Edit Note',
@@ -378,8 +379,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                           ),
                                           ChoiceChip(
                                             label: const Text('Cash'),
-                                            selected: selectedPaymentMethod ==
-                                                'Cash',
+                                            selected:
+                                                selectedPaymentMethod == 'Cash',
                                             onSelected: (bool selected) {
                                               setState(() {
                                                 selectedPaymentMethod =
@@ -411,93 +412,109 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
             ),
             Container(
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 255, 255, 255),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    offset: Offset(0, 0),
-                    blurRadius: 5,
-                  ),
-                ],
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+              height:
+                  Get.height * 0.11, // Set a fixed height for the bottom sheet
+              child:
+                  CheckoutSummary(totalPayment: totalPayment, cartBox: cartBox),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CheckoutSummary extends StatelessWidget {
+  const CheckoutSummary({
+    super.key,
+    required this.totalPayment,
+    required this.cartBox,
+  });
+
+  final double totalPayment;
+  final Box<CartItem> cartBox;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color.fromARGB(255, 255, 255, 255),
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromARGB(255, 0, 0, 0),
+            offset: Offset(0, 0),
+            blurRadius: 5,
+          ),
+        ],
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      width: Get.width,
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Row(
+          children: [
+            Icon(
+              Icons.monetization_on,
+              color: MainColor.primary,
+              size: 20.w,
+            ),
+            Column(
+              children: [
+                Text(
+                  'Total Pembayaran',
+                  style: TextStyle(fontSize: 20.w, fontWeight: FontWeight.bold),
                 ),
-              ),
-              width: Get.width,
-              height: Get.height * 0.11,
-              child: Padding(
-                padding: EdgeInsets.all(20.w),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.monetization_on,
-                      color: MainColor.primary,
-                      size: 20.w,
-                    ),
-                    Column(
+                Text(
+                  totalPayment == 0
+                      ? "Rp 0 (Free)"
+                      : "Rp ${totalPayment.toInt()}",
+                  style: TextStyle(
+                      fontSize: 20.w,
+                      fontWeight: FontWeight.bold,
+                      color: MainColor.primary),
+                ),
+              ],
+            ),
+            const Spacer(),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: MainColor.primary),
+                onPressed: () {
+                  Get.defaultDialog(
+                    title: 'Rincian Diskon',
+                    titleStyle: const TextStyle(
+                        color: MainColor.primary, fontWeight: FontWeight.bold),
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          'Total Pembayaran',
-                          style: TextStyle(
-                              fontSize: 20.w, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          totalPayment == 0
-                              ? "Rp 0 (Free)"
-                              : "Rp ${totalPayment.toInt()}",
-                          style: TextStyle(
-                              fontSize: 20.w,
-                              fontWeight: FontWeight.bold,
-                              color: MainColor.primary),
-                        ),
+                        Image.asset(ImageConstant.confirm),
+                        const SizedBox(height: 10),
+                        const Text('Pesanan Sedang Disiapkan',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 10),
+                        const Text(
+                            'Kamu dapat melacak pesananmu di fitur Pesanan'),
                       ],
                     ),
-                    const Spacer(),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: MainColor.primary),
-                        onPressed: () {
-                          Get.defaultDialog(
-                            title: 'Rincian Diskon',
-                            titleStyle: const TextStyle(
-                                color: MainColor.primary,
-                                fontWeight: FontWeight.bold),
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(ImageConstant.confirm),
-                                const SizedBox(height: 10),
-                                const Text('Pesanan Sedang Disiapkan',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 10),
-                                const Text(
-                                    'Kamu dapat melacak pesananmu di fitur Pesanan'),
-                              ],
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Get.offAndToNamed(MainRoute.list),
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                          cartBox.clear();
-                        },
-                        child: Text(
-                          "Pesan Sekarang",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.w,
-                              color: Colors.white),
-                        ))
-                  ],
-                ),
-              ),
-            )
+                    actions: [
+                      TextButton(
+                        onPressed: () => Get.offAndToNamed(MainRoute.list),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                  cartBox.clear();
+                },
+                child: Text(
+                  "Pesan Sekarang",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.w,
+                      color: Colors.white),
+                ))
           ],
         ),
       ),
