@@ -1,111 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
+import 'package:venturo_core/features/list/controllers/list_controller.dart';
 
-class CheckoutItemCard extends StatelessWidget {
+class EditMenu extends StatelessWidget {
   final Map<String, dynamic> item;
+  final ValueChanged<int> onQuantityChanged;
 
-  CheckoutItemCard({
+  EditMenu({
     Key? key,
     required this.item,
+    required this.onQuantityChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+        final ListController listController = Get.find(); // Use the same controller
+
     final menu = item['menu'];
-    final quantity = RxInt(item['quantity']); // Use RxInt for observable quantity
+    final quantity = RxInt(item['quantity']);
     final level = item['level'];
     final topping = item['topping'];
-    final note = item['note'];
+    final noteController = TextEditingController(text: item['note']);
 
-    return InkWell(
-      borderRadius: BorderRadius.circular(10.r),
-      child: Ink(
-        padding: EdgeInsets.all(7.r),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.r),
-          border: Border.all(
-            color: Colors.transparent,
-            width: 2.w,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Row(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Edit Menu'),
+        backgroundColor: MainColor.primary,
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
           children: [
-            // menu image
-            Container(
-              height: 90.h,
-              width: 90.w,
-              margin: EdgeInsets.only(right: 12.r),
-              padding: EdgeInsets.all(5.r),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
-                color: Colors.grey[100],
+            TextField(
+              controller: noteController,
+              decoration: InputDecoration(
+                labelText: 'Catatan',
+                border: OutlineInputBorder(),
               ),
-              child: CachedNetworkImage(
-                imageUrl: menu['foto'] != null && menu['foto'].isNotEmpty
-                    ? menu['foto']
-                    : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
-                useOldImageOnUrlChange: true,
-                fit: BoxFit.contain,
-                errorWidget: (context, url, error) => Image.network(
-                  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
-                  fit: BoxFit.cover,
+            ),
+            SizedBox(height: 20.h),
+            if (level != null)
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Level',
+                  border: OutlineInputBorder(),
                 ),
+                onChanged: (value) {
+                  item['level'] = value;
+                },
               ),
-            ),
-            // menu info
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    menu['nama'] ?? 'Unknown',
-                    style: Get.textTheme.titleMedium,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  Text(
-                    'Rp ${menu['harga'].toString()}',
-                    style: Get.textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  if (note != null && note.isNotEmpty)
-                    Text(
-                      note,
-                      style: Get.textTheme.bodySmall,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    )
-                  else
-                    Text(
-                      'Tambahkan Catatan',
-                      style: Get.textTheme.bodySmall!.copyWith(
-                        color: Colors.grey,
-                      ),
-                    ),
-                ],
+            SizedBox(height: 20.h),
+            if (topping != null)
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Topping',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  item['topping'] = value;
+                },
               ),
-            ),
-            const Spacer(),
+            SizedBox(height: 20.h),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
                   onPressed: () {
                     if (quantity.value > 1) {
                       quantity.value--;
+                      onQuantityChanged(quantity.value);
                     }
                   },
                   icon: Icon(Icons.remove, color: MainColor.primary),
@@ -117,10 +82,19 @@ class CheckoutItemCard extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     quantity.value++;
+                    onQuantityChanged(quantity.value);
                   },
                   icon: Icon(Icons.add, color: MainColor.primary),
                 ),
               ],
+            ),
+            SizedBox(height: 20.h),
+            ElevatedButton(
+              onPressed: () {
+                item['note'] = noteController.text;
+                Get.back();
+              },
+              child: Text('Save'),
             ),
           ],
         ),

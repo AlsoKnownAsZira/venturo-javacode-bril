@@ -125,6 +125,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       });
     }
 
+    void _removeItem(CartItem item) {
+      setState(() {
+        cartBox.delete(item.key);
+        items.remove(item);
+        _updateTotals();
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -183,12 +191,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           'level': item.level,
                           'topping': item.topping,
                           'note': item.note, // Add this line
+                          'key': item.key,
                         },
                         onQuantityChanged: (newQuantity) {
                           setState(() {
-                            item.quantity = newQuantity;
-                            cartBox.put(item.key, item); // Update the item in the box
-                            _updateTotals();
+                            if (newQuantity == 0) {
+                              _removeItem(item);
+                            } else {
+                              item.quantity = newQuantity;
+                              cartBox.put(
+                                  item.key, item); // Update the item in the box
+                              _updateTotals();
+                            }
                           });
                         },
                       ),

@@ -3,27 +3,37 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
+import 'package:venturo_core/features/list/sub_features/checkout/view/ui/edit_menu_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:venturo_core/shared/models/cart_item.dart';
 
 class CheckoutItemCard extends StatelessWidget {
   final Map<String, dynamic> item;
-  final ValueChanged<int> onQuantityChanged; // Add this line
+  final ValueChanged<int> onQuantityChanged;
 
   CheckoutItemCard({
     Key? key,
     required this.item,
-    required this.onQuantityChanged, // Add this line
+    required this.onQuantityChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final menu = item['menu'];
-    final quantity = RxInt(item['quantity']); // Use RxInt for observable quantity
+    final quantity = RxInt(item['quantity']);
     final level = item['level'];
     final topping = item['topping'];
     final note = item['note'];
+    final cartBox = Hive.box<CartItem>('cartBox');
 
     return InkWell(
       borderRadius: BorderRadius.circular(10.r),
+      onTap: () {
+        Get.to(() => EditMenu(
+              item: item,
+              onQuantityChanged: onQuantityChanged,
+            ));
+      },
       child: Ink(
         padding: EdgeInsets.all(7.r),
         decoration: BoxDecoration(
@@ -38,7 +48,7 @@ class CheckoutItemCard extends StatelessWidget {
               color: Colors.black.withOpacity(0.1),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
+              offset: Offset(0, 3),
             ),
           ],
         ),
@@ -84,6 +94,34 @@ class CheckoutItemCard extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold),
                   ),
+                  if (level != null && level.isNotEmpty)
+                    Text(
+                      "Level: $level",
+                      style: Get.textTheme.bodySmall,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    )
+                  else
+                    Text(
+                      'Level: -',
+                      style: Get.textTheme.bodySmall!.copyWith(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  if (topping != null && topping.isNotEmpty)
+                    Text(
+                      "Topping: $topping",
+                      style: Get.textTheme.bodySmall,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    )
+                  else
+                    Text(
+                      'Topping: -',
+                      style: Get.textTheme.bodySmall!.copyWith(
+                        color: Colors.grey,
+                      ),
+                    ),
                   if (note != null && note.isNotEmpty)
                     Text(
                       note,
@@ -108,7 +146,10 @@ class CheckoutItemCard extends StatelessWidget {
                   onPressed: () {
                     if (quantity.value > 1) {
                       quantity.value--;
-                      onQuantityChanged(quantity.value); // Call the callback
+                      onQuantityChanged(quantity.value);
+                    } else {
+                      cartBox.delete(item['key']);
+                      onQuantityChanged(0);
                     }
                   },
                   icon: Icon(Icons.remove, color: MainColor.primary),
@@ -120,7 +161,7 @@ class CheckoutItemCard extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     quantity.value++;
-                    onQuantityChanged(quantity.value); // Call the callback
+                    onQuantityChanged(quantity.value);
                   },
                   icon: Icon(Icons.add, color: MainColor.primary),
                 ),
