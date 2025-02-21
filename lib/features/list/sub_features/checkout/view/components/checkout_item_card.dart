@@ -6,10 +6,12 @@ import 'package:venturo_core/configs/themes/main_color.dart';
 
 class CheckoutItemCard extends StatelessWidget {
   final Map<String, dynamic> item;
+  final ValueChanged<int> onQuantityChanged; // Add this line
 
   CheckoutItemCard({
     Key? key,
     required this.item,
+    required this.onQuantityChanged, // Add this line
   }) : super(key: key);
 
   @override
@@ -106,6 +108,7 @@ class CheckoutItemCard extends StatelessWidget {
                   onPressed: () {
                     if (quantity.value > 1) {
                       quantity.value--;
+                      onQuantityChanged(quantity.value); // Call the callback
                     }
                   },
                   icon: Icon(Icons.remove, color: MainColor.primary),
@@ -117,6 +120,7 @@ class CheckoutItemCard extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     quantity.value++;
+                    onQuantityChanged(quantity.value); // Call the callback
                   },
                   icon: Icon(Icons.add, color: MainColor.primary),
                 ),

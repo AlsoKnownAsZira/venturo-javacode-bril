@@ -112,6 +112,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       );
     }
 
+    void _updateTotals() {
+      setState(() {
+        totalQuantity = items.fold<int>(0, (sum, item) => sum + item.quantity);
+        totalPrice = items.fold<int>(
+            0, (sum, item) => sum + (item.quantity * item.menu.harga));
+        discount = selectedVoucherAmount > 0 ? 0 : totalPrice * 0.20;
+        totalPayment = totalPrice - discount - selectedVoucherAmount;
+        if (totalPayment <= 0) {
+          totalPayment = 0;
+        }
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -170,6 +183,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           'level': item.level,
                           'topping': item.topping,
                           'note': item.note, // Add this line
+                        },
+                        onQuantityChanged: (newQuantity) {
+                          setState(() {
+                            item.quantity = newQuantity;
+                            cartBox.put(item.key, item); // Update the item in the box
+                            _updateTotals();
+                          });
                         },
                       ),
                     );
@@ -315,6 +335,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 setState(() {
                                   selectedVoucher = result['voucher'];
                                   selectedVoucherAmount = result['amount'];
+                                  _updateTotals();
                                 });
                               }
                             },
