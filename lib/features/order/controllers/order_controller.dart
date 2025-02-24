@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/features/order/repositories/order_repository.dart';
-  class OrderController extends GetxController {
 
+class OrderController extends GetxController {
   static OrderController get to => Get.find<OrderController>();
   late final OrderRepository _orderRepository;
 
@@ -17,7 +17,6 @@ import 'package:venturo_core/features/order/repositories/order_repository.dart';
     getOrderHistories();
   }
 
-
   RxList<Map<String, dynamic>> onGoingOrders = RxList();
   RxList<Map<String, dynamic>> historyOrders = RxList();
 
@@ -25,26 +24,26 @@ import 'package:venturo_core/features/order/repositories/order_repository.dart';
   RxString orderHistoryState = 'loading'.obs;
 
   Rx<String> selectedCategory = 'all'.obs;
-  
+
   Map<String, String> get dateFilterStatus => {
         'all': 'All status'.tr,
         'completed': 'Completed'.tr,
-        'canceled': 'Canceled'.tr,
+        'cancelled': 'Cancelled'.tr,
       };
-
 
   Rx<DateTimeRange> selectedDateRange = DateTimeRange(
     start: DateTime.now().subtract(const Duration(days: 30)),
     end: DateTime.now(),
   ).obs;
 
-
   Future<void> getOngoingOrders() async {
     onGoingOrderState('loading');
 
     try {
       final result = _orderRepository.getOngoingOrder();
-      final data = result.where((element) => element['data']['order']['status']!= 4).toList();
+      final data = result
+          .where((element) => element['data']['order']['status'] != 4)
+          .toList();
       onGoingOrders(data.reversed.toList());
 
       onGoingOrderState('success');
@@ -58,56 +57,54 @@ import 'package:venturo_core/features/order/repositories/order_repository.dart';
     }
   }
 
+  Future<void> getOrderHistories() async {
+    orderHistoryState('loading');
 
-Future<void> getOrderHistories() async {
-  orderHistoryState('loading');
+    try {
+      final result = await _orderRepository.getOrderHistory();
+      print("Order history fetched: $result"); // Debugging
+      historyOrders.assignAll(result.reversed.toList());
+      print("History Orders after update: $historyOrders"); // Debugging
 
-  try {
-    final result = await _orderRepository.getOrderHistory(); 
-     print("Order history fetched: $result"); // Debugging
-    historyOrders.assignAll(result.reversed.toList()); 
-    print("History Orders after update: $historyOrders"); // Debugging
+      orderHistoryState('success');
+    } catch (exception, stacktrace) {
+      print("Error fetching order history: $exception");
 
-    orderHistoryState('success');
-  } catch (exception, stacktrace) {
-        print("Error fetching order history: $exception");
-
-    await Sentry.captureException(
-      exception,
-      stackTrace: stacktrace,
-    );
-    orderHistoryState('error');
+      await Sentry.captureException(
+        exception,
+        stackTrace: stacktrace,
+      );
+      orderHistoryState('error');
+    }
   }
-}
-
 
   void setDateFilter({String? category, DateTimeRange? range}) {
     selectedCategory(category);
     selectedDateRange(range);
   }
 
-
   List<Map<String, dynamic>> get filteredHistoryOrder {
-    final historyOrderList = historyOrders.toList();
+  final historyOrderList = historyOrders.toList();
 
-if (selectedCategory.value == 'canceled') {
-  historyOrderList.removeWhere((element) => element['data']['order']['status'] != 4);
-} else if (selectedCategory.value == 'completed') {
-  historyOrderList.removeWhere((element) => element['data']['order']['status'] != 3);
-}
-
-
-    historyOrderList.removeWhere((element) =>
-        DateTime.parse(element['tanggal'] as String)
-            .isBefore(selectedDateRange.value.start) ||
-        DateTime.parse(element['tanggal'] as String)
-            .isAfter(selectedDateRange.value.end));
-
-    historyOrderList.sort((a, b) => DateTime.parse(b['tanggal'] as String)
-        .compareTo(DateTime.parse(a['tanggal'] as String)));
-
-    return historyOrderList;
+  if (selectedCategory.value == 'cancelled') {
+    historyOrderList
+        .removeWhere((element) => element['data']['order']['status'] != 4);
+  } else if (selectedCategory.value == 'completed') {
+    historyOrderList
+        .removeWhere((element) => element['data']['order']['status'] != 3);
   }
+
+  historyOrderList.removeWhere((element) =>
+      DateTime.parse(element['data']['order']['tanggal'] as String)
+          .isBefore(selectedDateRange.value.start) ||
+      DateTime.parse(element['data']['order']['tanggal'] as String)
+          .isAfter(selectedDateRange.value.end));
+
+  historyOrderList.sort((a, b) => DateTime.parse(b['data']['order']['tanggal'] as String)
+      .compareTo(DateTime.parse(a['data']['order']['tanggal'] as String)));
+
+  return historyOrderList;
+}
 
   String get totalHistoryOrder {
     final total = filteredHistoryOrder.where((e) => e['status'] == 3).fold(

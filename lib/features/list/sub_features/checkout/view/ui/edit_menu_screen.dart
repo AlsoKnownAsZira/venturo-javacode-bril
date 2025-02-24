@@ -28,6 +28,13 @@ class EditMenu extends StatelessWidget {
     final noteController = TextEditingController(text: item['note']);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Reset the values of the controller
+      listController.quantity.value = 0;
+      listController.selectedLevel.value = '';
+      listController.selectedTopping.value = '';
+      listController.selectedNote.value = '';
+
+      // Set the new values
       listController.quantity.value = quantity.value;
       listController.selectedLevel.value = level ?? '';
       listController.selectedTopping.value = topping ?? '';

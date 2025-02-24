@@ -191,7 +191,7 @@ class OrderRepository {
           "potongan": 15840,
           "total_bayar": 15840,
           "tanggal": "2024-10-08",
-          "status": 0
+          "status": 2
         },
         "detail": [
           {
@@ -228,7 +228,37 @@ class OrderRepository {
             "id_menu": 12,
             "kategori": "makanan",
             "topping": "[]",
-            "nama": "NGETES HISTORY",
+            "nama": "Cancelled ",
+            "foto":
+                "https://javacode.landa.id/img/menu/gambar_62660e47317ea.png",
+            "jumlah": 1,
+            "harga": "16000",
+            "total": 16000,
+            "catatan": ""
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "order": {
+          "id_order": 9998,
+          "no_struk": "092/KWT/10/2024",
+          "nama": "Fauzi updated 8",
+          "id_voucher": 1,
+          "nama_voucher": null,
+          "diskon": 0,
+          "potongan": 15840,
+          "total_bayar": 15840,
+          "tanggal": "2024-10-08",
+          "status": 4
+        },
+        "detail": [
+          {
+            "id_menu": 12,
+            "kategori": "makanan",
+            "topping": "[]",
+            "nama": "completed",
             "foto":
                 "https://javacode.landa.id/img/menu/gambar_62660e47317ea.png",
             "jumlah": 1,
@@ -241,9 +271,7 @@ class OrderRepository {
     }
   ];
 
-  List<Map<String, dynamic>> historyOrders = [
-
-  ];
+  List<Map<String, dynamic>> historyOrders = [];
 
   // Get Ongoing Order
   List<Map<String, dynamic>> getOngoingOrder() {
@@ -258,11 +286,11 @@ class OrderRepository {
   }
 
   // Get Order History
-List<Map<String, dynamic>> getOrderHistory() {
-  return ongoingOrder
-      .where((element) => element['data']['order']['status'] > 2)
-      .toList();
-}
+  List<Map<String, dynamic>> getOrderHistory() {
+    return ongoingOrder
+        .where((element) => element['data']['order']['status'] > 2)
+        .toList();
+  }
 
   // Get Order Detail
   Map<String, dynamic>? getOrderDetail(int idOrder) {

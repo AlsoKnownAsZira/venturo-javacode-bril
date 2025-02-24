@@ -150,9 +150,9 @@ class OrderItemCard extends StatelessWidget {
       case 2:
         return 'Bisa Diambil';
       case 3:
-        return 'Selesai';
-      case 4:
         return 'Dibatalkan';
+      case 4:
+        return 'Selesai';
       default:
         return 'Unknown';
     }
