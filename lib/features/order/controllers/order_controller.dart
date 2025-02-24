@@ -84,27 +84,28 @@ class OrderController extends GetxController {
   }
 
   List<Map<String, dynamic>> get filteredHistoryOrder {
-  final historyOrderList = historyOrders.toList();
+    final historyOrderList = historyOrders.toList();
 
-  if (selectedCategory.value == 'cancelled') {
-    historyOrderList
-        .removeWhere((element) => element['data']['order']['status'] != 4);
-  } else if (selectedCategory.value == 'completed') {
-    historyOrderList
-        .removeWhere((element) => element['data']['order']['status'] != 3);
+    if (selectedCategory.value == 'cancelled') {
+      historyOrderList
+          .removeWhere((element) => element['data']['order']['status'] != 3);
+    } else if (selectedCategory.value == 'completed') {
+      historyOrderList
+          .removeWhere((element) => element['data']['order']['status'] != 4);
+    }
+
+    historyOrderList.removeWhere((element) =>
+        DateTime.parse(element['data']['order']['tanggal'] as String)
+            .isBefore(selectedDateRange.value.start) ||
+        DateTime.parse(element['data']['order']['tanggal'] as String)
+            .isAfter(selectedDateRange.value.end));
+
+    historyOrderList.sort((a, b) =>
+        DateTime.parse(b['data']['order']['tanggal'] as String).compareTo(
+            DateTime.parse(a['data']['order']['tanggal'] as String)));
+
+    return historyOrderList;
   }
-
-  historyOrderList.removeWhere((element) =>
-      DateTime.parse(element['data']['order']['tanggal'] as String)
-          .isBefore(selectedDateRange.value.start) ||
-      DateTime.parse(element['data']['order']['tanggal'] as String)
-          .isAfter(selectedDateRange.value.end));
-
-  historyOrderList.sort((a, b) => DateTime.parse(b['data']['order']['tanggal'] as String)
-      .compareTo(DateTime.parse(a['data']['order']['tanggal'] as String)));
-
-  return historyOrderList;
-}
 
   String get totalHistoryOrder {
     final total = filteredHistoryOrder.where((e) => e['status'] == 3).fold(
