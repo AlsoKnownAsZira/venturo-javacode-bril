@@ -10,13 +10,13 @@ class OrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultTabController(
+    return  DefaultTabController(
       length: 2,
       child: SafeArea(
         child: Scaffold(
-          bottomNavigationBar: CustomNavbar(currentIndex: 1),
-          appBar: OrderTopBar(),
-          body: TabBarView(
+          bottomNavigationBar: CustomNavbar(),
+          appBar:const OrderTopBar(),
+          body:const TabBarView(
             children: [
               OnGoingOrderTabView(),
               OrderHistoryTabView(),

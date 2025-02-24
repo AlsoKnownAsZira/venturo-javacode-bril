@@ -46,7 +46,7 @@ class ListScreen extends StatelessWidget {
             color: MainColor.white,
           ),
         ),
-        bottomNavigationBar: const CustomNavbar(currentIndex: 0),
+        bottomNavigationBar:  CustomNavbar(),
         appBar: SearchAppBar(
           onChange: (value) => ListController.to.keyword(value),
         ),
