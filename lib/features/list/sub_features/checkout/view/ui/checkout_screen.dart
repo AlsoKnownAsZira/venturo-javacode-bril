@@ -8,6 +8,7 @@ import 'package:venturo_core/constants/image_constant.dart';
 import 'package:venturo_core/features/list/constants/list_assets_constant.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:venturo_core/features/list/sub_features/checkout/view/components/checkout_item_card.dart';
+import 'package:venturo_core/features/list/sub_features/checkout/view/components/checkout_summary.dart';
 import 'package:venturo_core/shared/models/cart_item.dart';
 import 'package:venturo_core/shared/models/menu.dart';
 
@@ -28,6 +29,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userBox = Hive.box('venturo');
+final int userId = userBox.get('userId');
     final cartBox = Hive.box<CartItem>('cartBox');
     // Retrieve items from Hive and convert them to CartItem list
     List<CartItem> items = cartBox.values.toList();
@@ -460,106 +463,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               height:
                   Get.height * 0.11, // Set a fixed height for the bottom sheet
               child:
-                  CheckoutSummary(totalPayment: totalPayment, cartBox: cartBox),
+                  CheckoutSummary(userId :userId,totalPayment:  totalPayment, cartBox: cartBox,selectedVoucherAmount: selectedVoucherAmount),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CheckoutSummary extends StatelessWidget {
-  const CheckoutSummary({
-    super.key,
-    required this.totalPayment,
-    required this.cartBox,
-  });
-
-  final double totalPayment;
-  final Box<CartItem> cartBox;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 255, 255, 255),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromARGB(255, 0, 0, 0),
-            offset: Offset(0, 0),
-            blurRadius: 5,
-          ),
-        ],
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      width: Get.width,
-      child: Padding(
-        padding: EdgeInsets.all(20.w),
-        child: Row(
-          children: [
-            Icon(
-              Icons.monetization_on,
-              color: MainColor.primary,
-              size: 20.w,
-            ),
-            Column(
-              children: [
-                Text(
-                  'Total Pembayaran',
-                  style: TextStyle(fontSize: 20.w, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  totalPayment == 0
-                      ? "Rp 0 (Free)"
-                      : "Rp ${totalPayment.toInt()}",
-                  style: TextStyle(
-                      fontSize: 20.w,
-                      fontWeight: FontWeight.bold,
-                      color: MainColor.primary),
-                ),
-              ],
-            ),
-            const Spacer(),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: MainColor.primary),
-                onPressed: () {
-                  Get.defaultDialog(
-                    title: 'Rincian Diskon',
-                    titleStyle: const TextStyle(
-                        color: MainColor.primary, fontWeight: FontWeight.bold),
-                    content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(ImageConstant.confirm),
-                        const SizedBox(height: 10),
-                        const Text('Pesanan Sedang Disiapkan',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 10),
-                        const Text(
-                            'Kamu dapat melacak pesananmu di fitur Pesanan'),
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Get.offAndToNamed(MainRoute.list),
-                        child: const Text('OK'),
-                      ),
-                    ],
-                  );
-                  cartBox.clear();
-                },
-                child: Text(
-                  "Pesan Sekarang",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.w,
-                      color: Colors.white),
-                ))
           ],
         ),
       ),
