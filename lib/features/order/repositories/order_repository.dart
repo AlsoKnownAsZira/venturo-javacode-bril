@@ -29,7 +29,11 @@ class OrderRepository {
       final responseBody = await response.stream.bytesToString();
       logger.d('Response body: $responseBody');
       final Map<String, dynamic> parsedResponse = json.decode(responseBody);
-      return List<Map<String, dynamic>>.from(parsedResponse['data']);
+      final List<Map<String, dynamic>> orders = List<Map<String, dynamic>>.from(parsedResponse['data']);
+      
+      // Sort orders by date
+      orders.sort((a, b) => DateTime.parse(b['tanggal']).compareTo(DateTime.parse(a['tanggal'])));
+      return orders;
     } else {
       final responseBody = await response.stream.bytesToString();
       logger.e('Failed to fetch orders: ${response.reasonPhrase}');
@@ -40,12 +44,16 @@ class OrderRepository {
 
   Future<List<Map<String, dynamic>>> getOngoingOrder(int userId) async {
     final orders = await getOrdersByUserId(userId);
-    return orders.where((element) => element['status'] < 3).toList();
+    final ongoingOrders = orders.where((element) => element['status'] < 3).toList();
+    ongoingOrders.sort((a, b) => DateTime.parse(b['tanggal']).compareTo(DateTime.parse(a['tanggal'])));
+    return ongoingOrders.take(20).toList();
   }
 
   Future<List<Map<String, dynamic>>> getOrderHistory(int userId) async {
     final orders = await getOrdersByUserId(userId);
-    return orders.where((element) => element['status'] > 2).toList();
+    final historyOrders = orders.where((element) => element['status'] > 2).toList();
+    historyOrders.sort((a, b) => DateTime.parse(b['tanggal']).compareTo(DateTime.parse(a['tanggal'])));
+    return historyOrders.take(20).toList();
   }
 
   Future<Map<String, dynamic>?> getOrderDetail(int userId, int idOrder) async {
