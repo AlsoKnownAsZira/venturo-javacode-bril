@@ -256,7 +256,7 @@ class OrderSummary extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  'Rp ${totalPrice - order['data']['order']['total_bayar']}',
+                  'Rp ${totalPrice - order['total_bayar']}',
                   style: TextStyle(
                       fontSize: 20.w,
                       fontWeight: FontWeight.bold,
@@ -295,7 +295,7 @@ class OrderSummary extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  'Rp ${order['data']['order']['total_bayar']}',
+                  'Rp ${order['total_bayar']}',
                   style: TextStyle(
                       fontSize: 20.w,
                       fontWeight: FontWeight.bold,

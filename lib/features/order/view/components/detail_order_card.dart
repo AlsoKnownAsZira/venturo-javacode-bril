@@ -4,12 +4,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class DetailOrderCard extends StatelessWidget {
-  final Map<String, dynamic> detailOrder;
+  final Map<String, dynamic>? detailOrder;
 
   const DetailOrderCard(this.detailOrder, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (detailOrder == null) {
+      return Center(
+        child: Text(
+          'No order details available',
+          style: Get.textTheme.titleMedium,
+        ),
+      );
+    }
+
     return Ink(
       padding: EdgeInsets.all(7.r),
       decoration: BoxDecoration(
@@ -37,7 +46,7 @@ class DetailOrderCard extends StatelessWidget {
               color: Colors.white,
             ),
             child: CachedNetworkImage(
-              imageUrl: detailOrder['foto'] ??
+              imageUrl: detailOrder!['foto'] ??
                   'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
               fit: BoxFit.contain,
               errorWidget: (context, _, __) => CachedNetworkImage(
@@ -53,13 +62,13 @@ class DetailOrderCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  detailOrder['nama'],
+                  detailOrder!['nama'],
                   style: Get.textTheme.titleMedium,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),
                 Text(
-                  'Rp ${int.parse(detailOrder['harga'])}',
+                  'Rp ${int.parse(detailOrder!['harga'])}',
                   style: Get.textTheme.bodyMedium!.copyWith(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -74,7 +83,7 @@ class DetailOrderCard extends StatelessWidget {
               padding: EdgeInsets.only(left: 12.w, right: 5.w),
               child: Center(
                 child: Text(
-                  detailOrder['jumlah'].toString(),
+                  detailOrder!['jumlah'].toString(),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.w),
                 ),
               ),

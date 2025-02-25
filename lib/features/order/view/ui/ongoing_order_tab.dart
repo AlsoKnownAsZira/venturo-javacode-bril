@@ -27,7 +27,7 @@ class OnGoingOrderTabView extends StatelessWidget {
             order: OrderController.to.onGoingOrders[index],
             onTap: () {
               Get.toNamed(
-                '${MainRoute.order}/${OrderController.to.onGoingOrders[index]['data']['order']['id_order']}',
+                '${MainRoute.order}/${OrderController.to.onGoingOrders[index]['id_order']}',
               );
             },
             onOrderAgain: () {},

@@ -2,11 +2,14 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/features/order/repositories/order_repository.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logger/logger.dart';
 
 class DetailOrderController extends GetxController {
   static DetailOrderController get to => Get.find<DetailOrderController>();
+  final Logger logger = Logger();
 
-  final OrderRepository _orderRepository = OrderRepository(); 
+ late final OrderRepository _orderRepository ; 
 
   // order data
   RxString orderDetailState = 'loading'.obs;
@@ -14,21 +17,20 @@ class DetailOrderController extends GetxController {
 
   Timer? timer;
 
-  @override
+    @override
   void onInit() {
     super.onInit();
 
-    final orderId = int.tryParse(Get.parameters['orderId'] ?? '') ?? 0;
-    if (orderId > 0) {
-      getOrderDetail(orderId).then((value) {
-        timer = Timer.periodic(
-          const Duration(seconds: 10),
-          (_) => getOrderDetail(orderId, isPeriodic: true),
-        );
-      });
-    } else {
-      orderDetailState('error');
-    }
+    _orderRepository = OrderRepository();
+    final orderId = int.parse(Get.parameters['orderId'] as String);
+    final userId = Hive.box('venturo').get('userId');
+
+    getOrderDetail(userId, orderId).then((value) {
+      timer = Timer.periodic(
+        const Duration(seconds: 10),
+        (_) => getOrderDetail(userId, orderId, isPeriodic: true),
+      );
+    });
   }
 
   @override
@@ -37,41 +39,48 @@ class DetailOrderController extends GetxController {
     super.onClose();
   }
 
-  Future<void> getOrderDetail(int orderId, {bool isPeriodic = false}) async {
+ Future<void> getOrderDetail(int userId, int orderId,
+      {bool isPeriodic = false}) async {
     if (!isPeriodic) {
       orderDetailState('loading');
     }
 
     try {
-      final result = _orderRepository.getOrderDetail(orderId);
+      logger
+          .d('Fetching order detail for user ID: $userId, order ID: $orderId');
+      final result = await _orderRepository.getOrderDetail(userId, orderId);
+      logger.d('Order detail fetched successfully: $result');
 
-      if (result != null) {
-        orderDetailState('success');
-        order(result);
-      } else {
-        orderDetailState('error');
+      // Ensure the menu field is parsed as a list of maps
+      if (result != null && result.containsKey('menu')) {
+        result['menu'] = List<Map<String, dynamic>>.from(result['menu']);
       }
+
+      orderDetailState('success');
+      order(result);
     } catch (exception, stacktrace) {
+      logger.e('Failed to fetch order detail: $exception');
       await Sentry.captureException(
         exception,
         stackTrace: stacktrace,
       );
+
       orderDetailState('error');
     }
   }
 
   List<Map<String, dynamic>> get foodItems =>
-      order.value?['data']['detail']
+      order.value?['menu']
           .where((element) => element['kategori'] == 'makanan')
-          .toList() ?? [];
+          .toList() ??[];
 
   List<Map<String, dynamic>> get drinkItems =>
-      order.value?['data']['detail']
+      order.value?['menu']
           .where((element) => element['kategori'] == 'minuman')
-          .toList() ?? [];
+          .toList() ??[];
 
   List<Map<String, dynamic>> get snackItems =>
-      order.value?['data']['detail']
+      order.value?['menu']
           .where((element) => element['kategori'] == 'snack')
-          .toList() ?? [];
+          .toList() ??[];
 }

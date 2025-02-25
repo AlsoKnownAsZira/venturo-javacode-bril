@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/features/order/repositories/order_repository.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logger/logger.dart';
 
 class OrderController extends GetxController {
   static OrderController get to => Get.find<OrderController>();
   late final OrderRepository _orderRepository;
+  final Logger logger = Logger();
 
   @override
   void onInit() {
@@ -26,13 +29,13 @@ class OrderController extends GetxController {
   Rx<String> selectedCategory = 'all'.obs;
 
   Map<String, String> get dateFilterStatus => {
-        'all': 'All status'.tr,
-        'completed': 'Completed'.tr,
-        'cancelled': 'Cancelled'.tr,
+        'all': 'Semua'.tr,
+        'completed': 'Selesai'.tr,
+        'cancelled': 'Dibatalkan'.tr,
       };
 
   Rx<DateTimeRange> selectedDateRange = DateTimeRange(
-    start: DateTime.now().subtract(const Duration(days: 30)),
+    start: DateTime.now().subtract(const Duration(days: 1000)),
     end: DateTime.now(),
   ).obs;
 
@@ -40,14 +43,15 @@ class OrderController extends GetxController {
     onGoingOrderState('loading');
 
     try {
-      final result = _orderRepository.getOngoingOrder();
-      final data = result
-          .where((element) => element['data']['order']['status'] != 4)
-          .toList();
-      onGoingOrders(data.reversed.toList());
+      final userId = Hive.box('venturo').get('userId');
+      logger.d('Fetching ongoing orders for user ID: $userId');
+      final result = await _orderRepository.getOngoingOrder(userId);
+      logger.d('Ongoing orders fetched successfully: $result');
+      onGoingOrders(result.reversed.toList());
 
       onGoingOrderState('success');
     } catch (exception, stacktrace) {
+      logger.e('Failed to fetch ongoing orders: $exception');
       await Sentry.captureException(
         exception,
         stackTrace: stacktrace,
@@ -57,19 +61,19 @@ class OrderController extends GetxController {
     }
   }
 
-  Future<void> getOrderHistories() async {
+   Future<void> getOrderHistories() async {
     orderHistoryState('loading');
 
     try {
-      final result = await _orderRepository.getOrderHistory();
-      print("Order history fetched: $result"); // Debugging
-      historyOrders.assignAll(result.reversed.toList());
-      print("History Orders after update: $historyOrders"); // Debugging
+      final userId = Hive.box('venturo').get('userId');
+      logger.d('Fetching order histories for user ID: $userId');
+      final result = await _orderRepository.getOrderHistory(userId);
+      logger.d('Order histories fetched successfully: $result');
+      historyOrders(result.reversed.toList());
 
       orderHistoryState('success');
     } catch (exception, stacktrace) {
-      print("Error fetching order history: $exception");
-
+      logger.e('Failed to fetch order histories: $exception');
       await Sentry.captureException(
         exception,
         stackTrace: stacktrace,
@@ -86,23 +90,22 @@ class OrderController extends GetxController {
   List<Map<String, dynamic>> get filteredHistoryOrder {
     final historyOrderList = historyOrders.toList();
 
-    if (selectedCategory.value == 'cancelled') {
-      historyOrderList
-          .removeWhere((element) => element['data']['order']['status'] != 3);
+    if (selectedCategory.value == 'canceled') {
+      historyOrderList.removeWhere((element) => element['status'] != 3);
     } else if (selectedCategory.value == 'completed') {
-      historyOrderList
-          .removeWhere((element) => element['data']['order']['status'] != 4);
+      historyOrderList.removeWhere((element) => element['status'] != 4);
     }
 
-    historyOrderList.removeWhere((element) =>
-        DateTime.parse(element['data']['order']['tanggal'] as String)
-            .isBefore(selectedDateRange.value.start) ||
-        DateTime.parse(element['data']['order']['tanggal'] as String)
-            .isAfter(selectedDateRange.value.end));
+    if (selectedDateRange.value != null) {
+      historyOrderList.removeWhere((element) =>
+          DateTime.parse(element['tanggal'] as String)
+              .isBefore(selectedDateRange.value!.start) ||
+          DateTime.parse(element['tanggal'] as String)
+              .isAfter(selectedDateRange.value!.end));
+    }
 
-    historyOrderList.sort((a, b) =>
-        DateTime.parse(b['data']['order']['tanggal'] as String).compareTo(
-            DateTime.parse(a['data']['order']['tanggal'] as String)));
+    historyOrderList.sort((a, b) => DateTime.parse(b['tanggal'] as String)
+        .compareTo(DateTime.parse(a['tanggal'] as String)));
 
     return historyOrderList;
   }

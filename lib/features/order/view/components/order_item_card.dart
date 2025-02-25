@@ -9,23 +9,25 @@ class OrderItemCard extends StatelessWidget {
     this.onTap,
     this.onOrderAgain,
     this.onGiveReview,
+    this.showButtons = false
   });
 
   final Map<String, dynamic> order;
   final VoidCallback? onTap;
   final VoidCallback? onOrderAgain;
   final ValueChanged<int>? onGiveReview;
+  final bool showButtons;
 
   @override
   Widget build(BuildContext context) {
-    final List<dynamic> details = order['data']['detail'] ?? [];
+    final List<dynamic> menu = order['menu'] ?? [];
 
     // Ensure there's at least one item
-    final firstMenuItem = details.isNotEmpty ? details[0] : {'nama': 'Unknown', 'foto': null};
-    final secondMenuItem = details.length > 1 ? details[1] : {'nama': ''};
+    final firstMenuItem = menu.isNotEmpty ? menu[0] : {'nama': 'Unknown', 'foto': null};
+    final secondMenuItem = menu.length > 1 ? menu[1] : {'nama': ''};
 
     // Safe total item count calculation
-    final totalMenuItems = details.fold(0, (sum, item) => sum + (item['jumlah'] as int? ?? 0));
+    final totalMenuItems = menu.fold(0, (sum, item) => sum + (item['jumlah'] as int? ?? 0));
 
     return InkWell(
       onTap: onTap,
@@ -57,7 +59,7 @@ class OrderItemCard extends StatelessWidget {
                 color: Colors.white,
               ),
               child: Image.network(
-                firstMenuItem['foto'] ??
+                firstMenuItem['foto'] ?? 
                     'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
                 fit: BoxFit.contain,
                 errorBuilder: (context, _, __) => Image.network(
@@ -71,7 +73,7 @@ class OrderItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _getStatusText(order['data']['order']['status'] as int? ?? -1), // Handle possible null
+                    _getStatusText(order['status'] as int? ?? -1), // Handle possible null
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
@@ -106,7 +108,7 @@ class OrderItemCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Rp ${(order['data']['order']['total_bayar'] as int? ?? 0).toString()}',
+                        'Rp ${(order['total_bayar'] as int? ?? 0).toString()}',
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
@@ -128,7 +130,7 @@ class OrderItemCard extends StatelessWidget {
               ),
             ),
             Text(
-              order['data']['order']['tanggal']?.toString() ?? '-',
+              order['tanggal']?.toString() ?? '-',
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,

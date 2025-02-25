@@ -79,7 +79,7 @@ class OrderHistoryTabView extends StatelessWidget {
                       order: order,
                       onTap: () {
                         Get.toNamed(
-                          '${MainRoute.order}/${order['data']['order']['id_order']}',
+                          '${MainRoute.order}/${order['id_order']}',
                         );
                       },
                       onOrderAgain: () {},

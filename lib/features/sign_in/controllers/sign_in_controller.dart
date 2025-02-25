@@ -211,9 +211,11 @@ class SignInController extends GetxController {
 
   /// Save session status
   void _saveSession() {
-    var box = Hive.box('venturo');
-    box.put('isLoggedIn', true);
-      box.put('email', emailCtrl.text);
+  var box = Hive.box('venturo');
+  box.put('isLoggedIn', true);
+  box.put('email', emailCtrl.text);
+  box.put('userId', 70); 
   print('Email stored in Hive box: ${emailCtrl.text}');
-  }
+  print('User ID stored in Hive box: 70');
+}
 }

@@ -30,9 +30,7 @@ class OrderTracker extends StatelessWidget {
               child: Conditional.single(
                 context: context,
                 conditionBuilder: (context) =>
-                    DetailOrderController.to.order.value?['data']['order']
-                        ['status'] >=
-                    0,
+                    DetailOrderController.to.order.value?['status'] >= 0,
                 widgetBuilder: (context) => const CheckedStep(),
                 fallbackBuilder: (context) => const UncheckedStep(),
               ),
@@ -41,9 +39,7 @@ class OrderTracker extends StatelessWidget {
               flex: 35,
               child: Container(
                 height: 2.h,
-                color: DetailOrderController.to.order.value?['data']['order']
-                            ['status'] >=
-                        1
+                color: DetailOrderController.to.order.value?['status'] >= 1
                     ? Get.theme.primaryColor
                     : Colors.grey,
               ),
@@ -53,9 +49,7 @@ class OrderTracker extends StatelessWidget {
               child: Conditional.single(
                 context: context,
                 conditionBuilder: (context) =>
-                    DetailOrderController.to.order.value?['data']['order']
-                        ['status'] >=
-                    1,
+                    DetailOrderController.to.order.value?['status'] >= 1,
                 widgetBuilder: (context) => const CheckedStep(),
                 fallbackBuilder: (context) => const UncheckedStep(),
               ),
@@ -64,9 +58,7 @@ class OrderTracker extends StatelessWidget {
               flex: 35,
               child: Container(
                 height: 2.h,
-                color: DetailOrderController.to.order.value?['data']['order']
-                            ['status'] >=
-                        2
+                color: DetailOrderController.to.order.value?['status'] >= 2
                     ? Get.theme.primaryColor
                     : Colors.grey,
               ),
@@ -76,9 +68,7 @@ class OrderTracker extends StatelessWidget {
               child: Conditional.single(
                 context: context,
                 conditionBuilder: (context) =>
-                    DetailOrderController.to.order.value?['data']['order']
-                        ['status'] >=
-                    2,
+                    DetailOrderController.to.order.value?['status'] >= 2,
                 widgetBuilder: (context) => const CheckedStep(),
                 fallbackBuilder: (context) => const UncheckedStep(),
               ),
