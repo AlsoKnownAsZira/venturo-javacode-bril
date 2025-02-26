@@ -3,14 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 
 class OrderItemCard extends StatelessWidget {
-  const OrderItemCard({
-    super.key,
-    required this.order,
-    this.onTap,
-    this.onOrderAgain,
-    this.onGiveReview,
-    this.showButtons = false
-  });
+  const OrderItemCard(
+      {super.key,
+      required this.order,
+      this.onTap,
+      this.onOrderAgain,
+      this.onGiveReview,
+      this.showButtons = false});
 
   final Map<String, dynamic> order;
   final VoidCallback? onTap;
@@ -23,11 +22,13 @@ class OrderItemCard extends StatelessWidget {
     final List<dynamic> menu = order['menu'] ?? [];
 
     // Ensure there's at least one item
-    final firstMenuItem = menu.isNotEmpty ? menu[0] : {'nama': 'Unknown', 'foto': null};
+    final firstMenuItem =
+        menu.isNotEmpty ? menu[0] : {'nama': 'Unknown', 'foto': null};
     final secondMenuItem = menu.length > 1 ? menu[1] : {'nama': ''};
 
     // Safe total item count calculation
-    final totalMenuItems = menu.fold(0, (sum, item) => sum + (item['jumlah'] as int? ?? 0));
+    final totalMenuItems =
+        menu.fold(0, (sum, item) => sum + (item['jumlah'] as int? ?? 0));
 
     return InkWell(
       onTap: onTap,
@@ -46,97 +47,139 @@ class OrderItemCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           children: [
-            // Image
-            Container(
-              height: 100.h,
-              width: 100.w,
-              margin: EdgeInsets.only(right: 10.w),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
-                color: Colors.white,
-              ),
-              child: Image.network(
-                firstMenuItem['foto'] ?? 
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
-                fit: BoxFit.contain,
-                errorBuilder: (context, _, __) => Image.network(
-                  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
-                  fit: BoxFit.contain,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Image
+                Container(
+                  height: 100.h,
+                  width: 100.w,
+                  margin: EdgeInsets.only(right: 10.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    color: Colors.white,
+                  ),
+                  child: Image.network(
+                    firstMenuItem['foto'] ??
+                        'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, _, __) => Image.network(
+                      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/240px-No_image_available.svg.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _getStatusText(order['status'] as int? ?? -1), // Handle possible null
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.amber,
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '${firstMenuItem['nama'] ?? 'Unknown'}\n',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                          ),
-                        ),
-                        TextSpan(
-                          text: secondMenuItem['nama']?.isNotEmpty == true
-                              ? '${secondMenuItem['nama']}...'
-                              : '',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Rp ${(order['total_bayar'] as int? ?? 0).toString()}',
+                        _getStatusText(order['status'] as int? ??
+                            -1), // Handle possible null
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
-                          color: MainColor.primary,
+                          color: Colors.amber,
                         ),
                       ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        '($totalMenuItems menu)',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: MainColor.grey,
+                      SizedBox(height: 10.h),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '${firstMenuItem['nama'] ?? 'Unknown'}\n',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              ),
+                            ),
+                            TextSpan(
+                              text: secondMenuItem['nama']?.isNotEmpty == true
+                                  ? '${secondMenuItem['nama']}...'
+                                  : '',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Rp ${(order['total_bayar'] as int? ?? 0).toString()}',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                              color: MainColor.primary,
+                            ),
+                          ),
+                          SizedBox(width: 10.w),
+                          Text(
+                            '($totalMenuItems menu)',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                              color: MainColor.grey,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                Text(
+                  order['tanggal']?.toString() ?? '-',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: MainColor.grey,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              order['tanggal']?.toString() ?? '-',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: MainColor.grey,
-              ),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 80.w,
+                ),
+                if (showButtons)
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MainColor.white,
+                      side:
+                          const BorderSide(color: MainColor.primary, width: 2),
+                    ),
+                    onPressed: () =>
+                        onGiveReview?.call(order['id'] as int? ?? 0),
+                    child: const Text(
+                      'Beri Penilaian',
+                      style: TextStyle(color: MainColor.primary),
+                    ),
+                  ),
+                SizedBox(
+                  width: 10.w,
+                ),
+                if (showButtons)
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MainColor.primary,
+                      side: const BorderSide(color: MainColor.black, width: 2),
+                    ),
+                    onPressed: onOrderAgain,
+                    child: const Text(
+                      'Pesan Lagi',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+              ],
+            )
           ],
         ),
       ),

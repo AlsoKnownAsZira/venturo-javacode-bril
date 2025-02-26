@@ -76,6 +76,7 @@ class OrderHistoryTabView extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final order = orders[index];
                     return OrderItemCard(
+                      showButtons: true,
                       order: order,
                       onTap: () {
                         Get.toNamed(

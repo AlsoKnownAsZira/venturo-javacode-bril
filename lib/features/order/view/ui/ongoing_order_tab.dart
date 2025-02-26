@@ -24,6 +24,7 @@ class OnGoingOrderTabView extends StatelessWidget {
         () => ListView.separated(
           padding: EdgeInsets.all(25.r),
           itemBuilder: (context, index) => OrderItemCard(
+            showButtons: false,
             order: OrderController.to.onGoingOrders[index],
             onTap: () {
               Get.toNamed(
