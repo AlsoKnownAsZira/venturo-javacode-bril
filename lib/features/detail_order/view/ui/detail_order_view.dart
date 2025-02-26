@@ -6,7 +6,6 @@ import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/detail_order/controllers/detail_order_controller.dart';
 import 'package:venturo_core/features/order/view/components/order_tracker.dart';
 
-import 'package:venturo_core/features/order/view/components/primary_button_title.dart';
 import 'package:venturo_core/features/order/view/components/detail_order_card.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,7 +48,7 @@ class DetailOrderView extends StatelessWidget {
           calculateTotals(drinkItems);
           calculateTotals(snackItems);
 
-          return Container(
+          return SizedBox(
             height: 300, // Set a fixed height for the bottom sheet
             child: OrderSummary(
                 totalQuantity: totalQuantity,
@@ -178,7 +177,7 @@ class DetailOrderView extends StatelessWidget {
                             child: DetailOrderCard(item),
                           )),
                     ],
-                    SizedBox(
+                    const SizedBox(
                       height: 300,
                     )
                   ],
@@ -304,7 +303,49 @@ class OrderSummary extends StatelessWidget {
               ],
             ),
             const Divider(),
-            OrderTracker()
+            if (order['status'] == 4) ...[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.green,
+                    size: 40.w,
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    'Pesanan selesai',
+                    style: TextStyle(
+                      fontSize: 40.w,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+            ] else if (order['status'] == 3) ...[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.cancel_outlined,
+                    color: Colors.red,
+                    size: 40.w,
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    'Pesanan Dibatalkan',
+                    style: TextStyle(
+                      fontSize: 40.w,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ] else ...[
+              const OrderTracker(),
+            ]
           ],
         ),
       ),
@@ -318,11 +359,11 @@ class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
 
   const RoundedAppBar({
-    Key? key,
+    super.key,
     required this.title,
     required this.icon,
     this.actions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

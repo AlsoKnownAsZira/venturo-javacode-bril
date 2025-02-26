@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:venturo_core/configs/themes/main_color.dart';
+
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SearchAppBar({
     super.key,
@@ -49,8 +51,8 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.r),
-            borderSide: BorderSide(
-              color: Theme.of(context).primaryColor,
+            borderSide: const BorderSide(
+              color: MainColor.primary,
             ),
           ),
           isDense: true,
@@ -58,8 +60,8 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
             Icons.search,
             size: 26.h,
           ),
-          prefixIconColor: Theme.of(context).primaryColor,
-          hintText: 'Search'.tr,
+          prefixIconColor: MainColor.primary,
+          hintText: 'Pencarian'.tr,
           hintStyle: Get.textTheme.labelSmall?.copyWith(
             color: Colors.black87,
             fontSize: 14.sp,

@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/controllers/list_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:venturo_core/shared/models/cart_item.dart';
-import 'package:venturo_core/shared/models/menu.dart';
+
 
 class EditMenu extends StatelessWidget {
   final Map<String, dynamic> item;
@@ -41,7 +40,7 @@ class EditMenu extends StatelessWidget {
       listController.selectedNote.value = noteController.text;
     });
 
-    void _showLevelBottomSheet() {
+    void showLevelBottomSheet() {
       showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -56,7 +55,7 @@ class EditMenu extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 20.w, fontWeight: FontWeight.bold),
                     ),
-                    Divider(),
+                   const Divider(),
                     if (listController.levels.isEmpty)
                       Text(
                         'Tidak ada pilihan Level',
@@ -85,7 +84,7 @@ class EditMenu extends StatelessWidget {
       );
     }
 
-    void _showToppingBottomSheet() {
+    void showToppingBottomSheet() {
       showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -100,7 +99,7 @@ class EditMenu extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 20.w, fontWeight: FontWeight.bold),
                     ),
-                    Divider(),
+                  const  Divider(),
                     if (listController.toppings.isEmpty)
                       Text(
                         'Tidak ada pilihan Topping',
@@ -130,7 +129,7 @@ class EditMenu extends StatelessWidget {
       );
     }
 
-    void _showCatatanBottomSheet() {
+    void showCatatanBottomSheet() {
       showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -183,7 +182,7 @@ class EditMenu extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Menu'),
+        title:const Text('Edit Menu'),
         backgroundColor: MainColor.primary,
       ),
       body: SingleChildScrollView(
@@ -255,7 +254,7 @@ class EditMenu extends StatelessWidget {
                             child: Center(
                               child: IconButton(
                                 padding: EdgeInsets.zero,
-                                constraints: BoxConstraints(),
+                                constraints: const BoxConstraints(),
                                 onPressed: () {
                                   if (quantity.value > 1) {
                                     quantity.value--;
@@ -283,12 +282,12 @@ class EditMenu extends StatelessWidget {
                             ),
                             child: IconButton(
                               padding: EdgeInsets.zero,
-                              constraints: BoxConstraints(),
+                              constraints: const BoxConstraints(),
                               onPressed: () {
                                 quantity.value++;
                                 onQuantityChanged(quantity.value);
                               },
-                              icon: Icon(Icons.add, color: Colors.white),
+                              icon: const Icon(Icons.add, color: Colors.white),
                             ),
                           ),
                         ],
@@ -348,7 +347,7 @@ class EditMenu extends StatelessWidget {
                       const Spacer(),
                       IconButton(
                           onPressed: () {
-                            _showLevelBottomSheet();
+                            showLevelBottomSheet();
                           },
                           icon: const Icon(Icons.arrow_forward_ios),
                           style: ButtonStyle(
@@ -371,7 +370,7 @@ class EditMenu extends StatelessWidget {
                       const Spacer(),
                       IconButton(
                           onPressed: () {
-                            _showToppingBottomSheet();
+                            showToppingBottomSheet();
                           },
                           icon: const Icon(Icons.arrow_forward_ios),
                           style: ButtonStyle(
@@ -394,7 +393,7 @@ class EditMenu extends StatelessWidget {
                       const Spacer(),
                       IconButton(
                           onPressed: () {
-                            _showCatatanBottomSheet();
+                            showCatatanBottomSheet();
                           },
                           icon: const Icon(Icons.arrow_forward_ios),
                           style: ButtonStyle(

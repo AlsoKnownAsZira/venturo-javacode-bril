@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
-import 'package:venturo_core/features/list/controllers/list_controller.dart';
 
 class MenuCard extends StatelessWidget {
   final Map<String, dynamic> menu;
@@ -28,9 +27,7 @@ class MenuCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10.r),
           border: Border.all(
-            color: isSelected
-                ? Theme.of(context).primaryColor
-                : Colors.transparent,
+            color: isSelected ? MainColor.primary : Colors.transparent,
             width: 2.w,
           ),
         ),
@@ -73,8 +70,7 @@ class MenuCard extends StatelessWidget {
                   Text(
                     'Rp ${menu['harga'].toString()}',
                     style: Get.textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold),
+                        color: MainColor.primary, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

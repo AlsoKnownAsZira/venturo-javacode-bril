@@ -48,7 +48,7 @@ class CheckoutItemCard extends StatelessWidget {
               color: Colors.black.withOpacity(0.1),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -91,8 +91,7 @@ class CheckoutItemCard extends StatelessWidget {
                   Text(
                     'Rp ${menu['harga'].toString()}',
                     style: Get.textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold),
+                        color: MainColor.primary, fontWeight: FontWeight.bold),
                   ),
                   if (level != null && level.isNotEmpty)
                     Text(
@@ -152,7 +151,7 @@ class CheckoutItemCard extends StatelessWidget {
                       onQuantityChanged(0);
                     }
                   },
-                  icon: Icon(Icons.remove, color: MainColor.primary),
+                  icon:const Icon(Icons.remove, color: MainColor.primary),
                 ),
                 Obx(() => Text(
                       "${quantity.value}",

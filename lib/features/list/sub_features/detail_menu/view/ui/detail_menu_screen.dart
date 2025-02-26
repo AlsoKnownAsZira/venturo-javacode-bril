@@ -67,7 +67,7 @@ class DetailMenuScreen extends StatelessWidget {
       printCartContents();
     }
 
-    void _showLevelBottomSheet() {
+    void showLevelBottomSheet() {
       showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -82,7 +82,7 @@ class DetailMenuScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 20.w, fontWeight: FontWeight.bold),
                     ),
-                    Divider(),
+                   const Divider(),
                     if (listController.levels.isEmpty)
                       Text(
                         'Tidak ada pilihan Level',
@@ -111,7 +111,7 @@ class DetailMenuScreen extends StatelessWidget {
       );
     }
 
-    void _showToppingBottomSheet() {
+    void showToppingBottomSheet() {
       showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -126,7 +126,7 @@ class DetailMenuScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 20.w, fontWeight: FontWeight.bold),
                     ),
-                    Divider(),
+                 const   Divider(),
                     if (listController.toppings.isEmpty)
                       Text(
                         'Tidak ada pilhan Topping',
@@ -156,7 +156,7 @@ class DetailMenuScreen extends StatelessWidget {
       );
     }
 
-   void _showCatatanBottomSheet() {
+   void showCatatanBottomSheet() {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -295,7 +295,7 @@ class DetailMenuScreen extends StatelessWidget {
                             child: Center(
                               child: IconButton(
                                 padding: EdgeInsets.zero,
-                                constraints: BoxConstraints(),
+                                constraints:const BoxConstraints(),
                                 onPressed: () {
                                   ListController.to.decrement();
                                 },
@@ -320,11 +320,11 @@ class DetailMenuScreen extends StatelessWidget {
                             ),
                             child: IconButton(
                               padding: EdgeInsets.zero,
-                              constraints: BoxConstraints(),
+                              constraints:const BoxConstraints(),
                               onPressed: () {
                                 ListController.to.increment();
                               },
-                              icon: Icon(Icons.add, color: Colors.white),
+                              icon: const Icon(Icons.add, color: Colors.white),
                             ),
                           ),
                         ],
@@ -384,7 +384,7 @@ class DetailMenuScreen extends StatelessWidget {
                       const Spacer(),
                       IconButton(
                           onPressed: () {
-                            _showLevelBottomSheet();
+                            showLevelBottomSheet();
                           },
                           icon: const Icon(Icons.arrow_forward_ios),
                           style: ButtonStyle(
@@ -407,7 +407,7 @@ class DetailMenuScreen extends StatelessWidget {
                       const Spacer(),
                       IconButton(
                           onPressed: () {
-                            _showToppingBottomSheet();
+                            showToppingBottomSheet();
                           },
                           icon: const Icon(Icons.arrow_forward_ios),
                           style: ButtonStyle(
@@ -430,7 +430,7 @@ class DetailMenuScreen extends StatelessWidget {
                       const Spacer(),
                       IconButton(
                           onPressed: () {
-                            _showCatatanBottomSheet();
+                            showCatatanBottomSheet();
                           },
                           icon: const Icon(Icons.arrow_forward_ios),
                           style: ButtonStyle(

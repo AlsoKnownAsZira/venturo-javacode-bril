@@ -52,8 +52,8 @@ class PromoCard extends StatelessWidget {
               thumbnailUrl.isNotEmpty ? thumbnailUrl : defaultImageUrl,
             ),
             fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Theme.of(context).primaryColor.withAlpha(150),
+            colorFilter: const ColorFilter.mode(
+              Color.fromARGB(120, 0, 112, 127),
               BlendMode.srcATop,
             ),
           ),

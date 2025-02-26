@@ -5,6 +5,7 @@ import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/list/constants/list_assets_constant.dart';
 import 'package:venturo_core/features/list/view/components/promo_card.dart';
 import 'package:flutter_html/flutter_html.dart';
+
 class PromoScreen extends StatelessWidget {
   PromoScreen({super.key});
 
@@ -29,7 +30,13 @@ class PromoScreen extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
-        title: const Text('Promo'),
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.local_offer, color: MainColor.primary),
+            Text('Promo'),
+          ],
+        ),
       ),
       body: ListView(
         children: [
@@ -93,7 +100,7 @@ class PromoScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.list_alt, color: MainColor.primary),
+                    const  Icon(Icons.list_alt, color: MainColor.primary),
                       const SizedBox(width: 10.0),
                       Text(
                         'Syarat dan ketentuan',

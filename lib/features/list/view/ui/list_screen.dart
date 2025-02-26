@@ -85,7 +85,7 @@ class ListScreen extends StatelessWidget {
                 SizedBox(height: 10.h),
                 Obx(() {
                   if (promoController.isLoading.value) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else {
                     return CarouselSlider(
                       options: CarouselOptions(
@@ -124,7 +124,7 @@ class ListScreen extends StatelessWidget {
                             return Padding(
                               padding: EdgeInsets.only(right: 10.w),
                               child: MenuChip(
-                                text: category,
+                                text: category.capitalizeFirst ?? '',
                                 icon: category == 'makanan'
                                     ? Icons.fastfood
                                     : category == 'minuman'

@@ -29,9 +29,12 @@ class CheckoutVoucherScreen extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
-        title: const Text(
-          "Pilih Voucher",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.local_offer, color: MainColor.primary),
+            Text('Pilih Voucher'),
+          ],
         ),
       ),
       body: SingleChildScrollView(
@@ -99,7 +102,32 @@ class CheckoutVoucherScreen extends StatelessWidget {
                   expiredIn: "1 Month",
                 ),
               ),
-              Container(
+              const Row(
+                children: [
+                  Icon(
+                    Icons.check_circle_outline,
+                    color: MainColor.primary,
+                  ),
+                  Expanded(
+                    child: Text.rich(
+                      TextSpan(
+                        text: "Penggunaan voucher tidak dapat digabung dengan ",
+                        children: [
+                          TextSpan(
+                            text: "discount employee reward program",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: MainColor.primary),
+                          ),
+                        ],
+                      ),
+                      maxLines: 2, // Allow the text to wrap to the next line
+                      overflow: TextOverflow.visible,
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
                 width: Get.width,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

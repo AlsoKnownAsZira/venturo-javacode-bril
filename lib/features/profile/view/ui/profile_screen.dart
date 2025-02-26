@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
             children: [
               Obx(() {
                 if (profileController.isLoading.value) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else {
                   final userProfile = profileController.userProfile;
                   return Column(
@@ -147,7 +147,7 @@ class ProfileScreen extends StatelessWidget {
                                   const Spacer(),
                                   Text(
                                     '${userProfile['tgl_lahir'] ?? 'Unknown'}',
-                                    style: TextStyle(fontSize: 18),
+                                    style:const TextStyle(fontSize: 18),
                                   ),
                                   IconButton(
                                       onPressed: () {},
@@ -169,7 +169,7 @@ class ProfileScreen extends StatelessWidget {
                                   const Spacer(),
                                   Text(
                                     '${userProfile['telepon'] ?? 'Unknown'}',
-                                    style: TextStyle(fontSize: 18),
+                                    style:const TextStyle(fontSize: 18),
                                   ),
                                   IconButton(
                                       onPressed: () {},
@@ -191,7 +191,7 @@ class ProfileScreen extends StatelessWidget {
                                   const Spacer(),
                                   Text(
                                     '${userProfile['email'] ?? 'Unknown'}',
-                                    style: TextStyle(fontSize: 18),
+                                    style:const TextStyle(fontSize: 18),
                                   ),
                                   IconButton(
                                       onPressed: () {},

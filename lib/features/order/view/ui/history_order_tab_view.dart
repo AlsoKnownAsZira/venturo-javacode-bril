@@ -38,7 +38,7 @@ class OrderHistoryTabView extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 16),
+          const    SizedBox(width: 16),
               Expanded(
                 child: Obx(
                   () => DatePicker(
@@ -63,11 +63,11 @@ class OrderHistoryTabView extends StatelessWidget {
                 final orders = OrderController.to.filteredHistoryOrder;
 
                 if (OrderController.to.orderHistoryState.value == 'loading') {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (orders.isEmpty) {
-                  return Center(child: Text('No orders found'));
+                  return const Center(child: Text('No orders found'));
                 }
 
                 return ListView.separated(

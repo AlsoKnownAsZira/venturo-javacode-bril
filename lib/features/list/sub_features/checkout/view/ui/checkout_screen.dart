@@ -86,7 +86,7 @@ final int userId = userBox.get('userId');
       totalPayment = 0;
     }
 
-    void _showEditNoteDialog(CartItem item) {
+    void showEditNoteDialog(CartItem item) {
       TextEditingController noteController =
           TextEditingController(text: item.note);
 
@@ -96,7 +96,7 @@ final int userId = userBox.get('userId');
           children: [
             TextField(
               controller: noteController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter note',
               ),
             ),
@@ -108,14 +108,14 @@ final int userId = userBox.get('userId');
                 });
                 Get.back();
               },
-              child: Text('Save'),
+              child:const  Text('Save'),
             ),
           ],
         ),
       );
     }
 
-    void _updateTotals() {
+    void updateTotals() {
       setState(() {
         totalQuantity = items.fold<int>(0, (sum, item) => sum + item.quantity);
         totalPrice = items.fold<int>(
@@ -128,11 +128,11 @@ final int userId = userBox.get('userId');
       });
     }
 
-    void _removeItem(CartItem item) {
+    void removeItem(CartItem item) {
       setState(() {
         cartBox.delete(item.key);
         items.remove(item);
-        _updateTotals();
+        updateTotals();
       });
     }
 
@@ -185,7 +185,7 @@ final int userId = userBox.get('userId');
                   ...kategoriItems.map((item) {
                     return GestureDetector(
                       onTap: () {
-                        _showEditNoteDialog(item);
+                        showEditNoteDialog(item);
                       },
                       child: CheckoutItemCard(
                         item: {
@@ -199,7 +199,7 @@ final int userId = userBox.get('userId');
                         onQuantityChanged: (newQuantity) {
                           setState(() {
                             if (newQuantity == 0) {
-                              _removeItem(item);
+                              removeItem(item);
                             } else {
                               item.quantity = newQuantity;
                               cartBox.put(
@@ -210,7 +210,7 @@ final int userId = userBox.get('userId');
                                   listController.selectedTopping.value;
                               cartBox.put(
                                   item.key, item); // Update the item in the box
-                              _updateTotals();
+                              updateTotals();
                             }
                           });
                         },
@@ -358,7 +358,7 @@ final int userId = userBox.get('userId');
                                 setState(() {
                                   selectedVoucher = result['voucher'];
                                   selectedVoucherAmount = result['amount'];
-                                  _updateTotals();
+                                  updateTotals();
                                 });
                               }
                             },
@@ -459,7 +459,7 @@ final int userId = userBox.get('userId');
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               height:
                   Get.height * 0.11, // Set a fixed height for the bottom sheet
               child:
