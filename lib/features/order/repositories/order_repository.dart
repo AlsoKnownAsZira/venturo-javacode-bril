@@ -61,4 +61,31 @@ class OrderRepository {
     return orders.firstWhere((element) => element['id_order'] == idOrder,
         orElse: () => {});
   }
+
+Future<void> createOrder(Map<String, dynamic> newOrder) async {
+    var headers = {
+      'Content-Type': 'application/json',
+      'token': token,
+      'Cookie': 'PHPSESSID=994efc163c62acb0186812f3df3c9619'
+    };
+    var request = http.Request('POST', Uri.parse('${baseUrl}order/add')); // Update this URL if necessary
+    request.headers.addAll(headers);
+    request.body = json.encode(newOrder);
+
+    logger.d('Sending request to ${request.url}');
+    logger.d('Request headers: ${request.headers}');
+    logger.d('Request body: ${request.body}');
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseBody = await response.stream.bytesToString();
+      logger.d('Response body: $responseBody');
+    } else {
+      final responseBody = await response.stream.bytesToString();
+      logger.e('Failed to create order: ${response.reasonPhrase}');
+      logger.e('Response body: $responseBody');
+      throw Exception('Failed to create order: ${response.reasonPhrase}');
+    }
+  }
 }

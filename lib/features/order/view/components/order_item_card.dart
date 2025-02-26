@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
+import 'package:venturo_core/features/order/controllers/order_controller.dart';
 
 class OrderItemCard extends StatelessWidget {
   const OrderItemCard(
@@ -20,6 +22,7 @@ class OrderItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<dynamic> menu = order['menu'] ?? [];
+    final OrderController orderController = Get.find<OrderController>();
 
     // Ensure there's at least one item
     final firstMenuItem =
@@ -76,8 +79,7 @@ class OrderItemCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _getStatusText(order['status'] as int? ??
-                            -1), // Handle possible null
+                        _getStatusText(order['status'] as int? ?? -1),
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
@@ -172,7 +174,11 @@ class OrderItemCard extends StatelessWidget {
                       backgroundColor: MainColor.primary,
                       side: const BorderSide(color: MainColor.black, width: 2),
                     ),
-                    onPressed: onOrderAgain,
+                    onPressed: () {
+
+                      Get.snackbar('Pesan lagi sukses!', 'Silahkan cek pesanan berjalan',backgroundColor: Colors.green,colorText: Colors.white);
+                      orderController.orderAgain(order);
+                    },
                     child: const Text(
                       'Pesan Lagi',
                       style: TextStyle(color: Colors.white),
