@@ -116,92 +116,63 @@ class ProfileScreen extends StatelessWidget {
                           padding: EdgeInsets.all(16.w),
                           child: Column(
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    'Nama',
-                                    style: TextStyle(
-                                        fontSize: 20.w,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    '${userProfile['nama'] ?? 'Unknown'}',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.arrow_forward_ios),
-                                      style: ButtonStyle(
-                                          iconSize:
-                                              MaterialStateProperty.all(20.w))),
-                                ],
+                              _buildProfileRow(
+                                context,
+                                'Nama',
+                                userProfile['nama'] ?? 'Unknown',
+                                () => _showEditBottomSheet(
+                                  context,
+                                  'Nama',
+                                  userProfile['nama'] ?? 'Unknown',
+                                  (value) => profileController.updateUserProfile({
+                                    ...userProfile,
+                                    'nama': value,
+                                  }),
+                                ),
                               ),
                               const Divider(),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Tanggal Lahir',
-                                    style: TextStyle(
-                                        fontSize: 20.w,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    '${userProfile['tgl_lahir'] ?? 'Unknown'}',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.arrow_forward_ios),
-                                      style: ButtonStyle(
-                                          iconSize:
-                                              MaterialStateProperty.all(20.w))),
-                                ],
+                              _buildProfileRow(
+                                context,
+                                'Tanggal Lahir',
+                                userProfile['tgl_lahir'] ?? 'Unknown',
+                                () => _showDatePicker(
+                                  context,
+                                  userProfile['tgl_lahir'] ?? 'Unknown',
+                                  (value) => profileController.updateUserProfile({
+                                    ...userProfile,
+                                    'tgl_lahir': value,
+                                  }),
+                                ),
                               ),
                               const Divider(),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Telepon',
-                                    style: TextStyle(
-                                        fontSize: 20.w,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    '${userProfile['telepon'] ?? 'Unknown'}',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.arrow_forward_ios),
-                                      style: ButtonStyle(
-                                          iconSize:
-                                              MaterialStateProperty.all(20.w))),
-                                ],
+                              _buildProfileRow(
+                                context,
+                                'Telepon',
+                                userProfile['telepon'] ?? 'Unknown',
+                                () => _showEditBottomSheet(
+                                  context,
+                                  'Telepon',
+                                  userProfile['telepon'] ?? 'Unknown',
+                                  (value) => profileController.updateUserProfile({
+                                    ...userProfile,
+                                    'telepon': value,
+                                  }),
+                                ),
                               ),
                               const Divider(),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Email',
-                                    style: TextStyle(
-                                        fontSize: 20.w,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    '${userProfile['email'] ?? 'Unknown'}',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.arrow_forward_ios),
-                                      style: ButtonStyle(
-                                          iconSize:
-                                              MaterialStateProperty.all(20.w))),
-                                ],
+                              _buildProfileRow(
+                                context,
+                                'Email',
+                                userProfile['email'] ?? 'Unknown',
+                                () => _showEditBottomSheet(
+                                  context,
+                                  'Email',
+                                  userProfile['email'] ?? 'Unknown',
+                                  (value) => profileController.updateUserProfile({
+                                    ...userProfile,
+                                    'email': value,
+                                  }),
+                                ),
                               ),
                             ],
                           ),
@@ -318,5 +289,79 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildProfileRow(BuildContext context, String title, String value, VoidCallback onEdit) {
+    return Row(
+      children: [
+        Text(
+          title,
+          style: TextStyle(fontSize: 20.w, fontWeight: FontWeight.bold),
+        ),
+        const Spacer(),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 18),
+        ),
+        IconButton(
+          onPressed: onEdit,
+          icon: const Icon(Icons.arrow_forward_ios),
+          style: ButtonStyle(
+            iconSize: MaterialStateProperty.all(20.w),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showEditBottomSheet(BuildContext context, String field, String currentValue, Function(String) onSave) {
+    final TextEditingController controller = TextEditingController(text: currentValue);
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Edit $field',
+                style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 16.h),
+              TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  labelText: field,
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 16.h),
+              ElevatedButton(
+                onPressed: () {
+                  onSave(controller.text);
+                  Navigator.pop(context);
+                },
+                child: Text('Save'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showDatePicker(BuildContext context, String currentDate, Function(String) onSave) {
+    DateTime initialDate = DateTime.tryParse(currentDate) ?? DateTime.now();
+    showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    ).then((selectedDate) {
+      if (selectedDate != null) {
+        onSave(selectedDate.toIso8601String().split('T').first);
+      }
+    });
   }
 }

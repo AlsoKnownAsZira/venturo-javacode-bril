@@ -16,12 +16,12 @@ class ProfileController extends GetxController {
   var isLoading = true.obs;
   final RxString deviceModel = ''.obs;
   final RxString deviceVersion = ''.obs;
+
   @override
   void onInit() {
-    fetchUserProfile();
-
     super.onInit();
     _initDeviceInfo();
+    loadUserProfile();
   }
 
   Future<void> _initDeviceInfo() async {
@@ -40,7 +40,6 @@ class ProfileController extends GetxController {
       Get.snackbar("Error", "Failed to get device info: $e");
     }
   }
-
 
   Future<void> signOut() async {
     try {
@@ -66,8 +65,30 @@ class ProfileController extends GetxController {
       isLoading(true);
       var profile = await ProfileRepository().fetchUserProfile();
       userProfile.value = profile;
+      saveUserProfile(profile); // Save profile locally
     } finally {
       isLoading(false);
     }
+  }
+
+  void saveUserProfile(Map<String, dynamic> profile) async {
+    var box = Hive.box('venturo');
+    await box.put('userProfile', profile);
+  }
+
+  void loadUserProfile() async {
+    var box = Hive.box('venturo');
+    var profile = box.get('userProfile');
+    if (profile != null) {
+      userProfile.value = profile;
+      isLoading.value = false;
+    } else {
+      fetchUserProfile();
+    }
+  }
+
+  void updateUserProfile(Map<String, dynamic> updatedProfile) async {
+    userProfile.value = updatedProfile;
+    saveUserProfile(updatedProfile);
   }
 }
