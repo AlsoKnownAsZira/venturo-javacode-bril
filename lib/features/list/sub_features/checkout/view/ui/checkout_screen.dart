@@ -30,7 +30,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final userBox = Hive.box('venturo');
-final int userId = userBox.get('userId');
+    final int userId = userBox.get('userId');
     final cartBox = Hive.box<CartItem>('cartBox');
     // Retrieve items from Hive and convert them to CartItem list
     List<CartItem> items = cartBox.values.toList();
@@ -108,7 +108,7 @@ final int userId = userBox.get('userId');
                 });
                 Get.back();
               },
-              child:const  Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         ),
@@ -220,7 +220,7 @@ final int userId = userBox.get('userId');
                 ],
               );
             }),
-            SizedBox(height: 365.h),
+            SizedBox(height: 430.h),
             Container(
               width: Get.width,
               height: Get.height * 0.303,
@@ -460,10 +460,12 @@ final int userId = userBox.get('userId');
               ),
             ),
             SizedBox(
-              height:
-                  Get.height * 0.11, // Set a fixed height for the bottom sheet
-              child:
-                  CheckoutSummary(userId :userId,totalPayment:  totalPayment, cartBox: cartBox,selectedVoucherAmount: selectedVoucherAmount),
+              height: Get.height * 0.11,
+              child: CheckoutSummary(
+                  userId: userId,
+                  totalPayment: totalPayment,
+                  cartBox: cartBox,
+                  selectedVoucherAmount: selectedVoucherAmount),
             ),
           ],
         ),

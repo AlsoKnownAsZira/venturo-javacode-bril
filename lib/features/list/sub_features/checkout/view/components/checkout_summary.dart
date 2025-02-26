@@ -11,7 +11,7 @@ import 'dart:convert';
 import 'package:logger/logger.dart';
 
 class CheckoutSummary extends StatelessWidget {
-   CheckoutSummary({
+  CheckoutSummary({
     super.key,
     required this.totalPayment,
     required this.cartBox,
@@ -120,6 +120,16 @@ class CheckoutSummary extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: MainColor.primary),
                 onPressed: () async {
+                  if (cartBox.isEmpty) {
+                    Get.snackbar(
+                      'Cart is empty',
+                      'Please add items to the cart before checking out.',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                    return;
+                  }
                   await postOrder();
                   Get.defaultDialog(
                     title: 'Rincian Diskon',
