@@ -62,9 +62,11 @@ class ProfileScreen extends StatelessWidget {
                       SizedBox(height: 40.h),
                       CircleAvatar(
                         radius: 100.h,
-                        backgroundImage: userProfile['foto'] != null
+                        backgroundImage: userProfile['foto'] != null &&
+                                userProfile['foto'] is String
                             ? NetworkImage(userProfile['foto'])
-                            : ImageConstant.logo as ImageProvider<Object>?,
+                            : AssetImage(ImageConstant.logo)
+                                as ImageProvider<Object>?,
                       ),
                       SizedBox(height: 16.h),
                       Row(
@@ -147,7 +149,7 @@ class ProfileScreen extends StatelessWidget {
                                   const Spacer(),
                                   Text(
                                     '${userProfile['tgl_lahir'] ?? 'Unknown'}',
-                                    style:const TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                   IconButton(
                                       onPressed: () {},
@@ -169,7 +171,7 @@ class ProfileScreen extends StatelessWidget {
                                   const Spacer(),
                                   Text(
                                     '${userProfile['telepon'] ?? 'Unknown'}',
-                                    style:const TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                   IconButton(
                                       onPressed: () {},
@@ -191,7 +193,7 @@ class ProfileScreen extends StatelessWidget {
                                   const Spacer(),
                                   Text(
                                     '${userProfile['email'] ?? 'Unknown'}',
-                                    style:const TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                   IconButton(
                                       onPressed: () {},
@@ -280,6 +282,29 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                             ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Add your sign-out logic here
+                          profileController.signOut();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50.w, vertical: 15.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: Text(
+                          'Sign Out',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
                       ),

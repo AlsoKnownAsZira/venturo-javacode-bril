@@ -12,6 +12,7 @@ import 'package:venturo_core/shared/controllers/global_controllers/initial_contr
 import 'package:venturo_core/shared/styles/google_text_style.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 
 class SignInController extends GetxController {
   static SignInController get to => Get.find();
@@ -21,7 +22,8 @@ class SignInController extends GetxController {
 
   /// Google Sign-In instance
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-   final Dio _dio = Dio();
+  final Dio _dio = Dio();
+  final Logger logger = Logger();
 
   /// Form Variable Setting
   var formKey = GlobalKey<FormState>();
@@ -61,51 +63,59 @@ class SignInController extends GetxController {
       Get.toNamed(MainRoute.noConnection);
     }
   }
- Future<void> _signInWithApi(BuildContext context) async {
-    final url = 'https://trainee.landa.id/javacode/auth/login';
-    try {
-      final response = await _dio.post(
-        url,
-        data: {
-          'email': emailCtrl.text,
-          'password': passwordCtrl.text,
-        },
-      );
 
-      EasyLoading.dismiss();
+Future<void> _signInWithApi(BuildContext context) async {
+  final url = 'https://trainee.landa.id/javacode/auth/login';
+  try {
+    logger.d('Sending login request to $url with email: ${emailCtrl.text}');
+    final response = await _dio.post(
+      url,
+      data: {
+        'email': emailCtrl.text,
+        'password': passwordCtrl.text,
+      },
+    );
 
-      if (response.statusCode == 200) {
-        final responseData = response.data;
-        _saveSession();
-        Get.toNamed(MainRoute.checkloc);
-      } else {
-        PanaraInfoDialog.show(
-          context,
-          title: "Warning",
-          message: "Email & Password Salah",
-          buttonText: "Coba lagi",
-          onTapDismiss: () {
-            Get.back();
-          },
-          panaraDialogType: PanaraDialogType.warning,
-          barrierDismissible: false,
-        );
-      }
-    } catch (e) {
-      EasyLoading.dismiss();
+    EasyLoading.dismiss();
+
+    logger.d('Received response: ${response.data}');
+
+    if (response.statusCode == 200 && response.data['status_code'] == 200) {
+      final responseData = response.data['data'];
+      logger.d('Login successful, userId: ${responseData['user']['id_user']}');
+      _saveSession(responseData['user']['id_user']); // Pass the userId from the response
+      Get.toNamed(MainRoute.checkloc);
+    } else {
+      logger.w('Login failed, response: ${response.data}');
       PanaraInfoDialog.show(
         context,
-        title: "Error",
-        message: "Failed to sign in. Please try again.",
+        title: "Warning",
+        message: "Email & Password Salah",
         buttonText: "Coba lagi",
         onTapDismiss: () {
           Get.back();
         },
-        panaraDialogType: PanaraDialogType.error,
+        panaraDialogType: PanaraDialogType.warning,
         barrierDismissible: false,
       );
     }
+  } catch (e) {
+    EasyLoading.dismiss();
+    logger.e('Login request failed: $e');
+    PanaraInfoDialog.show(
+      context,
+      title: "Error",
+      message: "Failed to sign in. Please try again.",
+      buttonText: "Coba lagi",
+      onTapDismiss: () {
+        Get.back();
+      },
+      panaraDialogType: PanaraDialogType.error,
+      barrierDismissible: false,
+    );
   }
+}
+
   /// Flavor setting
   void flavorSeting() async {
     Get.bottomSheet(
@@ -198,7 +208,7 @@ class SignInController extends GetxController {
       );
 
       await _auth.signInWithCredential(credential);
-      _saveSession();
+      _saveSession(googleUser.id.hashCode); // Use a unique identifier for the user
 
       Get.toNamed(MainRoute.checkloc);
 
@@ -210,12 +220,12 @@ class SignInController extends GetxController {
   }
 
   /// Save session status
-  void _saveSession() {
-  var box = Hive.box('venturo');
-  box.put('isLoggedIn', true);
-  box.put('email', emailCtrl.text);
-  box.put('userId', 70); 
-  print('Email stored in Hive box: ${emailCtrl.text}');
-  print('User ID stored in Hive box: 70');
-}
+  void _saveSession(int userId) {
+    var box = Hive.box('venturo');
+    box.put('isLoggedIn', true);
+    box.put('email', emailCtrl.text);
+    box.put('userId', userId); // Store the userId from the response
+    logger.d('Email stored in Hive box: ${emailCtrl.text}');
+    logger.d('User ID stored in Hive box: $userId');
+  }
 }

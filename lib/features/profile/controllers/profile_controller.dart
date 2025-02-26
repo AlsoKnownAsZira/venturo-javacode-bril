@@ -4,6 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:venturo_core/features/profile/repositories/profile_repository.dart';
+import 'package:venturo_core/features/sign_in/controllers/sign_in_controller.dart';
 
 class ProfileController extends GetxController {
   static ProfileController get to => Get.find();
@@ -40,13 +41,21 @@ class ProfileController extends GetxController {
     }
   }
 
+
   Future<void> signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
       var box = Hive.box('venturo');
 
       await box.clear();
-      Get.offAndToNamed(MainRoute.signIn);
+
+      SignInController.to.emailCtrl.clear();
+      SignInController.to.passwordCtrl.clear();
+
+      userProfile.value = {};
+      isLoading.value = true;
+
+      Get.offAllNamed(MainRoute.signIn); 
     } catch (e) {
       Get.snackbar("Error", "Failed to sign out: $e");
     }
