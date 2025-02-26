@@ -78,13 +78,22 @@ class OrderItemCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        _getStatusText(order['status'] as int? ?? -1),
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.amber,
-                        ),
+                      Row(
+                        children: [
+                          Icon(
+                            _getStatusIcon(order['status'] as int? ?? -1),
+                            color: _getStatusColor(order['status'] as int? ?? -1),
+                          ),
+                          SizedBox(width: 5.w),
+                          Text(
+                            _getStatusText(order['status'] as int? ?? -1),
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                              color: _getStatusColor(order['status'] as int? ?? -1),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 10.h),
                       RichText(
@@ -175,8 +184,6 @@ class OrderItemCard extends StatelessWidget {
                       side: const BorderSide(color: MainColor.black, width: 2),
                     ),
                     onPressed: () {
-
-                      Get.snackbar('Pesan lagi sukses!', 'Silahkan cek pesanan berjalan',backgroundColor: Colors.green,colorText: Colors.white);
                       orderController.orderAgain(order);
                     },
                     child: const Text(
@@ -206,6 +213,36 @@ class OrderItemCard extends StatelessWidget {
         return 'Selesai';
       default:
         return 'Unknown';
+    }
+  }
+
+  IconData _getStatusIcon(int status) {
+    switch (status) {
+      case 0:
+      case 1:
+      case 2:
+        return Icons.access_time;
+      case 3:
+        return Icons.cancel;
+      case 4:
+        return Icons.check_circle;
+      default:
+        return Icons.help;
+    }
+  }
+
+  Color _getStatusColor(int status) {
+    switch (status) {
+      case 0:
+      case 1:
+      case 2:
+        return Colors.amber;
+      case 3:
+        return Colors.red;
+      case 4:
+        return Colors.green;
+      default:
+        return Colors.grey;
     }
   }
 }
