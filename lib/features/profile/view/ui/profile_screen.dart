@@ -318,9 +318,15 @@ class ProfileScreen extends StatelessWidget {
     final TextEditingController controller = TextEditingController(text: currentValue);
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (context) {
         return Padding(
-          padding: EdgeInsets.all(16.w),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 16.w,
+            right: 16.w,
+            top: 16.h,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
