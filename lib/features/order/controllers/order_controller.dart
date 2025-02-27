@@ -126,12 +126,11 @@ Future<void> orderAgain(Map<String, dynamic> order) async {
       final userId = Hive.box('venturo').get('userId');
       logger.d('Re-ordering for user ID: $userId with order ID: ${order['id']}');
       
-      // Construct the new order payload
       final newOrder = {
         "order": {
           "id_user": userId,
-          "id_voucher": 1, // Adjust this as needed
-          "potongan": 0, // Adjust this as needed
+          "id_voucher": 1, 
+          "potongan": 0, 
           "total_bayar": order['total_bayar']
         },
         "menu": order['menu'].map((item) => {
@@ -146,7 +145,6 @@ Future<void> orderAgain(Map<String, dynamic> order) async {
       await _orderRepository.createOrder(newOrder);
       logger.d('Order created successfully: $newOrder');
 
-      // Optionally, you can refresh the ongoing orders
       await getOngoingOrders();
     } catch (exception, stacktrace) {
       logger.e('Failed to re-order: $exception');

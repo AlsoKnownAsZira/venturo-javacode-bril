@@ -20,4 +20,5 @@ static const String promo = '/list_promo';
 static const String checkoutVoucher = '/list_checkout_voucher';
 static const String checkoutDiscount = '/list_checkout_discount';
 static const String checkoutVoucherDetail = '/list_checkout_voucher_detail';
+static const String rating = '/rating';
 }

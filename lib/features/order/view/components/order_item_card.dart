@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:venturo_core/configs/routes/route.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/order/controllers/order_controller.dart';
 
@@ -82,7 +83,8 @@ class OrderItemCard extends StatelessWidget {
                         children: [
                           Icon(
                             _getStatusIcon(order['status'] as int? ?? -1),
-                            color: _getStatusColor(order['status'] as int? ?? -1),
+                            color:
+                                _getStatusColor(order['status'] as int? ?? -1),
                           ),
                           SizedBox(width: 5.w),
                           Text(
@@ -90,7 +92,8 @@ class OrderItemCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
-                              color: _getStatusColor(order['status'] as int? ?? -1),
+                              color: _getStatusColor(
+                                  order['status'] as int? ?? -1),
                             ),
                           ),
                         ],
@@ -167,8 +170,7 @@ class OrderItemCard extends StatelessWidget {
                       side:
                           const BorderSide(color: MainColor.primary, width: 2),
                     ),
-                    onPressed: () =>
-                        onGiveReview?.call(order['id'] as int? ?? 0),
+                    onPressed: () => Get.toNamed(MainRoute.rating),
                     child: const Text(
                       'Beri Penilaian',
                       style: TextStyle(color: MainColor.primary),

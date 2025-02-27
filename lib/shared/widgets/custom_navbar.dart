@@ -16,7 +16,7 @@ class CustomNavbar extends StatelessWidget {
       case MainRoute.order:
         selectedIndex.value = 1;
         break;
-   
+
       case MainRoute.profile:
         selectedIndex.value = 2;
         break;
@@ -29,13 +29,13 @@ class CustomNavbar extends StatelessWidget {
     selectedIndex.value = index;
     switch (index) {
       case 0:
-        Get.toNamed(MainRoute.list);
+        Get.offAndToNamed(MainRoute.list);
         break;
       case 1:
-        Get.toNamed(MainRoute.order);
+        Get.offAndToNamed(MainRoute.order);
         break;
       case 2:
-        Get.toNamed(MainRoute.profile);
+        Get.offAndToNamed(MainRoute.profile);
         break;
     }
   }

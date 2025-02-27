@@ -17,6 +17,7 @@ import 'package:venturo_core/features/list/view/ui/list_screen.dart';
 import 'package:venturo_core/features/order/bindings/order_binding.dart';
 import 'package:venturo_core/features/detail_order/view/ui/detail_order_view.dart';
 import 'package:venturo_core/features/order/view/ui/order_screen.dart';
+import 'package:venturo_core/features/profile/sub_features/rating/view/ui/rating_screen.dart';
 import 'package:venturo_core/features/sign_in/sub_features/no_connection/view/ui/no_connection_screen.dart';
 import 'package:venturo_core/features/sign_in/view/ui/sign_in_screen.dart';
 import 'package:venturo_core/features/splash/bindings/splash_binding.dart';
@@ -29,87 +30,89 @@ import 'package:venturo_core/features/splash/view/ui/splash_screen.dart';
 abstract class MainPages {
   static final pages = [
     GetPage(
-      name: MainRoute.splashRoute,
-      page: () => SplashScreen(),
-      binding: SplashBinding()
-    ),
+        name: MainRoute.splashRoute,
+        page: () => SplashScreen(),
+        binding: SplashBinding()),
     GetPage(
       name: MainRoute.profile,
-      page: () =>  ProfileScreen(),
+      page: () => ProfileScreen(),
       binding: ProfileBinding(),
     ),
     GetPage(
       name: MainRoute.privacyPolicy,
-      page: () =>const  PrivacyPolicyView(),
+      page: () => const PrivacyPolicyView(),
     ),
-      GetPage(
+    GetPage(
       name: MainRoute.noConnection,
-      page: () =>  NoConnectionScreen(),
+      page: () => NoConnectionScreen(),
     ),
     GetPage(
       name: MainRoute.signIn,
       page: () => const SignInView(),
       binding: SignInBinding(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.forgotPassword,
       page: () => const ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.otp,
       page: () => const OtpView(),
       binding: OtpBinding(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.location,
       page: () => const GetLocationScreen(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.checkloc,
       page: () => const CheckLocationScreen(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.list,
       page: () => ListScreen(),
       binding: ListBinding(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.listDetail,
       page: () => DetailMenuScreen(),
-      binding: ListBinding(), 
+      binding: ListBinding(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.listCheckout,
       page: () => CheckoutScreen(),
-      binding: ListBinding(), 
+      binding: ListBinding(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.order,
-      page: () =>const  OrderScreen(),
-      binding: OrderBinding(), 
+      page: () => const OrderScreen(),
+      binding: OrderBinding(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.orderDetail,
-      page: () =>const  DetailOrderView(),
-      binding: DetailOrderBinding(), 
+      page: () => const DetailOrderView(),
+      binding: DetailOrderBinding(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.promo,
       page: () => PromoScreen(),
-      binding: ListBinding(), 
+      binding: ListBinding(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.checkoutVoucher,
       page: () => CheckoutVoucherScreen(),
-      binding: ListBinding(), 
+      binding: ListBinding(),
     ),
-  GetPage(
+    GetPage(
       name: MainRoute.checkoutVoucherDetail,
       page: () => CheckoutVoucherDetail(),
-      binding: ListBinding(), 
+      binding: ListBinding(),
     ),
-
-
+    GetPage(
+      name: MainRoute.rating,
+      page: () => RatingScreen(),
+      binding: ProfileBinding(),
+    ),
   ];
 }

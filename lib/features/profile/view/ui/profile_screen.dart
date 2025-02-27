@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:venturo_core/configs/routes/route.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/constants/image_constant.dart';
 import 'package:venturo_core/features/profile/constants/profile_assets_constant.dart';
@@ -57,230 +58,292 @@ class ProfileScreen extends StatelessWidget {
                   return const Center(child: CircularProgressIndicator());
                 } else {
                   final userProfile = profileController.userProfile;
-                  return Column(
-                    children: [
-                      SizedBox(height: 40.h),
-                      CircleAvatar(
-                        radius: 100.h,
-                        backgroundImage: userProfile['foto'] != null &&
-                                userProfile['foto'] is String
-                            ? NetworkImage(userProfile['foto'])
-                            : AssetImage(ImageConstant.logo)
-                                as ImageProvider<Object>?,
-                      ),
-                      SizedBox(height: 16.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.credit_card,
-                              color: MainColor.primary, size: 20.sp),
-                          Text(
-                            "Segera Verifikasi KTP mu Sekarang!",
-                            style: TextStyle(
-                                color: MainColor.primary, fontSize: 20.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 16.h),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 16.w),
-                          child: Text(
-                            "Info Akun",
-                            style: TextStyle(
-                                color: MainColor.primary,
-                                fontSize: 30.sp,
-                                fontWeight: FontWeight.bold),
-                          ),
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 40.h),
+                        CircleAvatar(
+                          radius: 100.h,
+                          backgroundImage: userProfile['foto'] != null &&
+                                  userProfile['foto'] is String
+                              ? NetworkImage(userProfile['foto'])
+                              : AssetImage(ImageConstant.logo)
+                                  as ImageProvider<Object>?,
                         ),
-                      ),
-                      SizedBox(height: 16.h),
-                      Container(
-                        width: Get.width,
-                        height: Get.height * 0.325,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                          color: Color.fromARGB(255, 255, 255, 255),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              offset: Offset(0, 0),
-                              blurRadius: 5,
-                            ),
+                        SizedBox(height: 16.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.credit_card,
+                                color: MainColor.primary, size: 20.sp),
+                            Text(
+                              "Segera Verifikasi KTP mu Sekarang!",
+                              style: TextStyle(
+                                  color: MainColor.primary, fontSize: 20.sp),
+                            )
                           ],
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.all(16.w),
-                          child: Column(
-                            children: [
-                              _buildProfileRow(
-                                context,
-                                'Nama',
-                                userProfile['nama'] ?? 'Unknown',
-                                () => _showEditBottomSheet(
+                        SizedBox(height: 16.h),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 16.w),
+                            child: Text(
+                              "Info Akun",
+                              style: TextStyle(
+                                  color: MainColor.primary,
+                                  fontSize: 30.sp,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                        Container(
+                          width: Get.width,
+                          height: Get.height * 0.325,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                offset: Offset(0, 0),
+                                blurRadius: 5,
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(16.w),
+                            child: Column(
+                              children: [
+                                _buildProfileRow(
                                   context,
                                   'Nama',
                                   userProfile['nama'] ?? 'Unknown',
-                                  (value) => profileController.updateUserProfile({
-                                    ...userProfile,
-                                    'nama': value,
-                                  }),
+                                  () => _showEditBottomSheet(
+                                    context,
+                                    'Nama',
+                                    userProfile['nama'] ?? 'Unknown',
+                                    (value) =>
+                                        profileController.updateUserProfile({
+                                      ...userProfile,
+                                      'nama': value,
+                                    }),
+                                  ),
                                 ),
-                              ),
-                              const Divider(),
-                              _buildProfileRow(
-                                context,
-                                'Tanggal Lahir',
-                                userProfile['tgl_lahir'] ?? 'Unknown',
-                                () => _showDatePicker(
+                                const Divider(),
+                                _buildProfileRow(
                                   context,
+                                  'Tanggal Lahir',
                                   userProfile['tgl_lahir'] ?? 'Unknown',
-                                  (value) => profileController.updateUserProfile({
-                                    ...userProfile,
-                                    'tgl_lahir': value,
-                                  }),
+                                  () => _showDatePicker(
+                                    context,
+                                    userProfile['tgl_lahir'] ?? 'Unknown',
+                                    (value) =>
+                                        profileController.updateUserProfile({
+                                      ...userProfile,
+                                      'tgl_lahir': value,
+                                    }),
+                                  ),
                                 ),
-                              ),
-                              const Divider(),
-                              _buildProfileRow(
-                                context,
-                                'Telepon',
-                                userProfile['telepon'] ?? 'Unknown',
-                                () => _showEditBottomSheet(
+                                const Divider(),
+                                _buildProfileRow(
                                   context,
                                   'Telepon',
                                   userProfile['telepon'] ?? 'Unknown',
-                                  (value) => profileController.updateUserProfile({
-                                    ...userProfile,
-                                    'telepon': value,
-                                  }),
+                                  () => _showEditBottomSheet(
+                                    context,
+                                    'Telepon',
+                                    userProfile['telepon'] ?? 'Unknown',
+                                    (value) =>
+                                        profileController.updateUserProfile({
+                                      ...userProfile,
+                                      'telepon': value,
+                                    }),
+                                  ),
                                 ),
-                              ),
-                              const Divider(),
-                              _buildProfileRow(
-                                context,
-                                'Email',
-                                userProfile['email'] ?? 'Unknown',
-                                () => _showEditBottomSheet(
+                                const Divider(),
+                                _buildProfileRow(
                                   context,
                                   'Email',
                                   userProfile['email'] ?? 'Unknown',
-                                  (value) => profileController.updateUserProfile({
-                                    ...userProfile,
-                                    'email': value,
-                                  }),
+                                  () => _showEditBottomSheet(
+                                    context,
+                                    'Email',
+                                    userProfile['email'] ?? 'Unknown',
+                                    (value) =>
+                                        profileController.updateUserProfile({
+                                      ...userProfile,
+                                      'email': value,
+                                    }),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 16.w),
-                          child: Text(
-                            "Info Lainnya",
-                            style: TextStyle(
-                                color: MainColor.primary,
-                                fontSize: 30.sp,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                      Container(
-                        width: Get.width,
-                        height: Get.height * 0.175,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                          color: Color.fromARGB(255, 255, 255, 255),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              offset: Offset(0, 0),
-                              blurRadius: 5,
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.all(16.w),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    'Device Model',
-                                    style: TextStyle(
-                                        fontSize: 20.w,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                      'Device Model: ${ProfileController.to.deviceModel.value}'),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.arrow_forward_ios),
-                                      style: ButtonStyle(
-                                          iconSize:
-                                              MaterialStateProperty.all(20.w))),
-                                ],
-                              ),
-                              const Divider(),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Android Version',
-                                    style: TextStyle(
-                                        fontSize: 20.w,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                      ProfileController.to.deviceVersion.value),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.arrow_forward_ios),
-                                      style: ButtonStyle(
-                                          iconSize:
-                                              MaterialStateProperty.all(20.w))),
-                                ],
+                        SizedBox(height: 16.h),
+                        Container(
+                          width: Get.width,
+                          height: Get.height * 0.095,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                offset: Offset(0, 0),
+                                blurRadius: 5,
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Add your sign-out logic here
-                          profileController.signOut();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 50.w, vertical: 15.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                          child: Padding(
+                            padding: EdgeInsets.all(16.w),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.reviews,
+                                        color: MainColor.primary, size: 20.sp),
+                                    Text(
+                                      'Penilian',
+                                      style: TextStyle(
+                                          fontSize: 20.w,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Spacer(),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: MainColor.primary,
+                                          side: const BorderSide(
+                                              color: MainColor.white, width: 2),
+                                        ),
+                                        onPressed: () {
+                                          Get.toNamed(MainRoute.rating);
+                                        },
+                                        child: const Text(
+                                          'Nilai Sekarang',
+                                          style: TextStyle(color: Colors.white),
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        child: Text(
-                          'Sign Out',
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 16.w),
+                            child: Text(
+                              "Info Lainnya",
+                              style: TextStyle(
+                                  color: MainColor.primary,
+                                  fontSize: 30.sp,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 16.h),
-                    ],
+                        SizedBox(height: 16.h),
+                        Container(
+                          width: Get.width,
+                          height: Get.height * 0.175,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                offset: Offset(0, 0),
+                                blurRadius: 5,
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(16.w),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Device Model',
+                                      style: TextStyle(
+                                          fontSize: 20.w,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                        'Device Model: ${ProfileController.to.deviceModel.value}'),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon:
+                                            const Icon(Icons.arrow_forward_ios),
+                                        style: ButtonStyle(
+                                            iconSize: MaterialStateProperty.all(
+                                                20.w))),
+                                  ],
+                                ),
+                                const Divider(),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Android Version',
+                                      style: TextStyle(
+                                          fontSize: 20.w,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Spacer(),
+                                    Text(ProfileController
+                                        .to.deviceVersion.value),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon:
+                                            const Icon(Icons.arrow_forward_ios),
+                                        style: ButtonStyle(
+                                            iconSize: MaterialStateProperty.all(
+                                                20.w))),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Add your sign-out logic here
+                            profileController.signOut();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50.w, vertical: 15.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: Text(
+                            'Sign Out',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                      ],
+                    ),
                   );
                 }
               }),
@@ -291,7 +354,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileRow(BuildContext context, String title, String value, VoidCallback onEdit) {
+  Widget _buildProfileRow(
+      BuildContext context, String title, String value, VoidCallback onEdit) {
     return Row(
       children: [
         Text(
@@ -314,8 +378,10 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  void _showEditBottomSheet(BuildContext context, String field, String currentValue, Function(String) onSave) {
-    final TextEditingController controller = TextEditingController(text: currentValue);
+  void _showEditBottomSheet(BuildContext context, String field,
+      String currentValue, Function(String) onSave) {
+    final TextEditingController controller =
+        TextEditingController(text: currentValue);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -357,7 +423,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  void _showDatePicker(BuildContext context, String currentDate, Function(String) onSave) {
+  void _showDatePicker(
+      BuildContext context, String currentDate, Function(String) onSave) {
     DateTime initialDate = DateTime.tryParse(currentDate) ?? DateTime.now();
     showDatePicker(
       context: context,
