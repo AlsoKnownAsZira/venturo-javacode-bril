@@ -223,7 +223,8 @@ class ProfileScreen extends StatelessWidget {
                                           side: const BorderSide(
                                               color: MainColor.white, width: 2),
                                         ),
-                                        onPressed: () {
+                                        onPressed: ()  {
+                                   
                                           Get.toNamed(MainRoute.rating);
                                         },
                                         child: const Text(

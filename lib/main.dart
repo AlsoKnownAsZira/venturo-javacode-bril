@@ -10,6 +10,7 @@ import 'package:venturo_core/features/sign_in/bindings/sign_in_binding.dart';
 import 'package:venturo_core/shared/controllers/global_controllers/initial_controller.dart';
 import 'package:venturo_core/shared/models/cart_item.dart';
 import 'package:venturo_core/shared/models/menu.dart';
+import 'package:venturo_core/shared/models/rating.dart';
 import 'configs/pages/page.dart';
 import 'configs/themes/theme.dart';
 import 'utils/services/sentry_services.dart';
@@ -24,9 +25,11 @@ void main() async {
 
   Hive.registerAdapter(ItemAdapter());
   Hive.registerAdapter(KategoriAdapter());
+   Hive.registerAdapter(RatingModelAdapter()); 
 
   await Hive.openBox("venturo");
   await Hive.openBox<CartItem>('cartBox');
+  await Hive.openBox<RatingModel>('ratingsBox');
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
