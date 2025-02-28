@@ -8,6 +8,7 @@ import 'package:venturo_core/features/profile/controllers/profile_controller.dar
 import 'package:get/get.dart';
 import 'package:venturo_core/shared/widgets/custom_navbar.dart';
 import 'package:venturo_core/utils/functions/helpers.dart';
+import 'dart:io';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key}) {
@@ -65,11 +66,26 @@ class ProfileScreen extends StatelessWidget {
                         SizedBox(height: 40.h),
                         CircleAvatar(
                           radius: 100.h,
-                          backgroundImage: userProfile['foto'] != null &&
-                                  userProfile['foto'] is String
-                              ? NetworkImage(userProfile['foto'])
-                              : AssetImage(ImageConstant.logo)
-                                  as ImageProvider<Object>?,
+                          backgroundImage: profileController.imageFile != null
+                              ? FileImage(profileController.imageFile!)
+                                  as ImageProvider
+                              : (userProfile['foto'] != null &&
+                                      userProfile['foto'] is String
+                                  ? FileImage(File(userProfile['foto']))
+                                  : AssetImage(ImageConstant.logo)
+                                      as ImageProvider),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: GestureDetector(
+                              onTap: () => profileController.pickImage(),
+                              child: CircleAvatar(
+                                radius: 25,
+                                backgroundColor: Colors.white,
+                                child: Icon(Icons.camera_alt,
+                                    color: Colors.grey[700]),
+                              ),
+                            ),
+                          ),
                         ),
                         SizedBox(height: 16.h),
                         Row(
@@ -223,8 +239,7 @@ class ProfileScreen extends StatelessWidget {
                                           side: const BorderSide(
                                               color: MainColor.white, width: 2),
                                         ),
-                                        onPressed: ()  {
-                                   
+                                        onPressed: () {
                                           Get.toNamed(MainRoute.rating);
                                         },
                                         child: const Text(

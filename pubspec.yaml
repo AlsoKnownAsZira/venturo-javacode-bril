@@ -44,6 +44,8 @@ dependencies:
   google_sign_in: ^6.2.2
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.1
+  image_cropper: null
+  image_picker: null
   intl: ^0.18.1
   loadmore: ^2.1.0
   logger: ^2.5.0

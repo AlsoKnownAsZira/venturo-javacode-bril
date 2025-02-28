@@ -68,7 +68,7 @@ Future<void> createOrder(Map<String, dynamic> newOrder) async {
       'token': token,
       'Cookie': 'PHPSESSID=994efc163c62acb0186812f3df3c9619'
     };
-    var request = http.Request('POST', Uri.parse('${baseUrl}order/add')); // Update this URL if necessary
+    var request = http.Request('POST', Uri.parse('${baseUrl}order/add')); 
     request.headers.addAll(headers);
     request.body = json.encode(newOrder);
 
