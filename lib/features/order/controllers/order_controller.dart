@@ -92,9 +92,9 @@ class OrderController extends GetxController {
 
   // Filter by selected category
   if (selectedCategory.value == 'cancelled') {
-    historyOrderList.removeWhere((element) => element['status'] != 3);
-  } else if (selectedCategory.value == 'completed') {
     historyOrderList.removeWhere((element) => element['status'] != 4);
+  } else if (selectedCategory.value == 'completed') {
+    historyOrderList.removeWhere((element) => element['status'] != 3);
   }
 
   // Filter by selected date range

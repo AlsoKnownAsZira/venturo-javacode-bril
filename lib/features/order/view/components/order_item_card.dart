@@ -213,9 +213,9 @@ class OrderItemCard extends StatelessWidget {
       case 2:
         return 'Bisa Diambil';
       case 3:
-        return 'Dibatalkan';
-      case 4:
         return 'Selesai';
+      case 4:
+        return 'Dibatalkan';
       default:
         return 'Unknown';
     }
@@ -228,9 +228,9 @@ class OrderItemCard extends StatelessWidget {
       case 2:
         return Icons.access_time;
       case 3:
-        return Icons.cancel;
-      case 4:
         return Icons.check_circle;
+      case 4:
+        return Icons.cancel;
       default:
         return Icons.help;
     }
@@ -243,9 +243,9 @@ class OrderItemCard extends StatelessWidget {
       case 2:
         return Colors.amber;
       case 3:
-        return Colors.red;
-      case 4:
         return Colors.green;
+      case 4:
+        return Colors.red;
       default:
         return Colors.grey;
     }
