@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:venturo_core/configs/themes/main_color.dart';
 
 class DetailOrderCard extends StatelessWidget {
   final Map<String, dynamic>? detailOrder;
@@ -70,8 +71,7 @@ class DetailOrderCard extends StatelessWidget {
                 Text(
                   'Rp ${int.parse(detailOrder!['harga'])}',
                   style: Get.textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold),
+                      color: MainColor.primary, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

@@ -46,14 +46,14 @@ class OrderRepository {
     final orders = await getOrdersByUserId(userId);
     final ongoingOrders = orders.where((element) => element['status'] < 3).toList();
     ongoingOrders.sort((a, b) => DateTime.parse(b['tanggal']).compareTo(DateTime.parse(a['tanggal'])));
-    return ongoingOrders.take(20).toList();
+    return ongoingOrders.take(25).toList();
   }
 
   Future<List<Map<String, dynamic>>> getOrderHistory(int userId) async {
     final orders = await getOrdersByUserId(userId);
     final historyOrders = orders.where((element) => element['status'] > 2).toList();
     historyOrders.sort((a, b) => DateTime.parse(b['tanggal']).compareTo(DateTime.parse(a['tanggal'])));
-    return historyOrders.take(20).toList();
+    return historyOrders.take(25).toList();
   }
 
   Future<Map<String, dynamic>?> getOrderDetail(int userId, int idOrder) async {

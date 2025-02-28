@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:get/get.dart';
+import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/detail_order/controllers/detail_order_controller.dart';
 import 'package:venturo_core/features/order/view/components/checked_step.dart';
 import 'package:venturo_core/features/order/view/components/unchecked_step.dart';
@@ -40,7 +41,7 @@ class OrderTracker extends StatelessWidget {
               child: Container(
                 height: 2.h,
                 color: DetailOrderController.to.order.value?['status'] >= 1
-                    ? Get.theme.primaryColor
+                    ? MainColor.primary
                     : Colors.grey,
               ),
             ),
@@ -92,7 +93,7 @@ class OrderTracker extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Text(
-                'Menyiapkan'.tr,
+                'Sedang disiapkan'.tr,
                 style: Get.textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),

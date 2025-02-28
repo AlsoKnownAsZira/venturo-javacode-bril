@@ -186,6 +186,9 @@ class OrderItemCard extends StatelessWidget {
                       side: const BorderSide(color: MainColor.black, width: 2),
                     ),
                     onPressed: () {
+                      Get.snackbar('Pesan Lagi', 'Pesan lagi berhasil',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.green);
                       orderController.orderAgain(order);
                     },
                     child: const Text(

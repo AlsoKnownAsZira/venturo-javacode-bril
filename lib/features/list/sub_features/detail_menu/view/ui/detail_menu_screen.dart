@@ -30,20 +30,22 @@ class DetailMenuScreen extends StatelessWidget {
       final cartBox = Hive.box<CartItem>('cartBox');
       List<CartItem> cartItems = cartBox.values.toList();
       for (var item in cartItems) {
-        print('Item: ${item.menu.nama}, Quantity: ${item.quantity}, Category ${item.menu.kategori}');
+        print(
+            'Item: ${item.menu.nama}, Quantity: ${item.quantity}, Category ${item.menu.kategori}');
       }
     }
 
-    void addToCart(Item menu, int quantity, {String? level, String? topping, String? note}) {
+    void addToCart(Item menu, int quantity,
+        {String? level, String? topping, String? note}) {
       final cartBox = Hive.box<CartItem>('cartBox');
       print('adding to cart: ${menu.nama},ID:  ${menu.idMenu}');
       // Check if item already exists in cart
       List<CartItem> cartItems = cartBox.values.toList();
-      int existingIndex = cartItems.indexWhere((item) =>
-          item.menu.idMenu == menu.idMenu 
-          // item.level == level &&
-          // item.topping == topping
-          );
+      int existingIndex =
+          cartItems.indexWhere((item) => item.menu.idMenu == menu.idMenu
+              // item.level == level &&
+              // item.topping == topping
+              );
 
       if (existingIndex != -1) {
         // Item already exists, update quantity
@@ -82,7 +84,7 @@ class DetailMenuScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 20.w, fontWeight: FontWeight.bold),
                     ),
-                   const Divider(),
+                    const Divider(),
                     if (listController.levels.isEmpty)
                       Text(
                         'Tidak ada pilihan Level',
@@ -126,7 +128,7 @@ class DetailMenuScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 20.w, fontWeight: FontWeight.bold),
                     ),
-                 const   Divider(),
+                    const Divider(),
                     if (listController.toppings.isEmpty)
                       Text(
                         'Tidak ada pilhan Topping',
@@ -156,55 +158,56 @@ class DetailMenuScreen extends StatelessWidget {
       );
     }
 
-   void showCatatanBottomSheet() {
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    builder: (context) {
-      return Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        child: Container(
-          width: Get.width,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Add Catatan',
-                  style: TextStyle(
-                      fontSize: 20.w, fontWeight: FontWeight.bold),
-                ),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Masukkan catatan',
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      listController.selectNote(listController.selectedNote.value);
-                      Get.back();
-                    },
-                    icon: const Icon(
-                      Icons.done,
-                      color: MainColor.primary,
+    void showCatatanBottomSheet() {
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: Container(
+              width: Get.width,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Tambah Catatan',
+                      style: TextStyle(
+                          fontSize: 20.w, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  border: InputBorder.none,
-                ),
-                onChanged: (value) {
-                  listController.selectedNote.value = value;
-                },
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Masukkan catatan',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          listController
+                              .selectNote(listController.selectedNote.value);
+                          Get.back();
+                        },
+                        icon: const Icon(
+                          Icons.done,
+                          color: MainColor.primary,
+                        ),
+                      ),
+                      border: InputBorder.none,
+                    ),
+                    onChanged: (value) {
+                      listController.selectedNote.value = value;
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       );
-    },
-  );
-}
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -295,7 +298,7 @@ class DetailMenuScreen extends StatelessWidget {
                             child: Center(
                               child: IconButton(
                                 padding: EdgeInsets.zero,
-                                constraints:const BoxConstraints(),
+                                constraints: const BoxConstraints(),
                                 onPressed: () {
                                   ListController.to.decrement();
                                 },
@@ -320,7 +323,7 @@ class DetailMenuScreen extends StatelessWidget {
                             ),
                             child: IconButton(
                               padding: EdgeInsets.zero,
-                              constraints:const BoxConstraints(),
+                              constraints: const BoxConstraints(),
                               onPressed: () {
                                 ListController.to.increment();
                               },

@@ -61,26 +61,26 @@ class DetailOrderView extends StatelessWidget {
         title: 'Pesanan',
         icon: Icons.arrow_back_ios,
         actions: [
-          Obx(
-            () => Conditional.single(
-              context: context,
-              conditionBuilder: (context) =>
-                  DetailOrderController.to.order.value?['status'] == 0,
-              widgetBuilder: (context) => Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
-                child: TextButton(
-                  onPressed: () {
-                    // Handle cancel order
-                  },
-                  child: const Text(
-                    'Cancel Order',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              ),
-              fallbackBuilder: (context) => const SizedBox.shrink(),
-            ),
-          ),
+          // Obx(
+          //   () => Conditional.single(
+          //     context: context,
+          //     conditionBuilder: (context) =>
+          //         DetailOrderController.to.order.value?['status'] == 0,
+          //     widgetBuilder: (context) => Padding(
+          //       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
+          //       child: TextButton(
+          //         onPressed: () {
+          //           // Handle cancel order
+          //         },
+          //         child: const Text(
+          //           'Cancel Order',
+          //           style: TextStyle(color: Colors.red),
+          //         ),
+          //       ),
+          //     ),
+          //     fallbackBuilder: (context) => const SizedBox.shrink(),
+          //   ),
+          // ),
         ],
       ),
       body: Padding(
