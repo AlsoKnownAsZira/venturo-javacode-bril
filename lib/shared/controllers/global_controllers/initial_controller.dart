@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/constants/api_constant.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:venturo_core/utils/services/location_service.dart';
@@ -29,14 +32,31 @@ class GlobalController extends GetxController {
   var isConnect = true.obs; // Track internet connection status
 
   /// Check internet connection
-  Future<void> checkConnection() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
-      isConnect.value = false;
-    } else {
-      isConnect.value = true;
-    }
-  }
+  // Future<void> checkConnection() async {
+  //   var connectivityResult = await Connectivity().checkConnectivity();
+  //   if (connectivityResult == ConnectivityResult.none) {
+  //     isConnect.value = false;
+  //   } else {
+  //     isConnect.value = true;
+  //   }
+  // }
+ Future<void> checkConnection() async {
+   try {
+     final result = await InternetAddress.lookup('space.venturo.id');
+     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+       isConnect.value = true;
+     }
+   } on SocketException catch (exception, stackTrace) {
+     isConnect.value = false;
+     await Sentry.captureException(
+       exception,
+       stackTrace: stackTrace,
+     );
+
+     Get.offAllNamed(MainRoute.noConnection);
+   }
+	}
+
 
   /// Location
   RxString statusLocation = RxString('loading');

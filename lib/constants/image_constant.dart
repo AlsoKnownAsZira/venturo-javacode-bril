@@ -15,4 +15,7 @@ ImageConstant {
   static const String promoco2 = 'assets/images/ic_promoco2.png';
   static const String promoco3 = 'assets/images/ic_promoco3.png';
   static const String confirm = 'assets/images/ic_confirm.png';
+  static const String noInet = 'assets/images/ic_no-internet.png';
+
+
 }

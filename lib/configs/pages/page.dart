@@ -44,7 +44,7 @@ abstract class MainPages {
     ),
     GetPage(
       name: MainRoute.noConnection,
-      page: () => NoConnectionScreen(),
+      page: () =>const NoConnectionView(),
     ),
     GetPage(
       name: MainRoute.signIn,

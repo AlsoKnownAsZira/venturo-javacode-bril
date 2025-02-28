@@ -7,6 +7,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:venturo_core/configs/routes/route.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:venturo_core/features/sign_in/bindings/sign_in_binding.dart';
+import 'package:venturo_core/shared/bindings/global_binding.dart';
 import 'package:venturo_core/shared/controllers/global_controllers/initial_controller.dart';
 import 'package:venturo_core/shared/models/cart_item.dart';
 import 'package:venturo_core/shared/models/menu.dart';
@@ -74,7 +75,7 @@ class MyApp extends StatelessWidget {
             Locale('en', 'US'),
             Locale('id'),
           ],
-          initialBinding: SignInBinding(),
+          initialBinding: GlobalBinding(),
           initialRoute: MainRoute.initial,
           theme: themeLight,
           defaultTransition: Transition.native,
