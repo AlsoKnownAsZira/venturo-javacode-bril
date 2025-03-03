@@ -18,7 +18,7 @@ import 'utils/services/sentry_services.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-
+import 'package:venturo_core/configs/localizations/app_translation.dart';
 void main() async { 
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
@@ -62,6 +62,10 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
+           translations: AppTranslations(),
+            locale: const Locale('id','ID'),
+                      fallbackLocale: const Locale('en','US'),
+
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
@@ -69,12 +73,12 @@ class MyApp extends StatelessWidget {
           ],
           title: 'Venturo Core',
           debugShowCheckedModeBanner: false,
-          locale: const Locale('id'),
-          fallbackLocale: const Locale('id'),
+         
           supportedLocales: const [
-            Locale('en', 'US'),
-            Locale('id'),
+         Locale('en', 'US'),
+            Locale('id', 'ID'),
           ],
+          
           initialBinding: GlobalBinding(),
           initialRoute: MainRoute.initial,
           theme: themeLight,

@@ -26,6 +26,7 @@ class OnGoingOrderTabView extends StatelessWidget {
           if (OrderController.to.onGoingOrders.isEmpty) {
             return Center(
                 child: Stack(
+              alignment: Alignment.center,
               children: [
                 const Image(image: AssetImage(ImageConstant.loading)),
                 Column(

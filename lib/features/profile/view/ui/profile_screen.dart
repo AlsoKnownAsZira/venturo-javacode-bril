@@ -33,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
         elevation: 4,
         centerTitle: true,
         title: Text(
-          "Profil",
+          "profile".tr,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: MainColor.primary,
@@ -94,7 +94,7 @@ class ProfileScreen extends StatelessWidget {
                             Icon(Icons.credit_card,
                                 color: MainColor.primary, size: 20.sp),
                             Text(
-                              "Segera Verifikasi KTP mu Sekarang!",
+                              "ktp_verif".tr,
                               style: TextStyle(
                                   color: MainColor.primary, fontSize: 20.sp),
                             )
@@ -106,7 +106,7 @@ class ProfileScreen extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.only(left: 16.w),
                             child: Text(
-                              "Info Akun",
+                              "info_akun".tr,
                               style: TextStyle(
                                   color: MainColor.primary,
                                   fontSize: 30.sp,
@@ -137,7 +137,7 @@ class ProfileScreen extends StatelessWidget {
                               children: [
                                 _buildProfileRow(
                                   context,
-                                  'Nama',
+                                  'nama'.tr,
                                   userProfile['nama'] ?? 'Unknown',
                                   () => _showEditBottomSheet(
                                     context,
@@ -153,7 +153,7 @@ class ProfileScreen extends StatelessWidget {
                                 const Divider(),
                                 _buildProfileRow(
                                   context,
-                                  'Tanggal Lahir',
+                                  'lahir'.tr,
                                   userProfile['tgl_lahir'] ?? 'Unknown',
                                   () => _showDatePicker(
                                     context,
@@ -172,7 +172,7 @@ class ProfileScreen extends StatelessWidget {
                                   userProfile['telepon'] ?? 'Unknown',
                                   () => _showEditBottomSheet(
                                     context,
-                                    'Telepon',
+                                    'telepon'.tr,
                                     userProfile['telepon'] ?? 'Unknown',
                                     (value) =>
                                         profileController.updateUserProfile({
@@ -184,7 +184,7 @@ class ProfileScreen extends StatelessWidget {
                                 const Divider(),
                                 _buildProfileRow(
                                   context,
-                                  'Email',
+                                  'email'.tr,
                                   userProfile['email'] ?? 'Unknown',
                                   () => _showEditBottomSheet(
                                     context,
@@ -200,7 +200,7 @@ class ProfileScreen extends StatelessWidget {
                                 const Divider(),
                                 _buildProfileRow(
                                   context,
-                                  'PIN',
+                                  'pin'.tr,
                                   userProfile['pin'] != null
                                       ? obscurePin(userProfile['pin'])
                                       : 'Unknown',
@@ -218,8 +218,8 @@ class ProfileScreen extends StatelessWidget {
                                 const Divider(),
                                 _buildProfileRow(
                                   context,
-                                  'Bahasa',
-                                  'Ganti Bahasa',
+                                  'bahasa'.tr,
+                                  'ganti_bahasa'.tr,
                                   () => _showLanguageBottomSheet(context),
                                 ),
                               ],
@@ -252,7 +252,7 @@ class ProfileScreen extends StatelessWidget {
                                     Icon(Icons.reviews,
                                         color: MainColor.primary, size: 20.sp),
                                     Text(
-                                      'Penilian',
+                                      'nilai'.tr,
                                       style: TextStyle(
                                           fontSize: 20.w,
                                           fontWeight: FontWeight.bold),
@@ -267,9 +267,9 @@ class ProfileScreen extends StatelessWidget {
                                         onPressed: () {
                                           Get.toNamed(MainRoute.rating);
                                         },
-                                        child: const Text(
-                                          'Nilai Sekarang',
-                                          style: TextStyle(color: Colors.white),
+                                        child:  Text(
+                                          'nilai_sekarang'.tr,
+                                          style:const TextStyle(color: Colors.white),
                                         )),
                                   ],
                                 ),
@@ -285,7 +285,7 @@ class ProfileScreen extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.only(left: 16.w),
                             child: Text(
-                              "Info Lainnya",
+                              "info_lain".tr,
                               style: TextStyle(
                                   color: MainColor.primary,
                                   fontSize: 30.sp,
@@ -317,14 +317,14 @@ class ProfileScreen extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      'Device Model',
+                                      'device'.tr,
                                       style: TextStyle(
                                           fontSize: 20.w,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     const Spacer(),
                                     Text(
-                                        'Device Model: ${ProfileController.to.deviceModel.value}'),
+                                        ProfileController.to.deviceModel.value),
                                     IconButton(
                                         onPressed: () {},
                                         icon:
@@ -338,7 +338,7 @@ class ProfileScreen extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      'Android Version',
+                                      'android'.tr,
                                       style: TextStyle(
                                           fontSize: 20.w,
                                           fontWeight: FontWeight.bold),
@@ -374,7 +374,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Sign Out',
+                            'sign_out'.tr,
                             style: TextStyle(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.bold,
@@ -438,7 +438,7 @@ class ProfileScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Edit $field',
+                'Edit $field'.tr,
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16.h),
@@ -455,7 +455,7 @@ class ProfileScreen extends StatelessWidget {
                   onSave(controller.text);
                   Navigator.pop(context);
                 },
-                child: const Text('Save'),
+                child:  Text('save'.tr),
               ),
             ],
           ),
@@ -495,7 +495,7 @@ class ProfileScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Ganti Bahasa',
+                'ganti_bahasa'.tr,
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16.h),
@@ -504,6 +504,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      Get.updateLocale(Locale('en', 'US'));
                       Navigator.pop(context);
                     },
                     child: Container(
@@ -518,13 +519,14 @@ class ProfileScreen extends StatelessWidget {
                           Image.asset(ImageConstant.eng,
                               width: 24.w, height: 24.h),
                           SizedBox(width: 8.w),
-                          Text('English', style: TextStyle(fontSize: 18.sp)),
+                          Text('english'.tr, style: TextStyle(fontSize: 18.sp)),
                         ],
                       ),
                     ),
                   ),
                   GestureDetector(
                     onTap: () {
+                      Get.updateLocale(Locale('id', 'ID'));
                       Navigator.pop(context);
                     },
                     child: Container(
@@ -539,7 +541,8 @@ class ProfileScreen extends StatelessWidget {
                           Image.asset(ImageConstant.indo,
                               width: 24.w, height: 24.h),
                           SizedBox(width: 8.w),
-                          Text('Indonesia', style: TextStyle(fontSize: 18.sp)),
+                          Text('indonesia'.tr,
+                              style: TextStyle(fontSize: 18.sp)),
                         ],
                       ),
                     ),
