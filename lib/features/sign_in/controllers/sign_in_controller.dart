@@ -83,7 +83,7 @@ Future<void> _signInWithApi(BuildContext context) async {
     if (response.statusCode == 200 && response.data['status_code'] == 200) {
       final responseData = response.data['data'];
       logger.d('Login successful, userId: ${responseData['user']['id_user']}');
-      _saveSession(responseData['user']['id_user']); // Pass the userId from the response
+      _saveSession(responseData['user']['id_user'],responseData['user']['pin']); 
       Get.toNamed(MainRoute.checkloc);
     } else {
       logger.w('Login failed, response: ${response.data}');
@@ -208,7 +208,7 @@ Future<void> _signInWithApi(BuildContext context) async {
       );
 
       await _auth.signInWithCredential(credential);
-      _saveSession(googleUser.id.hashCode); // Use a unique identifier for the user
+      _saveSession(googleUser.id.hashCode, '11111'); // Use a unique identifier for the user and provide a default pin
 
       Get.toNamed(MainRoute.checkloc);
 
@@ -220,12 +220,14 @@ Future<void> _signInWithApi(BuildContext context) async {
   }
 
   /// Save session status
-  void _saveSession(int userId) {
+  void _saveSession(int userId, String pin) {
     var box = Hive.box('venturo');
     box.put('isLoggedIn', true);
     box.put('email', emailCtrl.text);
-    box.put('userId', userId); // Store the userId from the response
+    box.put('userId', userId);
     logger.d('Email stored in Hive box: ${emailCtrl.text}');
+    box.put('pin', pin);
     logger.d('User ID stored in Hive box: $userId');
+    logger.d('PIN stored in Hive box: $pin');
   }
 }

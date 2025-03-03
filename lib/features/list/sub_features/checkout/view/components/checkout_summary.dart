@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pinput/pinput.dart';
 import 'package:venturo_core/configs/routes/route.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/constants/image_constant.dart';
+import 'package:venturo_core/features/profile/controllers/profile_controller.dart';
 import 'package:venturo_core/shared/models/cart_item.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:logger/logger.dart';
-import 'package:venturo_core/utils/services/local_auth.dart'; 
+import 'package:venturo_core/utils/services/local_auth.dart';
 
 class CheckoutSummary extends StatelessWidget {
   CheckoutSummary({
@@ -29,10 +31,7 @@ class CheckoutSummary extends StatelessWidget {
   final Logger logger = Logger();
 
   Future<void> postOrder() async {
-    var headers = {
-      'token': token,
-      'Content-Type': 'application/json'
-    };
+    var headers = {'token': token, 'Content-Type': 'application/json'};
 
     var order = {
       "order": {
@@ -41,17 +40,20 @@ class CheckoutSummary extends StatelessWidget {
         "potongan": selectedVoucherAmount,
         "total_bayar": totalPayment.toInt()
       },
-      "menu": cartBox.values.map((item) => {
-        "id_menu": item.menu.idMenu,
-        "harga": item.menu.harga,
-        "level": item.level ?? 0,
-        "topping": item.topping ?? [],
-        "jumlah": item.quantity,
-        "catatan": item.note?? "",
-      }).toList()
+      "menu": cartBox.values
+          .map((item) => {
+                "id_menu": item.menu.idMenu,
+                "harga": item.menu.harga,
+                "level": item.level ?? 0,
+                "topping": item.topping ?? [],
+                "jumlah": item.quantity,
+                "catatan": item.note ?? "",
+              })
+          .toList()
     };
 
-    var request = http.Request('POST', Uri.parse('https://trainee.landa.id/javacode/order/add'));
+    var request = http.Request(
+        'POST', Uri.parse('https://trainee.landa.id/javacode/order/add'));
     request.body = json.encode(order);
     request.headers.addAll(headers);
 
@@ -119,66 +121,220 @@ class CheckoutSummary extends StatelessWidget {
             ),
             const Spacer(),
             ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: MainColor.primary),
-                onPressed: () async {
-                  if (cartBox.isEmpty) {
-                    Get.snackbar(
-                      'Keranjang Kosong',
-                      'Tambahkan menu ke keranjang untuk melanjutkan',
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white,
-                    );
-                    return;
-                  }
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: MainColor.primary),
+              onPressed: () async {
+                if (cartBox.isEmpty) {
+                  Get.snackbar(
+                    'Keranjang Kosong',
+                    'Tambahkan menu ke keranjang untuk melanjutkan',
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+                  return;
+                }
 
-                  // Perform fingerprint authentication
-                  bool isAuthenticated = await LocalAuth.authenticate();
-                  if (!isAuthenticated) {
-                    Get.snackbar(
-                      'Autentikasi Gagal',
-                      'Silahkan coba lagi',
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white,
-                    );
-                    return;
-                  }
-
-                  await postOrder();
-                  Get.defaultDialog(
-                    title: 'Rincian Diskon',
-                    titleStyle: const TextStyle(
-                        color: MainColor.primary, fontWeight: FontWeight.bold),
-                    content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(ImageConstant.confirm),
-                        const SizedBox(height: 10),
-                        const Text('Pesanan Sedang Disiapkan',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 10),
-                        const Text(
-                            'Kamu dapat melacak pesananmu di fitur Pesanan'),
-                      ],
-                    ),
-                    actions: [
+                Get.defaultDialog(
+                  backgroundColor: Colors.white,
+                  title: 'Verifikasi Pesanan',
+                  content: Column(
+                    children: [
+                      const Text(
+                        "Fingerprint",
+                        style: TextStyle(color: Colors.grey, fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          bool isAuthenticated = await LocalAuth.authenticate();
+                          if (isAuthenticated) {
+                            await postOrder();
+                            Get.back(); // Close the dialog
+                            Get.defaultDialog(
+                              title: 'Rincian Diskon',
+                              titleStyle: const TextStyle(
+                                  color: MainColor.primary,
+                                  fontWeight: FontWeight.bold),
+                              content: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(ImageConstant.confirm),
+                                  const SizedBox(height: 10),
+                                  const Text('Pesanan Sedang Disiapkan',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                      'Kamu dapat melacak pesananmu di fitur Pesanan'),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Get.offAllNamed(MainRoute.order),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                            cartBox.clear();
+                          } else {
+                            Get.snackbar(
+                              'Autentikasi Gagal',
+                              'Silahkan coba lagi',
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                            );
+                          }
+                        },
+                        child: const Image(
+                            image: AssetImage(ImageConstant.finger)),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 1,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text("ATAU"),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 1,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
                       TextButton(
-                        onPressed: () => Get.offAllNamed(MainRoute.order),
-                        child: const Text('OK'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: MainColor.primary,
+                        ),
+                        onPressed: () async {
+                          TextEditingController pinController =
+                              TextEditingController();
+                          ValueNotifier<bool> isObscure =
+                              ValueNotifier<bool>(true);
+
+                          Get.defaultDialog(
+                            title: 'Masukkan Kode PIN',
+                            content: Column(
+                              children: [
+                                ValueListenableBuilder<bool>(
+                                  valueListenable: isObscure,
+                                  builder: (context, value, child) {
+                                    return Row(
+                                      children: [
+                                        Expanded(
+                                            child: Pinput(
+                                          length: 5,
+                                          controller: pinController,
+                                          autofocus:
+                                              true, // Add this to automatically focus on the PIN input
+                                          obscureText: value,
+                                          onChanged: (pin) {
+                                            print(
+                                                'PIN onChanged: $pin'); // Check if typing is detected
+                                          },
+                                          onCompleted: (pin) async {
+                                            print(
+                                                'onCompleted triggered with PIN: $pin');
+
+                                            var box = Hive.box('venturo');
+                                            String storedPin =
+                                                box.get('pin') ?? '';
+                                            print(
+                                                'Stored PIN from Hive: $storedPin');
+
+                                            if (pin.trim() ==
+                                                storedPin.trim()) {
+                                              print(
+                                                  'PIN matched! Proceeding to post order...');
+                                              await postOrder();
+                                              Get.back(); // Close the PIN dialog
+                                              Get.defaultDialog(
+                                                title: 'Rincian Diskon',
+                                                content: Column(
+                                                  children: [
+                                                    Image.asset(
+                                                        ImageConstant.confirm),
+                                                    const SizedBox(height: 10),
+                                                    const Text(
+                                                        'Pesanan Sedang Disiapkan',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                    const SizedBox(height: 10),
+                                                    const Text(
+                                                        'Kamu dapat melacak pesananmu di fitur Pesanan'),
+                                                  ],
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Get.offAllNamed(
+                                                            MainRoute.order),
+                                                    child: const Text('OK'),
+                                                  ),
+                                                ],
+                                              );
+                                              cartBox.clear();
+                                              print(
+                                                  'Cart cleared successfully!');
+                                            } else {
+                                              print('PIN did not match.');
+                                              Get.snackbar(
+                                                'PIN Salah',
+                                                'Silahkan coba lagi',
+                                                snackPosition:
+                                                    SnackPosition.BOTTOM,
+                                                backgroundColor: Colors.red,
+                                                colorText: Colors.white,
+                                              );
+                                            }
+                                          },
+                                        )),
+                                        IconButton(
+                                          icon: Icon(
+                                            value
+                                                ? Icons.visibility_off
+                                                : Icons.visibility,
+                                          ),
+                                          onPressed: () {
+                                            isObscure.value = !isObscure.value;
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        child: const Text('Verifikasi Menggunakan PIN'),
                       ),
                     ],
-                  );
-                  cartBox.clear();
-                },
-                child: Text(
-                  "Pesan Sekarang",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.w,
-                      color: Colors.white),
-                ))
+                  ),
+                );
+              },
+              child: Text(
+                "Pesan Sekarang",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.w,
+                    color: Colors.white),
+              ),
+            )
           ],
         ),
       ),
