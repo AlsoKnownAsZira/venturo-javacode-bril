@@ -15,9 +15,9 @@ class GetLocationScreen extends StatelessWidget {
     return Scaffold(
       body: PopScope(
         canPop: false,
-         onPopInvoked: (didPop) {
-      if (didPop) return;
-    },
+        onPopInvoked: (didPop) {
+          if (didPop) return;
+        },
         child: Container(
           alignment: Alignment.center,
           width: double.infinity,
@@ -35,7 +35,7 @@ class GetLocationScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Searching location...'.tr,
+                'Mencari Lokasimu...'.tr,
                 style: Get.textTheme.titleLarge!
                     .copyWith(color: MainColor.kDarkColor.withOpacity(0.5)),
                 textAlign: TextAlign.center,
@@ -72,10 +72,9 @@ class GetLocationScreen extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                             24.verticalSpacingRadius,
-                             
                             ElevatedButton(
-                              onPressed: () =>
-                                  AppSettings.openAppSettings(type: AppSettingsType.location),
+                              onPressed: () => AppSettings.openAppSettings(
+                                  type: AppSettingsType.location),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
                                 elevation: 2,
@@ -84,7 +83,6 @@ class GetLocationScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(24.r),
                                 ),
                               ),
-                           
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -111,7 +109,6 @@ class GetLocationScreen extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                             24.verticalSpacingRadius,
-                           
                           ],
                         ),
                     'far': (context) => Column(
@@ -123,7 +120,8 @@ class GetLocationScreen extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                             24.verticalSpacingRadius,
-                          const  Text("Lokasi anda terlalu jauh dari javacode!")
+                            const Text(
+                                "Lokasi anda terlalu jauh dari javacode!")
                           ],
                         ),
                   },

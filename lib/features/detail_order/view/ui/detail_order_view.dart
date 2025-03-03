@@ -4,6 +4,7 @@ import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart
 import 'package:get/get.dart';
 import 'package:venturo_core/configs/themes/main_color.dart';
 import 'package:venturo_core/features/detail_order/controllers/detail_order_controller.dart';
+import 'package:venturo_core/features/order/controllers/order_controller.dart';
 import 'package:venturo_core/features/order/view/components/order_tracker.dart';
 
 import 'package:venturo_core/features/order/view/components/detail_order_card.dart';
@@ -69,12 +70,28 @@ class DetailOrderView extends StatelessWidget {
               widgetBuilder: (context) => Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.w),
                 child: TextButton(
-                  onPressed: () {
-                    // Handle cancel order
-                  },
-                  child: const Text(
-                    'Cancel Order',
-                    style: TextStyle(color: Colors.red),
+                  onPressed: () {},
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final orderId =
+                          DetailOrderController.to.order.value?['id_order'];
+                      if (orderId != null) {
+                        OrderController.to.cancelOrder(orderId);
+                        Get.back();
+                      } else {
+                        Get.snackbar('Error', 'Order ID tidak ditemukan',
+                            backgroundColor: Colors.green,
+                            colorText: Colors.white,
+                            snackPosition: SnackPosition.BOTTOM);
+                      }
+                    },
+                    // style: TextButton.styleFrom(
+                    //   backgroundColor: Colors.white,
+                    // ),
+                    child: const Text(
+                      'Batalkan Pesanan',
+                      style: TextStyle(color: Colors.red),
+                    ),
                   ),
                 ),
               ),

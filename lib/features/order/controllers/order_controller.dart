@@ -154,4 +154,22 @@ Future<void> orderAgain(Map<String, dynamic> order) async {
       );
     }
   }
+  Future<void> cancelOrder(int orderId) async {
+  try {
+    logger.d('Cancelling order with ID: $orderId');
+    await _orderRepository.cancelOrder(orderId);
+    await getOngoingOrders();
+    Get.snackbar('Success', 'Order cancelled successfully',
+        snackPosition: SnackPosition.BOTTOM);
+  } catch (exception, stacktrace) {
+    logger.e('Failed to cancel order: $exception');
+    await Sentry.captureException(
+      exception,
+      stackTrace: stacktrace,
+    );
+    Get.snackbar('Error', 'Failed to cancel order',
+        snackPosition: SnackPosition.BOTTOM);
+  }
+}
+
 }
