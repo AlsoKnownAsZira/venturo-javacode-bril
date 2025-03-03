@@ -117,7 +117,7 @@ class ProfileScreen extends StatelessWidget {
                         SizedBox(height: 16.h),
                         Container(
                           width: Get.width,
-                          height: Get.height * 0.4,
+                          height: Get.height * 0.475,
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(
                               Radius.circular(30),
@@ -214,6 +214,13 @@ class ProfileScreen extends StatelessWidget {
                                       'pin': value,
                                     }),
                                   ),
+                                ),
+                                const Divider(),
+                                _buildProfileRow(
+                                  context,
+                                  'Bahasa',
+                                  'Ganti Bahasa',
+                                  () => _showLanguageBottomSheet(context),
                                 ),
                               ],
                             ),
@@ -457,10 +464,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  String obscurePin(String pin) {
-    return '*' * pin.length;
-  }
-
   void _showDatePicker(
       BuildContext context, String currentDate, Function(String) onSave) {
     DateTime initialDate = DateTime.tryParse(currentDate) ?? DateTime.now();
@@ -474,5 +477,50 @@ class ProfileScreen extends StatelessWidget {
         onSave(selectedDate.toIso8601String().split('T').first);
       }
     });
+  }
+
+  void _showLanguageBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 16.w,
+            right: 16.w,
+            top: 16.h,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Change Language',
+                style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 16.h),
+              ListTile(
+                title: Text('English'),
+                onTap: () {
+                  // Add your logic to change the language to English
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text('Indonesian'),
+                onTap: () {
+                  // Add your logic to change the language to Indonesian
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  String obscurePin(String pin) {
+    return '*' * pin.length;
   }
 }
