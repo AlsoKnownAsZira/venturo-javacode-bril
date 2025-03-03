@@ -29,13 +29,7 @@ class CheckoutVoucherScreen extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.local_offer, color: MainColor.primary),
-            Text('Pilih Voucher'),
-          ],
-        ),
+        title: const Text('Pilih Voucher'),
       ),
       body: SingleChildScrollView(
         child: Padding(

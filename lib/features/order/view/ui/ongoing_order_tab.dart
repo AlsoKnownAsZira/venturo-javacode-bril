@@ -24,22 +24,27 @@ class OnGoingOrderTabView extends StatelessWidget {
       child: Obx(
         () {
           if (OrderController.to.onGoingOrders.isEmpty) {
-               return Center(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Image(image: AssetImage(ImageConstant.noOrder)),
-                      Text(
-                        "Sudah Pesan?",
-                        style: TextStyle(fontSize: 26.w),
-                      ),
-                      Text(
-                        "Lacak Pesananmu Disini.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 26.w),
-                      )
-                    ],
-                  ));
+            return Center(
+                child: Stack(
+              children: [
+                const Image(image: AssetImage(ImageConstant.loading)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Image(image: AssetImage(ImageConstant.noOrder)),
+                    Text(
+                      "Sudah Pesan?",
+                      style: TextStyle(fontSize: 26.w),
+                    ),
+                    Text(
+                      "Lacak Pesananmu Disini.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 26.w),
+                    )
+                  ],
+                )
+              ],
+            ));
           } else {
             return ListView.separated(
               padding: EdgeInsets.all(25.r),

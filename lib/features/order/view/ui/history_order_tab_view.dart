@@ -69,18 +69,23 @@ class OrderHistoryTabView extends StatelessWidget {
 
                 if (orders.isEmpty) {
                   return Center(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                      child: Stack(
                     children: [
-                      const Image(image: AssetImage(ImageConstant.noOrder)),
-                      Text(
-                        "Mulai Buat Pesanan",
-                        style: TextStyle(fontSize: 26.w),
-                      ),
-                      Text(
-                        "Makanan yang kamu opesan akan muncul disini agar kamu bisa menemukan menu favoritmu lagi!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 26.w),
+                      const Image(image: AssetImage(ImageConstant.loading)),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Image(image: AssetImage(ImageConstant.noOrder)),
+                          Text(
+                            "Mulai Buat Pesanan",
+                            style: TextStyle(fontSize: 26.w),
+                          ),
+                          Text(
+                            "Makanan yang kamu opesan akan muncul disini agar kamu bisa menemukan menu favoritmu lagi!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 26.w),
+                          )
+                        ],
                       )
                     ],
                   ));
