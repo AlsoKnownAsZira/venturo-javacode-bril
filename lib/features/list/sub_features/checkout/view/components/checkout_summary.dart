@@ -9,6 +9,7 @@ import 'package:venturo_core/shared/models/cart_item.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:logger/logger.dart';
+import 'package:venturo_core/utils/services/local_auth.dart'; 
 
 class CheckoutSummary extends StatelessWidget {
   CheckoutSummary({
@@ -122,14 +123,28 @@ class CheckoutSummary extends StatelessWidget {
                 onPressed: () async {
                   if (cartBox.isEmpty) {
                     Get.snackbar(
-                      'Cart is empty',
-                      'Please add items to the cart before checking out.',
+                      'Keranjang Kosong',
+                      'Tambahkan menu ke keranjang untuk melanjutkan',
                       snackPosition: SnackPosition.BOTTOM,
                       backgroundColor: Colors.red,
                       colorText: Colors.white,
                     );
                     return;
                   }
+
+                  // Perform fingerprint authentication
+                  bool isAuthenticated = await LocalAuth.authenticate();
+                  if (!isAuthenticated) {
+                    Get.snackbar(
+                      'Autentikasi Gagal',
+                      'Silahkan coba lagi',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                    return;
+                  }
+
                   await postOrder();
                   Get.defaultDialog(
                     title: 'Rincian Diskon',
@@ -149,7 +164,7 @@ class CheckoutSummary extends StatelessWidget {
                     ),
                     actions: [
                       TextButton(
-                        onPressed: () => Get.offAndToNamed(MainRoute.order),
+                        onPressed: () => Get.offAllNamed(MainRoute.order),
                         child: const Text('OK'),
                       ),
                     ],
