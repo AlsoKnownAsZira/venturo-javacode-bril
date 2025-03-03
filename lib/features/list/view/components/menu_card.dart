@@ -24,7 +24,15 @@ class MenuCard extends StatelessWidget {
       child: Ink(
         padding: EdgeInsets.all(7.r),
         decoration: BoxDecoration(
-          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 3,
+              blurRadius: 3,
+              offset: const Offset(0, 1),
+            ),
+          ],
+          color: Colors.grey[200],
           borderRadius: BorderRadius.circular(10.r),
           border: Border.all(
             color: isSelected ? MainColor.primary : Colors.transparent,
@@ -63,18 +71,43 @@ class MenuCard extends StatelessWidget {
                 children: [
                   Text(
                     menu['nama'],
-                    style: Get.textTheme.titleMedium,
+                    style: Get.textTheme.headlineSmall,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
                   Text(
                     'Rp ${menu['harga'].toString()}',
-                    style: Get.textTheme.bodyMedium!.copyWith(
-                        color: MainColor.primary, fontWeight: FontWeight.bold),
+                    style: Get.textTheme.labelLarge!.copyWith(
+                      color: MainColor.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.edit_note,
+                        color: MainColor.primary,
+                        size: 16.sp,
+                      ),
+                      Text(
+                        "Tambahkan Catatan",
+                        style: Get.textTheme.labelSmall,
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
+            Container(
+              color: MainColor.primary,
+              child: Center(
+                child: Icon(
+                  Icons.add,
+                  color: MainColor.white,
+                  size: 20.sp,
+                ),
+              ),
+            )
           ],
         ),
       ),

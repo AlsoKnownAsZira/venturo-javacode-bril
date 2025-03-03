@@ -46,7 +46,7 @@ class ListScreen extends StatelessWidget {
             color: MainColor.white,
           ),
         ),
-        bottomNavigationBar:  CustomNavbar(),
+        bottomNavigationBar: CustomNavbar(),
         appBar: SearchAppBar(
           onChange: (value) => ListController.to.keyword(value),
         ),
@@ -75,7 +75,7 @@ class ListScreen extends StatelessWidget {
                           size: 30.sp, color: MainColor.primary),
                       SizedBox(width: 10.w),
                       Text(
-                        "Available Promo",
+                        "Promo Yang Tersedia",
                         style: TextStyle(
                             fontSize: 25.sp, fontWeight: FontWeight.bold),
                       ),
