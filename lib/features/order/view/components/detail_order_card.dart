@@ -73,6 +73,11 @@ class DetailOrderCard extends StatelessWidget {
                   style: Get.textTheme.bodyMedium!.copyWith(
                       color: MainColor.primary, fontWeight: FontWeight.bold),
                 ),
+                   Text(
+                  '${detailOrder!['catatan'] ?? 'Tidak ada catatan'}',
+                  style: Get.textTheme.bodyMedium!.copyWith(
+                      color: MainColor.primary, fontWeight: FontWeight.bold),
+                ),
               ],
             ),
           ),

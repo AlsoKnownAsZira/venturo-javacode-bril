@@ -17,6 +17,9 @@ ImageConstant {
   static const String confirm = 'assets/images/ic_confirm.png';
   static const String noInet = 'assets/images/ic_no-internet.png';
   static const String noOrder = 'assets/images/ic_note.png';
+  static const String indo = 'assets/images/ic_ind.png';
+  static const String eng = 'assets/images/ic_eng.png';
+  static const String finger = 'assets/images/ic_finger.png';
 
 
 }

@@ -446,7 +446,7 @@ class ProfileScreen extends StatelessWidget {
                 controller: controller,
                 decoration: InputDecoration(
                   labelText: field,
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -455,7 +455,7 @@ class ProfileScreen extends StatelessWidget {
                   onSave(controller.text);
                   Navigator.pop(context);
                 },
-                child: Text('Save'),
+                child: const Text('Save'),
               ),
             ],
           ),
@@ -491,27 +491,60 @@ class ProfileScreen extends StatelessWidget {
             right: 16.w,
             top: 16.h,
           ),
-          child: Row(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Change Language',
+                'Ganti Bahasa',
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16.h),
-              ListTile(
-                title: Text('English'),
-                onTap: () {
-                  // Add your logic to change the language to English
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text('Indonesian'),
-                onTap: () {
-                  // Add your logic to change the language to Indonesian
-                  Navigator.pop(context);
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 32.h, horizontal: 48.w),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(ImageConstant.eng,
+                              width: 24.w, height: 24.h),
+                          SizedBox(width: 8.w),
+                          Text('English', style: TextStyle(fontSize: 18.sp)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 32.h, horizontal: 48.w),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(ImageConstant.indo,
+                              width: 24.w, height: 24.h),
+                          SizedBox(width: 8.w),
+                          Text('Indonesia', style: TextStyle(fontSize: 18.sp)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

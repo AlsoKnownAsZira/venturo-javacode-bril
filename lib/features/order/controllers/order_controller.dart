@@ -138,7 +138,7 @@ Future<void> orderAgain(Map<String, dynamic> order) async {
           "harga": item['harga'],
           "level": item['level'] ?? 0,
           "topping": item['topping'] ?? [],
-          "jumlah": item['jumlah']
+          "jumlah": item['jumlah'],
         }).toList()
       };
 

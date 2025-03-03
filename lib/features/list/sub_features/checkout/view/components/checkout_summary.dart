@@ -46,7 +46,8 @@ class CheckoutSummary extends StatelessWidget {
         "harga": item.menu.harga,
         "level": item.level ?? 0,
         "topping": item.topping ?? [],
-        "jumlah": item.quantity
+        "jumlah": item.quantity,
+        "catatan": item.note?? "",
       }).toList()
     };
 
