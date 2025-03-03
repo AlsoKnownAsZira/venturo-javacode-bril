@@ -117,7 +117,7 @@ class ProfileScreen extends StatelessWidget {
                         SizedBox(height: 16.h),
                         Container(
                           width: Get.width,
-                          height: Get.height * 0.325,
+                          height: Get.height * 0.4,
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(
                               Radius.circular(30),
@@ -194,6 +194,24 @@ class ProfileScreen extends StatelessWidget {
                                         profileController.updateUserProfile({
                                       ...userProfile,
                                       'email': value,
+                                    }),
+                                  ),
+                                ),
+                                const Divider(),
+                                _buildProfileRow(
+                                  context,
+                                  'PIN',
+                                  userProfile['pin'] != null
+                                      ? obscurePin(userProfile['pin'])
+                                      : 'Unknown',
+                                  () => _showEditBottomSheet(
+                                    context,
+                                    'PIN',
+                                    userProfile['pin'] ?? 'Unknown',
+                                    (value) =>
+                                        profileController.updateUserProfile({
+                                      ...userProfile,
+                                      'pin': value,
                                     }),
                                   ),
                                 ),
@@ -437,6 +455,10 @@ class ProfileScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  String obscurePin(String pin) {
+    return '*' * pin.length;
   }
 
   void _showDatePicker(
