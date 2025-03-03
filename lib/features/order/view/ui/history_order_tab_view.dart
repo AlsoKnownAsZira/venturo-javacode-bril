@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:venturo_core/configs/routes/route.dart';
+import 'package:venturo_core/constants/image_constant.dart';
 import 'package:venturo_core/features/order/controllers/order_controller.dart';
 import 'package:venturo_core/features/order/view/components/dropdown_status.dart';
 import 'package:venturo_core/features/order/view/components/date_picker.dart';
@@ -38,7 +39,7 @@ class OrderHistoryTabView extends StatelessWidget {
                   ),
                 ),
               ),
-          const    SizedBox(width: 16),
+              const SizedBox(width: 16),
               Expanded(
                 child: Obx(
                   () => DatePicker(
@@ -67,7 +68,22 @@ class OrderHistoryTabView extends StatelessWidget {
                 }
 
                 if (orders.isEmpty) {
-                  return const Center(child: Text('No orders found'));
+                  return Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Image(image: AssetImage(ImageConstant.noOrder)),
+                      Text(
+                        "Mulai Buat Pesanan",
+                        style: TextStyle(fontSize: 26.w),
+                      ),
+                      Text(
+                        "Makanan yang kamu opesan akan muncul disini agar kamu bisa menemukan menu favoritmu lagi!",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 26.w),
+                      )
+                    ],
+                  ));
                 }
 
                 return ListView.separated(
