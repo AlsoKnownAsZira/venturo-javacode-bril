@@ -393,66 +393,95 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   : MainColor.primary),
                         ),
                         IconButton(
-                            onPressed: () {
-                              Get.bottomSheet(
-                                backgroundColor: Colors.white,
-                                Container(
-                                  width: Get.width,
-                                  padding: EdgeInsets.all(20.w),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        'Pilih Metode Pembayaran',
-                                        style: TextStyle(
-                                            fontSize: 20.w,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(height: 10.h),
-                                      Wrap(
-                                        spacing: 10.w,
-                                        children: [
-                                          ChoiceChip(
-                                            label: const Text('Paylater'),
-                                            selected: selectedPaymentMethod ==
-                                                'Paylater',
-                                            onSelected: (bool selected) {
-                                              setState(() {
-                                                selectedPaymentMethod =
-                                                    selected ? 'Paylater' : '';
-                                              });
-                                            },
-                                            selectedColor: MainColor.primary,
-                                            backgroundColor: Colors.grey[200],
+                          onPressed: () {
+                            Get.bottomSheet(
+                              backgroundColor: Colors.white,
+                              StatefulBuilder(
+                                builder: (BuildContext context,
+                                    StateSetter setState) {
+                                  return Container(
+                                    width: Get.width,
+                                    padding: EdgeInsets.all(20.w),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'Pilih Metode Pembayaran',
+                                          style: TextStyle(
+                                              fontSize: 20.w,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(height: 10.h),
+                                        Wrap(
+                                          spacing: 10.w,
+                                          children: [
+                                            ChoiceChip(
+                                              label: const Text('Paylater'),
+                                              selected: selectedPaymentMethod ==
+                                                  'Paylater',
+                                              onSelected: (bool selected) {
+                                                setState(() {
+                                                  selectedPaymentMethod =
+                                                      selected
+                                                          ? 'Paylater'
+                                                          : '';
+                                                });
+                                                // Update the parent state
+                                                setState(() {
+                                                  selectedPaymentMethod =
+                                                      selected
+                                                          ? 'Paylater'
+                                                          : '';
+                                                });
+                                              },
+                                              selectedColor: MainColor.primary,
+                                              backgroundColor: Colors.grey[200],
+                                            ),
+                                            ChoiceChip(
+                                              label: const Text('Cash'),
+                                              selected: selectedPaymentMethod ==
+                                                  'Cash',
+                                              onSelected: (bool selected) {
+                                                setState(() {
+                                                  selectedPaymentMethod =
+                                                      selected ? 'Cash' : '';
+                                                });
+                                                // Update the parent state
+                                                setState(() {
+                                                  selectedPaymentMethod =
+                                                      selected ? 'Cash' : '';
+                                                });
+                                              },
+                                              selectedColor: MainColor.primary,
+                                              backgroundColor: Colors.grey[200],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 20.h),
+                                        ElevatedButton(
+                                          onPressed: () => Get.back(),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: MainColor.primary,
+                                            foregroundColor: Colors.white,
+                                            textStyle: TextStyle(
+                                                fontSize: 20.w,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          ChoiceChip(
-                                            label: const Text('Cash'),
-                                            selected:
-                                                selectedPaymentMethod == 'Cash',
-                                            onSelected: (bool selected) {
-                                              setState(() {
-                                                selectedPaymentMethod =
-                                                    selected ? 'Cash' : '';
-                                              });
-                                            },
-                                            selectedColor: MainColor.primary,
-                                            backgroundColor: Colors.grey[200],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 20.h),
-                                      ElevatedButton(
-                                        onPressed: () => Get.back(),
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.arrow_forward_ios),
-                            style: ButtonStyle(
-                                iconSize: MaterialStateProperty.all(20.w))),
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.arrow_forward_ios),
+                          style: ButtonStyle(
+                            iconSize: MaterialStateProperty.all(20.w),
+                          ),
+                        ),
                       ],
                     ),
                   ],
