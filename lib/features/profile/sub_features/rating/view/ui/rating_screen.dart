@@ -42,7 +42,7 @@ Widget build(BuildContext context) {
       elevation: 4,
       centerTitle: true,
       title: Text(
-        "Daftar Penilaian",
+        "dafar_penilaian".tr,
         style: TextStyle(
             fontWeight: FontWeight.bold,
             color: MainColor.black,
@@ -63,7 +63,7 @@ Widget build(BuildContext context) {
           valueListenable: ratingBox.listenable(),
           builder: (context, Box<RatingModel> box, _) {
             if (box.isEmpty) {
-              return Center(child: Text('Belum ada Penilaian'));
+              return Center(child: Text('nilai_kosong'.tr));
             }
             return ListView.builder(
               itemCount: box.length,

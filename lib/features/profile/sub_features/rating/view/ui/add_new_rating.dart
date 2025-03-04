@@ -10,18 +10,18 @@ class AddNewRating extends StatelessWidget {
   final RatingController ratingController = Get.put(RatingController());
 
   final Map<int, String> ratingTexts = {
-    1: 'Sangat Buruk',
-    2: 'Buruk',
-    3: 'Cukup',
-    4: 'Baik',
-    5: 'Sempurna'
+    1: 'sangat_buruk'.tr,
+    2: 'buruk'.tr,
+    3: 'cukup'.tr,
+    4: 'baik'.tr,
+    5: 'sempurna'.tr,
   };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Penilaian'),
+        title:   Text('nilai'.tr),
       ),
       body: SafeArea(
         child: Padding(
@@ -42,9 +42,9 @@ class AddNewRating extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Berikan Penilaianmu',
-                          style: TextStyle(
+                         Text(
+                          'beri_nilai'.tr,
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         Row(
@@ -89,9 +89,9 @@ class AddNewRating extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Apa yang perlu ditingkatkan?',
-                          style: TextStyle(
+                         Text(
+                          'nilai_tingkat'.tr,
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         Obx(() => Wrap(
@@ -123,9 +123,9 @@ class AddNewRating extends StatelessWidget {
                             )),
                         const SizedBox(height: 16),
                         const Divider(),
-                        const Text(
-                          'Tulis Review',
-                          style: TextStyle(
+                         Text(
+                          'tulis_review'.tr,
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         TextField(
@@ -133,12 +133,12 @@ class AddNewRating extends StatelessWidget {
                             ratingController.updateDescription(value);
                           },
                           maxLines: 4,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(
+                          decoration:  InputDecoration(
+                            border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(30)),
                             ),
-                            hintText: 'Tulis Review Anda',
+                            hintText: 'tulis_review_hint'.tr,
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -163,8 +163,8 @@ class AddNewRating extends StatelessWidget {
                                   result:
                                       newRating); // Return the new rating to the previous screen
                             },
-                            child: const Text(
-                              'Kirim Penilaian',
+                            child:  Text(
+                              'kirim_rating'.tr,
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
