@@ -117,7 +117,7 @@ class ProfileScreen extends StatelessWidget {
                         SizedBox(height: 16.h),
                         Container(
                           width: Get.width,
-                          height: Get.height * 0.475,
+                          height: Get.height * 0.48,
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(
                               Radius.circular(30),
