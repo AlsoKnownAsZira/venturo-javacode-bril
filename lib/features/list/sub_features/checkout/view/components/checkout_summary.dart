@@ -47,7 +47,7 @@ class CheckoutSummary extends StatelessWidget {
                 "level": item.level ?? 0,
                 "topping": item.topping ?? [],
                 "jumlah": item.quantity,
-                "catatan": item.note ?? "",
+                "catatan": item.note ?? "Tidak ada Catatan",
               })
           .toList()
     };

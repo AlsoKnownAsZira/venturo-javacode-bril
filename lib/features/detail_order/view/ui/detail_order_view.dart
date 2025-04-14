@@ -320,7 +320,7 @@ class OrderSummary extends StatelessWidget {
               ],
             ),
             const Divider(),
-            if (order['status'] == 4) ...[
+            if (order['status'] == 3) ...[
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -340,7 +340,7 @@ class OrderSummary extends StatelessWidget {
                   ),
                 ],
               ),
-            ] else if (order['status'] == 3) ...[
+            ] else if (order['status'] == 4) ...[
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

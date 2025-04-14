@@ -36,7 +36,6 @@ class DetailOrderCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          /* Image */
           Container(
             height: 90.h,
             width: 90.w,

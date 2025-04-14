@@ -81,7 +81,7 @@ class OrderHistoryTabView extends StatelessWidget {
                             style: TextStyle(fontSize: 26.w),
                           ),
                           Text(
-                            "Makanan yang kamu opesan akan muncul disini agar kamu bisa menemukan menu favoritmu lagi!",
+                            "Makanan yang kamu pesan akan muncul disini agar kamu bisa menemukan menu favoritmu lagi!",
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 26.w),
                           )
