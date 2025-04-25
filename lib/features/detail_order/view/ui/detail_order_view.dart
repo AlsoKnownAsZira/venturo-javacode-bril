@@ -59,7 +59,7 @@ class DetailOrderView extends StatelessWidget {
         }
       }),
       appBar: RoundedAppBar(
-        title: 'Pesanan',
+        title: 'pesanan'.tr,
         icon: Icons.arrow_back_ios,
         actions: [
           Obx(
@@ -88,9 +88,9 @@ class DetailOrderView extends StatelessWidget {
                     // style: TextButton.styleFrom(
                     //   backgroundColor: Colors.white,
                     // ),
-                    child: const Text(
-                      'Batalkan Pesanan',
-                      style: TextStyle(color: Colors.red),
+                    child: Text(
+                      'batal_pesanan'.tr,
+                      style: const TextStyle(color: Colors.red),
                     ),
                   ),
                 ),
@@ -141,7 +141,7 @@ class DetailOrderView extends StatelessWidget {
                         children: [
                           const Icon(Icons.fastfood, color: MainColor.primary),
                           Text(
-                            'Makanan',
+                            'makanan'.tr,
                             style: TextStyle(
                               fontSize: 25.sp,
                               fontWeight: FontWeight.bold,
@@ -161,7 +161,7 @@ class DetailOrderView extends StatelessWidget {
                           const Icon(Icons.local_drink,
                               color: MainColor.primary),
                           Text(
-                            'Minuman',
+                            'minuman'.tr,
                             style: TextStyle(
                               fontSize: 25.sp,
                               fontWeight: FontWeight.bold,
@@ -180,7 +180,7 @@ class DetailOrderView extends StatelessWidget {
                         children: [
                           const Icon(Icons.icecream, color: MainColor.primary),
                           Text(
-                            'Snack',
+                            'snack'.tr,
                             style: TextStyle(
                               fontSize: 25.sp,
                               fontWeight: FontWeight.bold,
@@ -245,7 +245,7 @@ class OrderSummary extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Total Pesanan ($totalQuantity menu)',
+                  'total_pesanan'.trParams({'totalQuantity': '$totalQuantity'}),
                   style: TextStyle(fontSize: 20.w, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
@@ -289,7 +289,7 @@ class OrderSummary extends StatelessWidget {
                   size: 20.w,
                 ),
                 Text(
-                  'Pembayaran',
+                  'pembayaran'.tr,
                   style: TextStyle(fontSize: 20.w, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
@@ -306,7 +306,7 @@ class OrderSummary extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Total Pembayaran',
+                  'total_pembayaran'.tr,
                   style: TextStyle(fontSize: 20.w, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
@@ -331,7 +331,7 @@ class OrderSummary extends StatelessWidget {
                   ),
                   SizedBox(width: 8.w),
                   Text(
-                    'Pesanan selesai',
+                    'pesanan_selesai'.tr,
                     style: TextStyle(
                       fontSize: 40.w,
                       fontWeight: FontWeight.bold,
@@ -351,7 +351,7 @@ class OrderSummary extends StatelessWidget {
                   ),
                   SizedBox(width: 8.w),
                   Text(
-                    'Pesanan Dibatalkan',
+                    'pesanan_dibatalkan'.tr,
                     style: TextStyle(
                       fontSize: 40.w,
                       fontWeight: FontWeight.bold,

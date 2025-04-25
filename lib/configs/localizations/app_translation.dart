@@ -36,6 +36,23 @@ class AppTranslations extends Translations {
           'tulis_review' : 'Write Review',
           'tuils_review_hint' : 'Write Your Review',
           'kirim_rating' : 'Send Review',
+          // Detail order view
+          'pesanan': 'Order',
+          'batal_pesanan': 'Cancel Order',
+          'makanan': 'Food',
+          'minuman': 'Drink',
+          'snack': 'Snack',
+          'total_pesanan': 'Total Order (@totalQuantity menu)',
+          'pembayaran': 'Payment',
+          'total_pembayaran': 'Total Payment',
+          'pesanan_selesai': 'Order Completed',
+          'pesanan_dibatalkan': 'Order Canceled',
+          //forgot password screen
+          'masukkan_email': 'Enter your email address to reset your password',
+          'alamat_email': 'Email Address',
+          'masukkan_alamat_email': 'Enter your email address',
+          'email_required': 'Email address is required',
+          'ubah_kata_sandi': 'Change Password',
         },
         'id_ID': {
           //Page Profil
@@ -71,6 +88,23 @@ class AppTranslations extends Translations {
           'tulis_review' : 'Tulis Ulasan',
           'tulis_review_hint' : 'Tulis Ulasan Anda',
           'kirim_rating' : 'Kirim Ulasan',
+             // Detail order view
+          'pesanan': 'Pesanan',
+          'batal_pesanan': 'Batalkan Pesanan',
+          'makanan': 'Makanan',
+          'minuman': 'Minuman',
+          'snack': 'Camilan',
+          'total_pesanan': 'Total Pesanan (@totalQuantity menu)',
+          'pembayaran': 'Pembayaran',
+          'total_pembayaran': 'Total Pembayaran',
+          'pesanan_selesai': 'Pesanan Selesai',
+          'pesanan_dibatalkan': 'Pesanan Dibatalkan',
+          //forgot password screen
+          'masukkan_email': 'Masukkan alamat surel untuk mengatur ulang kata sandi Anda',
+          'alamat_email': 'Alamat Surel',
+          'masukkan_alamat_email': 'Masukkan alamat surel Anda',
+          'email_required': 'Alamat surel diperlukan',
+          'ubah_kata_sandi': 'Ubah Kata Sandi',
         },
       };
 }

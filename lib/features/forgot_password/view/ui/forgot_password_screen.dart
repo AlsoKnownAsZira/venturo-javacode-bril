@@ -67,7 +67,7 @@ class ForgotPasswordView extends StatelessWidget {
               ),
               SizedBox(height: 121.h),
               Text(
-                'Masukkan alamat email untuk mengubah password anda',
+                'masukkan_email'.tr,
                 style: GoogleTextStyle.fw600.copyWith(
                   fontSize: 22.sp,
                   color: MainColor.black,
@@ -81,10 +81,10 @@ class ForgotPasswordView extends StatelessWidget {
                   controller: ForgotPasswordController.to.emailCtrl,
                   keyboardType: TextInputType.emailAddress,
                   initialValue: ForgotPasswordController.to.emailValue.value,
-                  label: "Email Address",
-                  hint: "Input Email Address",
+                  label: "alamat_email".tr,
+                  hint: "masukkan_alamat_email".tr,
                   isRequired: true,
-                  requiredText: "Email address cannot be empty",
+                  requiredText: "email_required".tr,
                 ),
               ),
               SizedBox(height: 40.h),
@@ -95,7 +95,7 @@ class ForgotPasswordView extends StatelessWidget {
                   Get.toNamed('/otp'); 
                 },
                 child: Text(
-                  "Ubah Password",
+                  "ubah_kata_sandi".tr,
                   style: GoogleTextStyle.fw800.copyWith(
                     fontSize: 14.sp,
                     color: MainColor.white,
